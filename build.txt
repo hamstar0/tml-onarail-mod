@@ -1,0 +1,8 @@
+author = hamstar
+version = 0.0.1
+displayName = On A Rail
+modReferences = HamstarHelpers@1.6.5
+buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
+includePDB = true
+languageVersion = 6
+homepage = https://forums.terraria.org/index.php?threads/licenses-unlock-items-as-you-progress.69438/

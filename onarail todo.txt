@@ -1,0 +1,55 @@
+Future
+-	(Late game) fast travel via clicking on rails on the map
+-	Prevent building rails without supports (16 blocks per support, 32 blocks per grounded support)
+
+
+
+v2
+-	Implement engine upgrades
+-	Implement cars
+v1
+-	Initialize player with 1k train tracks
+-	Implement spawn hijacking
+-	Implement train entity
+	-	Implement fuel feeding
+	-	Implement debarking
+	-	Implement boarding
+	-	Define entity (obeys gravity, clings to rails)
+-	Setup source control
+
+-	Implement minecart alternative for train
+-	Create plan
+-	Create project
+
+
+
+Plan 1
+-	Every player is bound to a Train (permanent minecart)
+-	Train replaces player's spawn and recall destination
+-	Players auto-switch to the train when using a minecart very close to the train location
+-	Trains have storage for fuel items
+-	Trains can pull cars
+	-	Storage cars
+	-	NPC cars
+	-	Turret cars
+-	Train engines (upgradeable)
+	-	Steam engine (default)
+		-	Wood: +1 fuel
+		-	Gel: +2 fuel
+		-	Coal (crafted at furnace): +3 fuel
+		-	Pink Gel: +20 fuel
+	-	Hellforge Steam engine: Crafted from Hellforge + Hellstone Bars
+		-	Fossil: +10 fuel
+		-	Jungle Spores: +15 fuel
+	-	Magitech engine: Crafted from mech boss drops
+		-	Cursed Flame: +20 fuel
+		-	Ichor: +20 fuel
+		-	Crystal: +8 fuel
+	-	Ion Thrust engine: Bought from cyborg NPC
+		-	Nanites: +2 fuel
+		-	Martian Conduit: +100 fuel
+-	Train functions can be added
+	-	Auto rail placement
+	-	Auto tunneling
+	-	Armor plating (protects player)
+	-	Ramming attachments (damages enemies)
