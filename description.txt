@@ -1,4 +1,4 @@
-Each player now uses a rail-bound train (like a persisting minecart) as their central point of operations.
+Each player now uses a rail-bound train as their main base of operations.
 - Trains permanently replace beds for respawn and recall use.
 - Trains can only move on rails.
 - Trains need fuel to move. More and better fuel increases distance and speed.

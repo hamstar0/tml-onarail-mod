@@ -1,10 +1,5 @@
-﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.Services.Promises;
-using HamstarHelpers.TmlHelpers;
-using System.Collections.Generic;
-using Terraria;
+﻿using HamstarHelpers.Helpers.DebugHelpers;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 
 
 namespace OnARail {

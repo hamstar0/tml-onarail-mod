@@ -11,12 +11,13 @@ v1
 -	Initialize player with 1k train tracks
 -	Implement spawn hijacking
 -	Implement train entity
+	-	Implement train graphics
 	-	Implement fuel feeding
 	-	Implement debarking
 	-	Implement boarding
 	-	Define entity (obeys gravity, clings to rails)
--	Setup source control
 
+-	Setup source control
 -	Implement minecart alternative for train
 -	Create plan
 -	Create project

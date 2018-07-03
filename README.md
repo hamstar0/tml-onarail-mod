@@ -1,6 +1,6 @@
-# tml-onarail-mod
+# On A Rail
 
-Each player now uses a rail-bound train as their permanent respawn point to completely replace beds.
+Each player now uses a rail-bound train as their main base of operations.
 - Trains can only move on rails.
 - Trains need fuel to move. More and better fuel increases distance and speed.
 - Trains can be extended with cars and upgraded.

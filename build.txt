@@ -1,7 +1,7 @@
 author = hamstar
 version = 0.0.1
 displayName = On A Rail
-modReferences = HamstarHelpers@1.6.5
+modReferences = HamstarHelpers@2.0.0
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
 includePDB = true
 languageVersion = 6
