@@ -35,14 +35,5 @@ namespace OnARail.Train {
 				i++;
 			}
 		}
-
-
-		////////////////
-
-		public void DrawAll( SpriteBatch sb ) {
-			foreach( var train in this.Trains.Values ) {
-				train.Draw( sb );
-			}
-		}
 	}
 }

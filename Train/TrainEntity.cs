@@ -1,25 +1,29 @@
-﻿using HamstarHelpers.Components.CustomEntity;
+﻿using System.Collections.Generic;
+using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.ModLoader.IO;
 
 
 namespace OnARail.Train {
 	class TrainEntity : CustomEntity {
+		private static IList<CustomEntityProperty> MyProperties = new List<CustomEntityProperty> {
+			new RespectsTerrainEntityProperty(),
+			new RespectsGravityEntityProperty(),
+			new ClingsToRailEntityProperty()
+		};
+
 		private static Texture2D Tex;
-		public static int FrameCount { get; private set; }
-		public static int Width { get; private set; }
-		public static int Height { get; private set; }
+		private static int FrameCount = 3;
+		private static int Width = 64;
+		private static int Height = 64;
 
 
 		////////////////
 
 		static TrainEntity() {
-			TrainEntity.FrameCount = 3;
-			TrainEntity.Width = 1;
-			TrainEntity.Height = 1;
-
 			if( Main.netMode != 2 ) {
 				Promises.AddPostModLoadPromise( () => {
 					TrainEntity.Width = TrainEntity.Tex.Width;
@@ -30,53 +34,62 @@ namespace OnARail.Train {
 		}
 
 
+		////////////////
+
+		internal static TrainEntity LoadAs( TagCompound tags, int which ) {
+			if( !tags.ContainsKey("train_pos_x_" + which) ) { return null; }
+
+			float x = tags.GetFloat( "train_pos_x_" + which );
+			float y = tags.GetFloat( "train_pos_y_" + which );
+			var pos = new Vector2( x, y );
+
+			return new TrainEntity( pos );
+		}
+
+		internal static void SaveAs( TrainEntity train_ent, TagCompound tags, int which ) {
+			tags[ "train_pos_x_"+which ] = train_ent.position.X;
+			tags[ "train_pos_y_"+which ] = train_ent.position.Y;
+		}
+
+
 
 		////////////////
 
-		public Vector2 Pos;
-		public Rectangle Rect { get; private set; }
-
-
-
-		////////////////
-
-		public TrainEntity( Vector2 pos, Color color ) {
-			pos.X = MathHelper.Clamp( pos.X, 160, ( Main.maxTilesX - 10 ) * 16 );
-			pos.Y = MathHelper.Clamp( pos.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
-			//DebugHelpers.Log( "wall of "+color.ToString()+": "+Main.tile[(int)(pos.X/16f)+2, (int)(pos.Y/16f)+4].wall );
-
-			this.Pos = pos;
-
-			// Clients and single only
-			if( Main.netMode != 2 ) {
-				this.Rect = new Rectangle( (int)pos.X, (int)pos.Y, TrainEntity.Width, TrainEntity.Height );
+		public override string DisplayName {
+			get {
+				return "Clockwork Train";
 			}
 		}
-		
-		public void ChangePosition( Vector2 pos ) {
-			this.Pos = pos;
-			this.Rect = new Rectangle( (int)pos.X, (int)pos.Y, this.Rect.Width, this.Rect.Height );
+
+		public override Texture2D Texture {
+			get {
+				return OnARailMod.Instance.GetTexture( "Mounts/TrainMount_Back" );
+			}
+		}
+
+		protected override IList<CustomEntityProperty> _OrderedProperties {
+			get {
+				return TrainEntity.MyProperties;
+			}
 		}
 
 
 		////////////////
 
-		public void Draw( SpriteBatch sb ) {
-			if( Main.netMode == 2 ) { return; }
-			
-			var world_scr_rect = new Rectangle( (int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight );
-			if( !this.Rect.Intersects( world_scr_rect ) ) { return; }
+		public TrainEntity( Vector2 position ) : base(true) {
+			position.X = MathHelper.Clamp( position.X, 160, ( Main.maxTilesX - 10 ) * 16 );
+			position.Y = MathHelper.Clamp( position.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
 
-			Vector2 scr_scr_pos = this.Pos - Main.screenPosition;
-			Rectangle scr_rect = this.Rect;
-			scr_rect.X -= world_scr_rect.X;
-			scr_rect.Y -= world_scr_rect.Y;
+			this.position = position;
+			this.width = TrainEntity.Width;
+			this.height = TrainEntity.Height;
+		}
 
-			float scale = 1f;
 
-			sb.Draw( TrainEntity.Tex, scr_scr_pos, scr_rect, Color.White, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
+		////////////////
 
-			Dust.NewDust( this.Pos, this.Rect.Width, this.Rect.Height, 15, 0, 0, 150, Color.White, 1f );
+		public override void PostDraw( SpriteBatch sb ) {
+			Dust.NewDust( this.position, this.width, this.height, 15, 0, 0, 150, Color.White, 1f );
 		}
 	}
 }

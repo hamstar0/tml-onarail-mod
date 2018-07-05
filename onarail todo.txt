@@ -16,7 +16,14 @@ v1
 	-	Implement debarking
 	-	Implement boarding
 	-	Define entity (obeys gravity, clings to rails)
+	-	@Implement Custom Entity
+		-	Implement sync
+		-	Implement properties
+			-	Sync
+			-	Rail cling
 
+			-	Gravity
+		-	Implement custom entity manager
 -	Setup source control
 -	Implement minecart alternative for train
 -	Create plan
