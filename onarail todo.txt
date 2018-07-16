@@ -7,6 +7,7 @@ Future
 v2
 -	Implement engine upgrades
 -	Implement cars
+-	Implement track laying accessor
 v1
 -	Initialize player with 1k train tracks
 -	Implement spawn hijacking
@@ -16,12 +17,11 @@ v1
 	-	Implement debarking
 	-	Implement boarding
 	-	Define entity (obeys gravity, clings to rails)
-	-	@Implement Custom Entity
-		-	Implement sync
-		-	Implement properties
-			-	Sync
-			-	Rail cling
 
+	-	@Implement Custom Entity
+		-	Implement properties
+			-	Periodic sync
+			-	Rail cling
 			-	Gravity
 		-	Implement custom entity manager
 -	Setup source control

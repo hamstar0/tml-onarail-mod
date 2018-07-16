@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HamstarHelpers.Components.CustomEntity;
+using HamstarHelpers.Components.CustomEntity.Properties;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,7 +13,7 @@ namespace OnARail.Train {
 		private static IList<CustomEntityProperty> MyProperties = new List<CustomEntityProperty> {
 			new RespectsTerrainEntityProperty(),
 			new RespectsGravityEntityProperty(),
-			new ClingsToRailEntityProperty()
+			new RailBoundEntityProperty()
 		};
 
 		private static Texture2D Tex;
