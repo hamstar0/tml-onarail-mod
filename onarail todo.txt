@@ -16,8 +16,9 @@ v1
 	-	Implement fuel feeding
 	-	Implement debarking
 	-	Implement boarding
-	-	Define entity (obeys gravity, clings to rails)
 
+	-	Place entity at default spawn
+	-	Define entity (obeys gravity, clings to rails)
 	-	@Implement Custom Entity
 		-	Implement properties
 			-	Periodic sync

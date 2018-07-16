@@ -2,7 +2,7 @@
 using Terraria.ModLoader.IO;
 
 
-namespace OnARail.Train {
+namespace OnARail.CustomEntities {
 	class TrainManager {
 		private readonly IDictionary<string, TrainEntity> Trains = new Dictionary<string, TrainEntity>();
 

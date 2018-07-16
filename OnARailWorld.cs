@@ -1,4 +1,4 @@
-﻿using OnARail.Train;
+﻿using OnARail.CustomEntities;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 

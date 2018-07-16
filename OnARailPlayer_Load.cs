@@ -1,4 +1,6 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Components.CustomEntity;
+using HamstarHelpers.Helpers.DebugHelpers;
+using OnARail.CustomEntities;
 using Terraria.ModLoader;
 
 
@@ -19,6 +21,9 @@ namespace OnARail {
 		////////////////
 		
 		public void OnEnterWorldForSingle() {
+			var ent = new TrainEntity( this.player.position );
+
+			CustomEntityManager.Entities.Add( ent );
 		}
 
 		public void OnEnterWorldForClient() {

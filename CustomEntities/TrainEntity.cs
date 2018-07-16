@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Properties;
+using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,7 +9,7 @@ using Terraria;
 using Terraria.ModLoader.IO;
 
 
-namespace OnARail.Train {
+namespace OnARail.CustomEntities {
 	class TrainEntity : CustomEntity {
 		private static IList<CustomEntityProperty> MyProperties = new List<CustomEntityProperty> {
 			new RespectsTerrainEntityProperty(),
@@ -27,9 +28,9 @@ namespace OnARail.Train {
 		static TrainEntity() {
 			if( Main.netMode != 2 ) {
 				Promises.AddPostModLoadPromise( () => {
+					TrainEntity.Tex = OnARailMod.Instance.GetTexture( "Mounts/TrainMount_Back" );
 					TrainEntity.Width = TrainEntity.Tex.Width;
 					TrainEntity.Height = TrainEntity.Tex.Height / TrainEntity.FrameCount;
-					TrainEntity.Tex = OnARailMod.Instance.GetTexture( "Mounts/TrainMount_Back" );
 				} );
 			}
 		}
@@ -64,7 +65,7 @@ namespace OnARail.Train {
 
 		public override Texture2D Texture {
 			get {
-				return OnARailMod.Instance.GetTexture( "Mounts/TrainMount_Back" );
+				return TrainEntity.Tex;
 			}
 		}
 
@@ -77,11 +78,11 @@ namespace OnARail.Train {
 
 		////////////////
 
-		public TrainEntity( Vector2 position ) : base(true) {
-			position.X = MathHelper.Clamp( position.X, 160, ( Main.maxTilesX - 10 ) * 16 );
-			position.Y = MathHelper.Clamp( position.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
+		public TrainEntity( Vector2 pos ) : base(true) {
+			pos.X = MathHelper.Clamp( pos.X, 160, ( Main.maxTilesX - 10 ) * 16 );
+			pos.Y = MathHelper.Clamp( pos.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
 
-			this.position = position;
+			this.position = pos;
 			this.width = TrainEntity.Width;
 			this.height = TrainEntity.Height;
 		}
