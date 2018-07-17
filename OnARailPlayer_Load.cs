@@ -21,9 +21,7 @@ namespace OnARail {
 		////////////////
 		
 		public void OnEnterWorldForSingle() {
-			var ent = new TrainEntity( this.player.position );
-
-			CustomEntityManager.Entities.Add( ent );
+			TrainEntity.Spawn( this.player.position );
 		}
 
 		public void OnEnterWorldForClient() {

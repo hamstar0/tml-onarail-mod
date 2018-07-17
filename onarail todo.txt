@@ -7,16 +7,20 @@ Future
 v2
 -	Implement engine upgrades
 -	Implement cars
--	Implement track laying accessor
+-	Implement track laying accessory
 v1
+-	Implement advanced train mechanics
+	-	Implement fuel feeding
+	-	Fix board/unboard alignment and orientation
 -	Initialize player with 1k train tracks
 -	Implement spawn hijacking
--	Implement train entity
+-	Implement basic train entity
+	-	Add minimap icon
+	-	Add OnHover icon
 	-	Implement train graphics
-	-	Implement fuel feeding
-	-	Implement debarking
-	-	Implement boarding
 
+	-	Implement unboarding
+	-	Implement boarding
 	-	Place entity at default spawn
 	-	Define entity (obeys gravity, clings to rails)
 	-	@Implement Custom Entity

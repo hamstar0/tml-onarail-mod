@@ -5,6 +5,7 @@ using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OnARail.Buffs;
 using Terraria;
 using Terraria.ModLoader.IO;
 
@@ -16,6 +17,8 @@ namespace OnARail.CustomEntities {
 			new RespectsGravityEntityProperty(),
 			new RailBoundEntityProperty()
 		};
+
+		public const float BoardingDistance = 96;
 
 		private static Texture2D Tex;
 		private static int FrameCount = 3;
@@ -54,26 +57,23 @@ namespace OnARail.CustomEntities {
 		}
 
 
+		////////////////
+
+		public static void Spawn( Vector2 pos ) {
+			var ent = new TrainEntity( pos );
+
+			CustomEntityManager.Entities.Add( ent );
+		}
+
+
 
 		////////////////
 
-		public override string DisplayName {
-			get {
-				return "Clockwork Train";
-			}
-		}
+		public override string DisplayName { get { return "Clockwork Train"; } }
+		public override Texture2D Texture { get { return TrainEntity.Tex; } }
+		protected override IList<CustomEntityProperty> _OrderedProperties { get { return TrainEntity.MyProperties; } }
 
-		public override Texture2D Texture {
-			get {
-				return TrainEntity.Tex;
-			}
-		}
-
-		protected override IList<CustomEntityProperty> _OrderedProperties {
-			get {
-				return TrainEntity.MyProperties;
-			}
-		}
+		private bool IsHovering = false;
 
 
 		////////////////
@@ -90,8 +90,30 @@ namespace OnARail.CustomEntities {
 
 		////////////////
 
+		public override void OnMouseHover() {
+			Player player = Main.LocalPlayer;
+			
+			if( Main.mouseLeft ) {
+				if( this.IsHovering ) {
+					player.position = this.position;
+					player.AddBuff( OnARailMod.Instance.BuffType<TrainMountBuff>(), 60 );
+
+					CustomEntityManager.Entities.Remove( this );
+				}
+			} else {
+				this.IsHovering = player.Distance( this.Center ) <= TrainEntity.BoardingDistance;
+			}
+		}
+
+
+		////////////////
+
 		public override void PostDraw( SpriteBatch sb ) {
 			Dust.NewDust( this.position, this.width, this.height, 15, 0, 0, 150, Color.White, 1f );
+
+			if( this.IsHovering ) {
+
+			}
 		}
 	}
 }
