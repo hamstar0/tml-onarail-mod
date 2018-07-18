@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.Components.Config;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using Terraria;
@@ -93,6 +94,35 @@ namespace OnARail {
 			Array.Copy( args, 1, new_args, 0, args.Length - 1 );
 
 			return OnARailAPI.Call( call_type, new_args );
+		}
+
+
+		////////////////
+
+		public override void PostDrawInterface( SpriteBatch sb ) {
+			// Clients and single only (redundant?)
+			if( Main.netMode == 2 ) { return; }
+
+			try {
+				if( !Main.mapFullscreen && ( Main.mapStyle == 1 || Main.mapStyle == 2 ) ) {
+					this.DrawMiniMapForAll( sb );
+				}
+			} catch( Exception e ) {
+				ErrorLogger.Log( "OnARailMod.PostDrawInterface - " + e.ToString() );
+				throw e;
+			}
+		}
+
+		public override void PostDrawFullscreenMap( ref string mouseText ) {
+			// Clients and single only (redundant?)
+			if( Main.netMode == 2 ) { return; }
+
+			try {
+				this.DrawFullMapForAll( Main.spriteBatch );
+			} catch( Exception e ) {
+				ErrorLogger.Log( "OnARailMod.PostDrawFullscreenMap: " + e.ToString() );
+				throw e;
+			}
 		}
 	}
 }

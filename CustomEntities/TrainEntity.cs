@@ -11,7 +11,7 @@ using Terraria.ModLoader.IO;
 
 
 namespace OnARail.CustomEntities {
-	class TrainEntity : CustomEntity {
+	public class TrainEntity : CustomEntity {
 		private static IList<CustomEntityComponent> MyProperties = new List<CustomEntityComponent> {
 			new RespectsTerrainEntityComponent(),
 			new RespectsGravityEntityComponent(),
@@ -20,8 +20,8 @@ namespace OnARail.CustomEntities {
 
 		public const float BoardingDistance = 96;
 
-		private static Texture2D TrainTexture;
-		private static Texture2D TrainIcon;
+		internal static Texture2D TrainTexture;
+		internal static Texture2D TrainIcon;
 
 
 		////////////////
