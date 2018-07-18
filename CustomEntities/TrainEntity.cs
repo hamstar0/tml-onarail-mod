@@ -20,7 +20,8 @@ namespace OnARail.CustomEntities {
 
 		public const float BoardingDistance = 96;
 
-		private static Texture2D Tex;
+		private static Texture2D TrainTexture;
+		private static Texture2D TrainIcon;
 
 
 		////////////////
@@ -28,7 +29,8 @@ namespace OnARail.CustomEntities {
 		static TrainEntity() {
 			if( Main.netMode != 2 ) {
 				Promises.AddPostModLoadPromise( () => {
-					TrainEntity.Tex = OnARailMod.Instance.GetTexture( "Mounts/TrainMount_Back" );
+					TrainEntity.TrainTexture = OnARailMod.Instance.GetTexture( "Mounts/TrainMount_Back" );
+					TrainEntity.TrainIcon = OnARailMod.Instance.GetTexture( "CustomEntities/TrainIcon" );
 				} );
 			}
 		}
@@ -65,7 +67,7 @@ namespace OnARail.CustomEntities {
 		////////////////
 
 		public override string DisplayName { get { return "Clockwork Train"; } }
-		public override Texture2D Texture { get { return TrainEntity.Tex; } }
+		public override Texture2D Texture { get { return TrainEntity.TrainTexture; } }
 		public override int FrameCount { get { return 4; } }
 
 		protected override IList<CustomEntityComponent> _OrderedComponents { get { return TrainEntity.MyProperties; } }
@@ -80,8 +82,8 @@ namespace OnARail.CustomEntities {
 			pos.Y = MathHelper.Clamp( pos.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
 
 			this.position = pos;
-			this.width = TrainEntity.Tex.Width;
-			this.height = (TrainEntity.Tex.Height / this.FrameCount) - 12;
+			this.width = TrainEntity.TrainTexture.Width;
+			this.height = (TrainEntity.TrainTexture.Height / this.FrameCount) - 12;
 		}
 
 
@@ -90,7 +92,7 @@ namespace OnARail.CustomEntities {
 		public override void OnMouseHover() {
 			Player player = Main.LocalPlayer;
 			
-			if( Main.mouseLeft ) {
+			if( Main.mouseRight ) {
 				if( this.IsHovering ) {
 					player.position = this.position;
 					player.AddBuff( OnARailMod.Instance.BuffType<TrainMountBuff>(), 60 );
@@ -105,8 +107,21 @@ namespace OnARail.CustomEntities {
 
 		////////////////
 
+		private float PulseScaleAnimation = 0f;
+
 		public override void PostDraw( SpriteBatch sb ) {
-			//if( this.IsHovering ) { }
+			if( this.IsHovering ) {
+				var pos = new Vector2( Main.mouseX - TrainEntity.TrainIcon.Width, Main.mouseY - TrainEntity.TrainIcon.Height );
+				float scale = 1f + ((this.PulseScaleAnimation > 0 ? this.PulseScaleAnimation : -this.PulseScaleAnimation) / 90f);
+
+				if( this.PulseScaleAnimation >= 30 ) {
+					this.PulseScaleAnimation = -this.PulseScaleAnimation;
+				} else {
+					this.PulseScaleAnimation++;
+				}
+
+				sb.Draw( TrainEntity.TrainIcon, pos, null, Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 1f );
+			}
 		}
 	}
 }

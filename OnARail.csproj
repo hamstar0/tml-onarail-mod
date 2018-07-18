@@ -73,6 +73,7 @@
   <ItemGroup>
     <Content Include="Buffs\TrainMountBuff.png" />
     <Content Include="build.txt" />
+    <Content Include="CustomEntities\TrainIcon.png" />
     <Content Include="description.txt" />
     <Content Include="Mounts\TrainMount_Back.png" />
     <Content Include="Mounts\TrainMount_Front.png" />

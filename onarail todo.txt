@@ -17,8 +17,8 @@ v1
 -	Implement basic train entity
 	-	Add minimap icon
 	-	Add OnHover icon
-	-	Implement train graphics
 
+	-	Implement train graphics
 	-	Implement unboarding
 	-	Implement boarding
 	-	Place entity at default spawn
