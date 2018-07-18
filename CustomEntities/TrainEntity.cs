@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using HamstarHelpers.Components.CustomEntity;
-using HamstarHelpers.Components.CustomEntity.Properties;
+using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
@@ -12,18 +12,15 @@ using Terraria.ModLoader.IO;
 
 namespace OnARail.CustomEntities {
 	class TrainEntity : CustomEntity {
-		private static IList<CustomEntityProperty> MyProperties = new List<CustomEntityProperty> {
-			new RespectsTerrainEntityProperty(),
-			new RespectsGravityEntityProperty(),
-			new RailBoundEntityProperty()
+		private static IList<CustomEntityComponent> MyProperties = new List<CustomEntityComponent> {
+			new RespectsTerrainEntityComponent(),
+			new RespectsGravityEntityComponent(),
+			new RailBoundEntityComponent()
 		};
 
 		public const float BoardingDistance = 96;
 
 		private static Texture2D Tex;
-		private static int FrameCount = 3;
-		private static int Width = 64;
-		private static int Height = 64;
 
 
 		////////////////
@@ -32,8 +29,6 @@ namespace OnARail.CustomEntities {
 			if( Main.netMode != 2 ) {
 				Promises.AddPostModLoadPromise( () => {
 					TrainEntity.Tex = OnARailMod.Instance.GetTexture( "Mounts/TrainMount_Back" );
-					TrainEntity.Width = TrainEntity.Tex.Width;
-					TrainEntity.Height = TrainEntity.Tex.Height / TrainEntity.FrameCount;
 				} );
 			}
 		}
@@ -71,7 +66,9 @@ namespace OnARail.CustomEntities {
 
 		public override string DisplayName { get { return "Clockwork Train"; } }
 		public override Texture2D Texture { get { return TrainEntity.Tex; } }
-		protected override IList<CustomEntityProperty> _OrderedProperties { get { return TrainEntity.MyProperties; } }
+		public override int FrameCount { get { return 4; } }
+
+		protected override IList<CustomEntityComponent> _OrderedComponents { get { return TrainEntity.MyProperties; } }
 
 		private bool IsHovering = false;
 
@@ -83,8 +80,8 @@ namespace OnARail.CustomEntities {
 			pos.Y = MathHelper.Clamp( pos.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
 
 			this.position = pos;
-			this.width = TrainEntity.Width;
-			this.height = TrainEntity.Height;
+			this.width = TrainEntity.Tex.Width;
+			this.height = (TrainEntity.Tex.Height / this.FrameCount) - 12;
 		}
 
 
@@ -109,11 +106,7 @@ namespace OnARail.CustomEntities {
 		////////////////
 
 		public override void PostDraw( SpriteBatch sb ) {
-			Dust.NewDust( this.position, this.width, this.height, 15, 0, 0, 150, Color.White, 1f );
-
-			if( this.IsHovering ) {
-
-			}
+			//if( this.IsHovering ) { }
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace OnARail.Mounts {
 
 			var player_y_offsets = new int[ total_frames ];
 			for( int i = 0; i < player_y_offsets.Length; i++ ) {
-				player_y_offsets[i] = 8;
+				player_y_offsets[i] = 8+(i%2);
 			}
 
 			this.mountData.Minecart = true;
@@ -20,7 +20,6 @@ namespace OnARail.Mounts {
 			this.mountData.spawnDust = 213;
 			this.mountData.buff = this.mod.BuffType( "TrainMountBuff" );
 			//this.mountData.extraBuff = 185;
-			this.mountData.heightBoost = 10;
 			this.mountData.flightTimeMax = 0;
 			this.mountData.fallDamage = 1f;
 			this.mountData.runSpeed = 10f;
@@ -29,12 +28,15 @@ namespace OnARail.Mounts {
 			this.mountData.jumpHeight = 12;
 			this.mountData.jumpSpeed = 5.15f;
 			this.mountData.blockExtraJumps = true;
+
 			this.mountData.totalFrames = total_frames;
+			this.mountData.heightBoost = 10;
 			this.mountData.playerYOffsets = player_y_offsets;
 			this.mountData.xOffset = 1;
-			this.mountData.yOffset = 13;
+			this.mountData.yOffset = 16;
 			this.mountData.bodyFrame = 3;
 			this.mountData.playerHeadOffset = 14;
+
 			this.mountData.standingFrameCount = 1;
 			this.mountData.standingFrameDelay = 12;
 			this.mountData.standingFrameStart = 0;
@@ -53,7 +55,7 @@ namespace OnARail.Mounts {
 			this.mountData.idleFrameLoop = false;
 
 			if( Main.netMode != 2 ) {
-				this.mountData.textureWidth = this.mountData.backTexture.Width + 20;
+				this.mountData.textureWidth = this.mountData.backTexture.Width;
 				this.mountData.textureHeight = this.mountData.backTexture.Height;
 			}
 		}
