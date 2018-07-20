@@ -15,6 +15,7 @@ v1
 -	Initialize player with 1k train tracks
 -	Implement spawn hijacking
 -	Implement basic train entity
+	-	Implement syncing of mount/dismount
 	-	Set entity to persist even when player is mounted
 
 	-	Add minimap icon
