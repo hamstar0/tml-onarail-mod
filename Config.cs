@@ -13,6 +13,8 @@ namespace OnARail {
 
 		public bool DebugModeInfo = false;
 
+		public bool SaveTrainDataAsJson = true;
+
 
 
 		//public string _OLD_SETTINGS_BELOW_ = "";
@@ -20,7 +22,7 @@ namespace OnARail {
 
 
 		////////////////
-		
+
 		public bool UpdateToLatestVersion( OnARailMod mymod ) {
 			var new_config = new OnARailConfigData();
 			var vers_since = this._ModVersionSinceUpdate != "" ?

@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 namespace OnARail {
     public partial class OnARailMod : Mod {
 		private void DrawMiniMapForAll( SpriteBatch sb ) {
-			ISet<CustomEntity> trains = CustomEntityManager.Entities.GetByComponentType<TrainDrawEntityComponent>();
+			ISet<CustomEntity> trains = CustomEntityManager.Instance.GetByComponentType<TrainDrawEntityComponent>();
 
 			foreach( var train in trains ) {
 				if( Main.mapStyle == 1 ) {
@@ -24,7 +24,7 @@ namespace OnARail {
 
 
 		private void DrawFullMapForAll( SpriteBatch sb ) {
-			ISet<CustomEntity> trains = CustomEntityManager.Entities.GetByComponentType<TrainDrawEntityComponent>();
+			ISet<CustomEntity> trains = CustomEntityManager.Instance.GetByComponentType<TrainDrawEntityComponent>();
 
 			foreach( var train in trains ) {
 				this.DrawFullscreenMap( sb, train );
@@ -36,7 +36,7 @@ namespace OnARail {
 
 		public void DrawMiniMap( SpriteBatch sb, CustomEntity train_ent ) {
 			float scale = Main.mapMinimapScale;
-			Texture2D tex = TrainEntity.TrainIcon;
+			Texture2D tex = TrainEntityFactory.TrainIcon;
 
 			var rect = new Rectangle( (int)train_ent.position.X, (int)train_ent.position.Y, tex.Width, tex.Height );
 
@@ -48,7 +48,7 @@ namespace OnARail {
 
 		public void DrawOverlayMap( SpriteBatch sb, CustomEntity train_ent ) {
 			float scale = Main.mapOverlayScale;
-			Texture2D tex = TrainEntity.TrainIcon;
+			Texture2D tex = TrainEntityFactory.TrainIcon;
 
 			var rect = new Rectangle( (int)train_ent.position.X, (int)train_ent.position.Y, tex.Width, tex.Height );
 
@@ -60,7 +60,7 @@ namespace OnARail {
 
 		public void DrawFullscreenMap( SpriteBatch sb, CustomEntity train_ent ) {
 			float scale = Main.mapFullscreenScale;
-			Texture2D tex = TrainEntity.TrainIcon;
+			Texture2D tex = TrainEntityFactory.TrainIcon;
 
 			var rect = new Rectangle( (int)train_ent.position.X, (int)train_ent.position.Y, tex.Width, tex.Height );
 			Vector2 pos = HudMapHelpers.GetFullMapPosition( rect );

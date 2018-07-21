@@ -34,7 +34,7 @@ namespace OnARail.Buffs {
 
 
 		private void OnExpire( Player player ) {
-			TrainEntity.CreateTrain( player.position );
+			TrainEntityFactory.CreateTrain( player.position );
 		}
 	}
 }

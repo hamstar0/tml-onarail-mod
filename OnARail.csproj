@@ -64,6 +64,7 @@
     <Compile Include="Buffs\TrainMountBuff.cs" />
     <Compile Include="Commands\DebugCommand.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="CustomEntities\TrainEntity_Behaviors.cs" />
     <Compile Include="Mounts\TrainMount.cs" />
     <Compile Include="OnARailMod_UI.cs" />
     <Compile Include="OnARailPlayer_Load.cs" />
