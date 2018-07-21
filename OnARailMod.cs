@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Components.Config;
 using Microsoft.Xna.Framework.Graphics;
+using OnARail.CustomEntities;
 using System;
 using System.IO;
 using Terraria;
@@ -43,6 +44,8 @@ namespace OnARail {
 		public JsonConfig<OnARailConfigData> ConfigJson { get; private set; }
 		public OnARailConfigData Config { get { return this.ConfigJson.Data; } }
 
+		private TrainEntityFactory TrainFactory;
+
 
 		////////////////
 
@@ -63,6 +66,8 @@ namespace OnARail {
 			OnARailMod.Instance = this;
 
 			this.LoadConfig();
+
+			this.TrainFactory = new TrainEntityFactory();
 		}
 
 		private void LoadConfig() {
