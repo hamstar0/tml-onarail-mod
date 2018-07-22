@@ -30,7 +30,12 @@ namespace OnARail.CustomEntities {
 
 
 		public static void ActivateTrainEntity( Player player ) {
-			f
+			var myplayer = player.GetModPlayer<OnARailPlayer>();
+			CustomEntity ent = CustomEntityManager.Instance[ myplayer.MyTrainId ];
+			var train_mouse_comp = ent.GetComponentByType<TrainMouseInteractionEntityComponent>();
+
+			train_mouse_comp.IsMounted = false;
+			ent.Sync();
 		}
 
 

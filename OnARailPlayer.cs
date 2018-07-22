@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace OnARail {
 	partial class OnARailPlayer : ModPlayer {
-		private int MyTrainId;
+		public int MyTrainId { get; private set; }
 
 
 
