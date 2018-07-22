@@ -17,15 +17,18 @@ namespace OnARail.Buffs {
 
 
 		public override void Update( Player player, ref int buff_idx ) {
+			if( player.buffType[buff_idx] != this.Type ) {
+				return;
+			}
+
 			player.mount.SetMount( this.mod.MountType<TrainMount>(), player );
-			player.buffTime[ buff_idx ] = 2;
 
 			int who = player.whoAmI;
 			
 			Timers.SetTimer( "TrainMountFor" + who, 3, () => {
 				Player player2 = Main.player[ who ];
 
-				if( player2.active || (player.active && player2.dead) ) {
+				if( player2.active || (player2.active && player2.dead) ) {
 					this.OnExpire( player2 );
 				}
 				return false;

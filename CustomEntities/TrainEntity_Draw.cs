@@ -15,29 +15,33 @@ namespace OnARail.CustomEntities {
 
 		////////////////
 
+		protected class MyStaticInitializer : StaticInitializer {
+			protected override void StaticInitialize() {
+				if( Main.netMode != 2 ) {
+					Promises.AddPostModLoadPromise( () => {
+						TrainDrawEntityComponent.TrainTexture = OnARailMod.Instance.GetTexture( "Mounts/TrainMount_Back" );
+						TrainDrawEntityComponent.TrainIcon = OnARailMod.Instance.GetTexture( "CustomEntities/TrainIcon" );
+					} );
+				}
+			}
+		}
+
+
+		////////////////
+
 		private float PulseScaleAnimation = 0f;
 
 
 		////////////////
 
-		public TrainDrawEntityComponent() : base( "Mounts/TrainMount_Back", 4 ) { }
-
-
-		protected override void StaticInitialize() {
-			if( Main.netMode != 2 ) {
-				Promises.AddPostModLoadPromise( () => {
-					TrainDrawEntityComponent.TrainTexture = OnARailMod.Instance.GetTexture( "Mounts/TrainMount_Back" );
-					TrainDrawEntityComponent.TrainIcon = OnARailMod.Instance.GetTexture( "CustomEntities/TrainIcon" );
-				} );
-			}
-		}
+		public TrainDrawEntityComponent() : base( "OnARail/Mounts/TrainMount_Back", 4 ) { }
 
 		////////////////
 
 		public override void PostDraw( SpriteBatch sb, CustomEntity ent ) {
 			var mouse_comp = ent.GetComponentByType<TrainMouseInteractionEntityComponent>();
 
-			if( mouse_comp.IsHovering ) {
+			if( mouse_comp.IsMouseHovering && !mouse_comp.IsMounted ) {
 				var pos = new Vector2( Main.mouseX - TrainDrawEntityComponent.TrainIcon.Width, Main.mouseY - TrainDrawEntityComponent.TrainIcon.Height );
 				float scale = 1f + ( ( this.PulseScaleAnimation > 0 ? this.PulseScaleAnimation : -this.PulseScaleAnimation ) / 90f );
 

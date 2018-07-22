@@ -36,9 +36,9 @@ namespace OnARail.CustomEntities {
 				TrainEntityFactory.Components = new List<CustomEntityComponent> {
 					new TrainDrawEntityComponent(),
 					new TrainMouseInteractionEntityComponent(),
-					new RespectsTerrainEntityComponent(),
-					new RespectsGravityEntityComponent(),
-					new RailBoundEntityComponent(),
+					new TrainRespectsTerrainEntityComponent(),
+					new TrainRespectsGravityEntityComponent(),
+					new TrainRailBoundEntityComponent(),
 					new PeriodicSyncEntityComponent(),
 					new PerWorldSaveEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
 				};
