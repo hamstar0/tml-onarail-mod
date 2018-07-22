@@ -8,14 +8,14 @@ using Terraria;
 
 
 namespace OnARail.CustomEntities {
-	class TrainEntityFactory {
-		private static IList<CustomEntityComponent> Components;
+	class TrainEntityHandler {
+		private static IList<CustomEntityComponent> CommonComponents;
 
 
 		////////////////
 
 		public static int CreateTrain( Vector2 pos ) {
-			var ent = new CustomEntity( TrainEntityFactory.Components );
+			var ent = new CustomEntity( TrainEntityHandler.CommonComponents );
 			var draw_comp = ent.GetComponentByType<TrainDrawEntityComponent>();
 
 			pos.X = MathHelper.Clamp( pos.X, 160, ( Main.maxTilesX - 10 ) * 16 );
@@ -29,11 +29,16 @@ namespace OnARail.CustomEntities {
 		}
 
 
+		public static void ActivateTrainEntity( Player player ) {
+			f
+		}
+
+
 		////////////////
 
-		internal TrainEntityFactory() {
+		internal TrainEntityHandler() {
 			Promises.AddPostModLoadPromise( () => {
-				TrainEntityFactory.Components = new List<CustomEntityComponent> {
+				TrainEntityHandler.CommonComponents = new List<CustomEntityComponent> {
 					new TrainDrawEntityComponent(),
 					new TrainMouseInteractionEntityComponent(),
 					new TrainRespectsTerrainEntityComponent(),

@@ -64,16 +64,16 @@
     <Compile Include="Buffs\TrainMountBuff.cs" />
     <Compile Include="Commands\DebugCommand.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="CustomEntities\TrainEntity_Misc.cs" />
-    <Compile Include="CustomEntities\TrainEntity_Draw.cs" />
-    <Compile Include="CustomEntities\TrainEntity_Mouse.cs" />
+    <Compile Include="CustomEntities\Train_Misc.cs" />
+    <Compile Include="CustomEntities\Train_Draw.cs" />
+    <Compile Include="CustomEntities\Train_Mouse.cs" />
     <Compile Include="Mounts\TrainMount.cs" />
     <Compile Include="OnARailMod_UI.cs" />
     <Compile Include="OnARailPlayer_Load.cs" />
     <Compile Include="OnARailPlayer.cs" />
     <Compile Include="OnARailMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CustomEntities\TrainEntity.cs" />
+    <Compile Include="CustomEntities\Train.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Buffs\TrainMountBuff.png" />

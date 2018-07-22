@@ -44,7 +44,7 @@ namespace OnARail {
 		public JsonConfig<OnARailConfigData> ConfigJson { get; private set; }
 		public OnARailConfigData Config { get { return this.ConfigJson.Data; } }
 
-		private TrainEntityFactory TrainFactory;
+		private TrainEntityHandler TrainFactory;
 
 
 		////////////////
@@ -67,7 +67,7 @@ namespace OnARail {
 
 			this.LoadConfig();
 
-			this.TrainFactory = new TrainEntityFactory();
+			this.TrainFactory = new TrainEntityHandler();
 		}
 
 		private void LoadConfig() {

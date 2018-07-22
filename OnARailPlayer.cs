@@ -1,10 +1,17 @@
 ﻿using HamstarHelpers.Helpers.DebugHelpers;
+using OnARail.Mounts;
 using Terraria;
 using Terraria.ModLoader;
 
 
 namespace OnARail {
 	partial class OnARailPlayer : ModPlayer {
+		private int MyTrainId;
+
+
+
+		////////////////
+
 		public override bool CloneNewInstances { get { return false; } }
 
 		public override void Initialize() { }
@@ -21,13 +28,20 @@ namespace OnARail {
 		}
 
 		public override void OnEnterWorld( Player player ) {
-			if( player.whoAmI != this.player.whoAmI ) { return; }
-
 			if( Main.netMode == 0 ) {
 				this.OnEnterWorldForSingle();
 			} else if( Main.netMode == 1 ) {
 				this.OnEnterWorldForClient();
 			}
+		}
+
+
+		////////////////
+
+		public void MountTrain() {
+			int mount_type = this.mod.MountType<TrainMount>();
+
+			this.player.mount.SetMount( mount_type, this.player );
 		}
 	}
 }

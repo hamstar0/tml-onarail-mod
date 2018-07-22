@@ -1,6 +1,5 @@
 using HamstarHelpers.Services.Timers;
 using OnARail.CustomEntities;
-using OnARail.Mounts;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -20,24 +19,19 @@ namespace OnARail.Buffs {
 			if( player.buffType[buff_idx] != this.Type ) {
 				return;
 			}
-
-			player.mount.SetMount( this.mod.MountType<TrainMount>(), player );
-
+			var myplayer = player.GetModPlayer<OnARailPlayer>();
 			int who = player.whoAmI;
+
+			myplayer.MountTrain();
 			
 			Timers.SetTimer( "TrainMountFor" + who, 3, () => {
 				Player player2 = Main.player[ who ];
 
 				if( player2.active || (player2.active && player2.dead) ) {
-					this.OnExpire( player2 );
+					TrainEntityHandler.ActivateTrainEntity( player2 );
 				}
 				return false;
 			} );
-		}
-
-
-		private void OnExpire( Player player ) {
-			TrainEntityFactory.CreateTrain( player.position );
 		}
 	}
 }

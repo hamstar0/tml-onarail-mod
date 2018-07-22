@@ -20,7 +20,7 @@ namespace OnARail.CustomEntities {
 				if( Main.netMode != 2 ) {
 					Promises.AddPostModLoadPromise( () => {
 						TrainDrawEntityComponent.TrainTexture = OnARailMod.Instance.GetTexture( "Mounts/TrainMount_Back" );
-						TrainDrawEntityComponent.TrainIcon = OnARailMod.Instance.GetTexture( "CustomEntities/TrainIcon" );
+						TrainDrawEntityComponent.TrainIcon = OnARailMod.Instance.GetTexture( "Logic/TrainIcon" );
 					} );
 				}
 			}
