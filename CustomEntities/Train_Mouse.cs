@@ -13,7 +13,7 @@ namespace OnARail.CustomEntities {
 
 
 		////////////////
-
+		
 		[PacketProtocolIgnore]
 		[JsonIgnore]
 		public bool IsMouseHovering = false;
@@ -24,11 +24,11 @@ namespace OnARail.CustomEntities {
 		
 		protected override void OnMouseHover( CustomEntity ent ) {
 			Player player = Main.LocalPlayer;
-			
+
 			this.IsMouseHovering = player.Distance( ent.Center ) <= TrainMouseInteractionEntityComponent.BoardingDistance;
 
-			if( Main.mouseRight ) {
-				if( this.IsMouseHovering ) {
+			if( this.IsMouseHovering ) {
+				if( Main.mouseRight ) {
 					var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
 					if( train_comp.MountTrain_NoSync( ent, player ) ) {
@@ -41,13 +41,9 @@ namespace OnARail.CustomEntities {
 		}
 
 		public override void Update( CustomEntity ent ) {
-			if( this.IsMouseHovering ) {
-				Player player = Main.LocalPlayer;
+			this.IsMouseHovering = false;
 
-				if( player.Distance( ent.Center ) > TrainMouseInteractionEntityComponent.BoardingDistance ) {
-					this.IsMouseHovering = false;
-				}
-			}
+			base.Update( ent );
 		}
 	}
 }

@@ -38,6 +38,11 @@ namespace OnARail.CustomEntities {
 			}
 
 			CustomEntity ent = CustomEntityManager.Instance[ myplayer.MyTrainId ];
+			if( ent == null ) {
+				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.ActivateTrainEntity - Player " + player.name + " (" + player.whoAmI + ") has invalid train." );
+				return;
+			}
+
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
 			train_comp.DismountTrain_NoSync( ent );

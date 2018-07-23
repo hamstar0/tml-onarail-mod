@@ -45,9 +45,9 @@ namespace OnARail.CustomEntities {
 					Main.mouseX - TrainDrawInGameEntityComponent.TrainIcon.Width,
 					Main.mouseY - TrainDrawInGameEntityComponent.TrainIcon.Height
 				);
-				float scale = 1f + ( ( this.PulseScaleAnimation > 0 ? this.PulseScaleAnimation : -this.PulseScaleAnimation ) / 90f );
+				float scale = 1f + ( ( this.PulseScaleAnimation > 0 ? this.PulseScaleAnimation : -this.PulseScaleAnimation ) / 150f );
 
-				if( this.PulseScaleAnimation >= 30 ) {
+				if( this.PulseScaleAnimation >= 36 ) {
 					this.PulseScaleAnimation = -this.PulseScaleAnimation;
 				} else {
 					this.PulseScaleAnimation++;

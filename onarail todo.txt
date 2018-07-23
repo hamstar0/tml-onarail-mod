@@ -13,6 +13,8 @@ v1
 	-	Implement fuel feeding
 	-	Fix board/unboard alignment and orientation
 -	Initialize player with 1k train tracks
+-	Fix custom entity invisibly following player
+-	Update buff icon
 
 -	@Set train entity to render with lighting
 -	Implement spawn hijacking
