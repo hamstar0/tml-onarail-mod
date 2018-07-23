@@ -22,7 +22,7 @@ namespace OnARail.Buffs {
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
 			int who = player.whoAmI;
 
-			myplayer.MountTrain();
+			myplayer.MountTrainMount();
 			
 			Timers.SetTimer( "TrainMountFor" + who, 3, () => {
 				Player player2 = Main.player[ who ];

@@ -64,6 +64,7 @@
     <Compile Include="Buffs\TrainMountBuff.cs" />
     <Compile Include="Commands\DebugCommand.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="CustomEntities\Train_Behavior.cs" />
     <Compile Include="CustomEntities\Train_Misc.cs" />
     <Compile Include="CustomEntities\Train_Draw.cs" />
     <Compile Include="CustomEntities\Train_Mouse.cs" />

@@ -31,11 +31,19 @@ namespace OnARail.CustomEntities {
 
 		public static void ActivateTrainEntity( Player player ) {
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
-			CustomEntity ent = CustomEntityManager.Instance[ myplayer.MyTrainId ];
-			var train_mouse_comp = ent.GetComponentByType<TrainMouseInteractionEntityComponent>();
+			if( myplayer.MyTrainId == -1 ) {
+				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.ActivateTrainEntity - Player "+player.name+" ("+player.whoAmI+") has no train." );
+				return;
+			}
 
-			train_mouse_comp.IsMounted = false;
-			ent.Sync();
+			CustomEntity ent = CustomEntityManager.Instance[ myplayer.MyTrainId ];
+			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
+
+			train_comp.DismountTrain_NoSync( ent );
+
+			if( Main.netMode != 0 ) {
+				ent.Sync();
+			}
 		}
 
 
@@ -44,13 +52,14 @@ namespace OnARail.CustomEntities {
 		internal TrainEntityHandler() {
 			Promises.AddPostModLoadPromise( () => {
 				TrainEntityHandler.CommonComponents = new List<CustomEntityComponent> {
+					new TrainBehaviorEntityComponent(),
 					new TrainDrawEntityComponent(),
 					new TrainMouseInteractionEntityComponent(),
 					new TrainRespectsTerrainEntityComponent(),
 					new TrainRespectsGravityEntityComponent(),
 					new TrainRailBoundEntityComponent(),
-					new PeriodicSyncEntityComponent(),
-					new PerWorldSaveEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
+					new PeriodicSyncEntityComponent()
+					//new PerWorldSaveEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
 				};
 			} );
 		}

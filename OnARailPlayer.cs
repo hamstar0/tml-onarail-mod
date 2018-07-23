@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Components.CustomEntity;
+using HamstarHelpers.Helpers.DebugHelpers;
 using OnARail.Mounts;
 using Terraria;
 using Terraria.ModLoader;
@@ -14,7 +15,9 @@ namespace OnARail {
 
 		public override bool CloneNewInstances { get { return false; } }
 
-		public override void Initialize() { }
+		public override void Initialize() {
+			this.MyTrainId = -1;
+		}
 
 
 		////////////////
@@ -38,7 +41,7 @@ namespace OnARail {
 
 		////////////////
 
-		public void MountTrain() {
+		public void MountTrainMount() {
 			int mount_type = this.mod.MountType<TrainMount>();
 
 			this.player.mount.SetMount( mount_type, this.player );

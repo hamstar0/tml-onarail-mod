@@ -1,5 +1,4 @@
-﻿using HamstarHelpers.Components.CustomEntity;
-using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Helpers.DebugHelpers;
 using OnARail.CustomEntities;
 using Terraria.ModLoader;
 

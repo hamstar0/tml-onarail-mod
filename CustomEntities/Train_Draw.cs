@@ -20,7 +20,7 @@ namespace OnARail.CustomEntities {
 				if( Main.netMode != 2 ) {
 					Promises.AddPostModLoadPromise( () => {
 						TrainDrawEntityComponent.TrainTexture = OnARailMod.Instance.GetTexture( "Mounts/TrainMount_Back" );
-						TrainDrawEntityComponent.TrainIcon = OnARailMod.Instance.GetTexture( "Logic/TrainIcon" );
+						TrainDrawEntityComponent.TrainIcon = OnARailMod.Instance.GetTexture( "CustomEntities/TrainIcon" );
 					} );
 				}
 			}
@@ -39,9 +39,10 @@ namespace OnARail.CustomEntities {
 		////////////////
 
 		public override void PostDraw( SpriteBatch sb, CustomEntity ent ) {
+			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 			var mouse_comp = ent.GetComponentByType<TrainMouseInteractionEntityComponent>();
 
-			if( mouse_comp.IsMouseHovering && !mouse_comp.IsMounted ) {
+			if( mouse_comp.IsMouseHovering && train_comp.IsMountedBy == -1 ) {
 				var pos = new Vector2( Main.mouseX - TrainDrawEntityComponent.TrainIcon.Width, Main.mouseY - TrainDrawEntityComponent.TrainIcon.Height );
 				float scale = 1f + ( ( this.PulseScaleAnimation > 0 ? this.PulseScaleAnimation : -this.PulseScaleAnimation ) / 90f );
 

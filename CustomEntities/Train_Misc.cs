@@ -6,9 +6,9 @@ using HamstarHelpers.Helpers.DebugHelpers;
 namespace OnARail.CustomEntities {
 	class TrainRespectsTerrainEntityComponent : RespectsTerrainEntityComponent {
 		public override void Update( CustomEntity ent ) {
-			var mouse_comp = ent.GetComponentByType<TrainMouseInteractionEntityComponent>();
+			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
-			if( !mouse_comp.IsMounted ) {
+			if( train_comp.IsMountedBy == -1 ) {
 				base.Update( ent );
 			}
 		}
@@ -16,9 +16,9 @@ namespace OnARail.CustomEntities {
 
 	class TrainRespectsGravityEntityComponent : RespectsGravityEntityComponent {
 		public override void Update( CustomEntity ent ) {
-			var mouse_comp = ent.GetComponentByType<TrainMouseInteractionEntityComponent>();
+			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
-			if( !mouse_comp.IsMounted ) {
+			if( train_comp.IsMountedBy == -1 ) {
 				base.Update( ent );
 			}
 		}
@@ -26,9 +26,9 @@ namespace OnARail.CustomEntities {
 
 	class TrainRailBoundEntityComponent : RailBoundEntityComponent {
 		public override void Update( CustomEntity ent ) {
-			var mouse_comp = ent.GetComponentByType<TrainMouseInteractionEntityComponent>();
+			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
-			if( !mouse_comp.IsMounted ) {
+			if( train_comp.IsMountedBy == -1 ) {
 				base.Update( ent );
 			}
 		}

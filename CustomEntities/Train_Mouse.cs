@@ -3,7 +3,6 @@ using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DebugHelpers;
 using Newtonsoft.Json;
-using OnARail.Buffs;
 using Terraria;
 
 
@@ -15,9 +14,6 @@ namespace OnARail.CustomEntities {
 
 		////////////////
 
-		[JsonIgnore]
-		public bool IsMounted = false;
-
 		[PacketProtocolIgnore]
 		[JsonIgnore]
 		public bool IsMouseHovering = false;
@@ -25,17 +21,19 @@ namespace OnARail.CustomEntities {
 
 
 		////////////////
-
+		
 		protected override void OnMouseHover( CustomEntity ent ) {
 			Player player = Main.LocalPlayer;
 
 			if( Main.mouseRight ) {
-				if( !this.IsMounted && this.IsMouseHovering ) {
-					player.position = ent.position;
-					player.AddBuff( OnARailMod.Instance.BuffType<TrainMountBuff>(), 60 );
+				var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
-					this.IsMounted = true;
-					ent.Sync();
+				if( this.IsMouseHovering ) {
+					train_comp.MountTrain_NoSync( ent, player );
+
+					if( Main.netMode != 0 ) {
+						ent.Sync();
+					}
 				}
 			} else {
 				this.IsMouseHovering = player.Distance( ent.Center ) <= TrainMouseInteractionEntityComponent.BoardingDistance;
