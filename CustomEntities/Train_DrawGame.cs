@@ -8,8 +8,7 @@ using Terraria;
 
 
 namespace OnARail.CustomEntities {
-	class TrainDrawEntityComponent : DrawsEntityComponent {
-		internal static Texture2D TrainTexture;
+	class TrainDrawInGameEntityComponent : DrawsInGameEntityComponent {
 		internal static Texture2D TrainIcon;
 
 
@@ -19,8 +18,7 @@ namespace OnARail.CustomEntities {
 			protected override void StaticInitialize() {
 				if( Main.netMode != 2 ) {
 					Promises.AddPostModLoadPromise( () => {
-						TrainDrawEntityComponent.TrainTexture = OnARailMod.Instance.GetTexture( "Mounts/TrainMount_Back" );
-						TrainDrawEntityComponent.TrainIcon = OnARailMod.Instance.GetTexture( "CustomEntities/TrainIcon" );
+						TrainDrawInGameEntityComponent.TrainIcon = OnARailMod.Instance.GetTexture( "CustomEntities/TrainIcon" );
 					} );
 				}
 			}
@@ -34,16 +32,19 @@ namespace OnARail.CustomEntities {
 
 		////////////////
 
-		public TrainDrawEntityComponent() : base( "OnARail/Mounts/TrainMount_Back", 4 ) { }
+		public TrainDrawInGameEntityComponent() : base( "OnARail/Mounts/TrainMount_Back", 4 ) { }
 
 		////////////////
 
 		public override void PostDraw( SpriteBatch sb, CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 			var mouse_comp = ent.GetComponentByType<TrainMouseInteractionEntityComponent>();
-
+			
 			if( mouse_comp.IsMouseHovering && train_comp.IsMountedBy == -1 ) {
-				var pos = new Vector2( Main.mouseX - TrainDrawEntityComponent.TrainIcon.Width, Main.mouseY - TrainDrawEntityComponent.TrainIcon.Height );
+				var pos = new Vector2(
+					Main.mouseX - TrainDrawInGameEntityComponent.TrainIcon.Width,
+					Main.mouseY - TrainDrawInGameEntityComponent.TrainIcon.Height
+				);
 				float scale = 1f + ( ( this.PulseScaleAnimation > 0 ? this.PulseScaleAnimation : -this.PulseScaleAnimation ) / 90f );
 
 				if( this.PulseScaleAnimation >= 30 ) {
@@ -52,7 +53,7 @@ namespace OnARail.CustomEntities {
 					this.PulseScaleAnimation++;
 				}
 
-				sb.Draw( TrainDrawEntityComponent.TrainIcon, pos, null, Color.White, 0f, default( Vector2 ), scale, SpriteEffects.None, 1f );
+				sb.Draw( TrainDrawInGameEntityComponent.TrainIcon, pos, null, Color.White, 0f, default( Vector2 ), scale, SpriteEffects.None, 1f );
 			}
 		}
 	}

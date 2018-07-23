@@ -1,46 +1,11 @@
 ﻿using HamstarHelpers.Components.Config;
-using Microsoft.Xna.Framework.Graphics;
 using OnARail.CustomEntities;
 using System;
-using System.IO;
-using Terraria;
 using Terraria.ModLoader;
 
 
 namespace OnARail {
     public partial class OnARailMod : Mod {
-		public static OnARailMod Instance { get; private set; }
-
-		public static string GithubUserName { get { return "hamstar0"; } }
-		public static string GithubProjectName { get { return "tml-onarail-mod"; } }
-
-		public static string ConfigFileRelativePath {
-			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + OnARailConfigData.ConfigFileName; }
-		}
-		public static void ReloadConfigFromFile() {
-			if( Main.netMode != 0 ) {
-				throw new Exception( "Cannot reload configs outside of single player." );
-			}
-			if( !OnARailMod.Instance.ConfigJson.LoadFile() ) {
-				OnARailMod.Instance.ConfigJson.SaveFile();
-			}
-		}
-		public static void ResetConfigFromDefaults() {
-			if( Main.netMode != 0 ) {
-				throw new Exception( "Cannot reset to default configs outside of single player." );
-			}
-
-			var config_data = new OnARailConfigData();
-			//config_data.SetDefaults();
-
-			OnARailMod.Instance.ConfigJson.SetData( config_data );
-			OnARailMod.Instance.ConfigJson.SaveFile();
-		}
-
-
-
-		////////////////
-
 		public JsonConfig<OnARailConfigData> ConfigJson { get; private set; }
 		public OnARailConfigData Config { get { return this.ConfigJson.Data; } }
 
@@ -99,35 +64,6 @@ namespace OnARail {
 			Array.Copy( args, 1, new_args, 0, args.Length - 1 );
 
 			return OnARailAPI.Call( call_type, new_args );
-		}
-
-
-		////////////////
-
-		public override void PostDrawInterface( SpriteBatch sb ) {
-			// Clients and single only (redundant?)
-			if( Main.netMode == 2 ) { return; }
-
-			try {
-				if( !Main.mapFullscreen && ( Main.mapStyle == 1 || Main.mapStyle == 2 ) ) {
-					this.DrawMiniMapForAll( sb );
-				}
-			} catch( Exception e ) {
-				ErrorLogger.Log( "OnARailMod.PostDrawInterface - " + e.ToString() );
-				throw e;
-			}
-		}
-
-		public override void PostDrawFullscreenMap( ref string mouseText ) {
-			// Clients and single only (redundant?)
-			if( Main.netMode == 2 ) { return; }
-
-			try {
-				this.DrawFullMapForAll( Main.spriteBatch );
-			} catch( Exception e ) {
-				ErrorLogger.Log( "OnARailMod.PostDrawFullscreenMap: " + e.ToString() );
-				throw e;
-			}
 		}
 	}
 }

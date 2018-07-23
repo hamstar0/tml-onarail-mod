@@ -27,9 +27,8 @@ namespace OnARail.CustomEntities {
 				this.IsMountedBy = -1;
 				return;
 			}
-			
-			player.SpawnX = (int)( ent.position.X / 16 );
-			player.SpawnY = (int)( ent.position.Y / 16 );
+
+			ent.position = player.position;
 		}
 
 

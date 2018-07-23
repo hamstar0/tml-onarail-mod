@@ -1,5 +1,7 @@
-﻿using HamstarHelpers.Components.CustomEntity;
-using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.PlayerHelpers;
+using Microsoft.Xna.Framework;
+using OnARail.CustomEntities;
 using OnARail.Mounts;
 using Terraria;
 using Terraria.ModLoader;
@@ -37,6 +39,30 @@ namespace OnARail {
 				this.OnEnterWorldForClient();
 			}
 		}
+
+
+		////////////////
+
+		private Vector2 PrevPosition = default( Vector2 );
+
+		public override void PreUpdate() {
+			if( this.player.dead ) { return; }
+
+			if( Vector2.Distance( this.player.position, PlayerHelpers.GetSpawnPoint(this.player) ) <= 8 ) {
+				if( Vector2.Distance( this.player.position, this.PrevPosition ) > 16 * 4 ) {
+					TrainEntityHandler.WarpPlayer( player );
+				}
+			}
+
+			this.PrevPosition = this.player.position;
+		}
+
+
+		////////////////
+
+		//public override void OnRespawn( Player player ) {
+		//	TrainEntityHandler.WarpPlayer( player );
+		//}
 
 
 		////////////////

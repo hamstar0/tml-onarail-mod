@@ -2,6 +2,7 @@
 using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -16,7 +17,7 @@ namespace OnARail.CustomEntities {
 
 		public static int CreateTrain( Vector2 pos ) {
 			var ent = new CustomEntity( TrainEntityHandler.CommonComponents );
-			var draw_comp = ent.GetComponentByType<TrainDrawEntityComponent>();
+			var draw_comp = ent.GetComponentByType<TrainDrawInGameEntityComponent>();
 
 			pos.X = MathHelper.Clamp( pos.X, 160, ( Main.maxTilesX - 10 ) * 16 );
 			pos.Y = MathHelper.Clamp( pos.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
@@ -49,11 +50,31 @@ namespace OnARail.CustomEntities {
 
 		////////////////
 
+		public static void WarpPlayer( Player player ) {
+			var myplayer = player.GetModPlayer<OnARailPlayer>();
+			if( myplayer.MyTrainId == -1 ) {
+				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.WarpPlayer - Player " + player.name + " (" + player.whoAmI + ") has no train." );
+				return;
+			}
+
+			CustomEntity ent = CustomEntityManager.Instance[ myplayer.MyTrainId ];
+
+			//if( player.whoAmI == Main.myPlayer ) {
+			//	Main.BlackFadeIn = 255;
+			//}
+
+			PlayerHelpers.Teleport( player, ent.position );
+		}
+
+
+		////////////////
+
 		internal TrainEntityHandler() {
 			Promises.AddPostModLoadPromise( () => {
 				TrainEntityHandler.CommonComponents = new List<CustomEntityComponent> {
 					new TrainBehaviorEntityComponent(),
-					new TrainDrawEntityComponent(),
+					new TrainDrawInGameEntityComponent(),
+					new TrainDrawOnMapEntityComponent(),
 					new TrainMouseInteractionEntityComponent(),
 					new TrainRespectsTerrainEntityComponent(),
 					new TrainRespectsGravityEntityComponent(),

@@ -13,8 +13,9 @@ v1
 	-	Implement fuel feeding
 	-	Fix board/unboard alignment and orientation
 -	Initialize player with 1k train tracks
--	Implement spawn hijacking
 
+-	@Set train entity to render with lighting
+-	Implement spawn hijacking
 -	Implement basic train entity
 	-	Implement syncing of mount/dismount
 	-	Set entity to persist even when player is mounted
