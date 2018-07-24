@@ -1,5 +1,5 @@
 using HamstarHelpers.Services.Timers;
-using OnARail.CustomEntities;
+using OnARail.Entities;
 using Terraria;
 using Terraria.ModLoader;
 

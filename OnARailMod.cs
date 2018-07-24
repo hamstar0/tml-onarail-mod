@@ -1,5 +1,5 @@
 ﻿using HamstarHelpers.Components.Config;
-using OnARail.CustomEntities;
+using OnARail.Entities;
 using System;
 using Terraria.ModLoader;
 

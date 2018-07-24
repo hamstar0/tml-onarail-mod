@@ -64,11 +64,11 @@
     <Compile Include="Buffs\TrainMountBuff.cs" />
     <Compile Include="Commands\DebugCommand.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="CustomEntities\Train_Behavior.cs" />
-    <Compile Include="CustomEntities\Train_DrawMap.cs" />
-    <Compile Include="CustomEntities\Train_Misc.cs" />
-    <Compile Include="CustomEntities\Train_DrawGame.cs" />
-    <Compile Include="CustomEntities\Train_Mouse.cs" />
+    <Compile Include="Entities\Train_Behavior.cs" />
+    <Compile Include="Entities\Train_DrawMap.cs" />
+    <Compile Include="Entities\Train_Misc.cs" />
+    <Compile Include="Entities\Train_DrawGame.cs" />
+    <Compile Include="Entities\Train_Mouse.cs" />
     <Compile Include="Mounts\TrainMount.cs" />
     <Compile Include="NetProtocols\ModSession.cs" />
     <Compile Include="NetProtocols\TrainSpawn.cs" />
@@ -77,12 +77,12 @@
     <Compile Include="OnARailPlayer.cs" />
     <Compile Include="OnARailMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CustomEntities\Train.cs" />
+    <Compile Include="Entities\Train.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Buffs\TrainMountBuff.png" />
     <Content Include="build.txt" />
-    <Content Include="CustomEntities\TrainIcon.png" />
+    <Content Include="Entities\TrainIcon.png" />
     <Content Include="description.txt" />
     <Content Include="Mounts\TrainMount_Back.png" />
     <Content Include="Mounts\TrainMount_Front.png" />

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
 
-namespace OnARail.CustomEntities {
+namespace OnARail.Entities {
 	class TrainDrawInGameEntityComponent : DrawsInGameEntityComponent {
 		internal static Texture2D TrainIcon;
 
@@ -18,7 +18,7 @@ namespace OnARail.CustomEntities {
 			protected override void StaticInitialize() {
 				if( Main.netMode != 2 ) {
 					Promises.AddPostModLoadPromise( () => {
-						TrainDrawInGameEntityComponent.TrainIcon = OnARailMod.Instance.GetTexture( "CustomEntities/TrainIcon" );
+						TrainDrawInGameEntityComponent.TrainIcon = OnARailMod.Instance.GetTexture( "Entities/TrainIcon" );
 					} );
 				}
 			}

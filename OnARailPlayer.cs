@@ -2,9 +2,8 @@
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
-using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
-using OnARail.CustomEntities;
+using OnARail.Entities;
 using OnARail.Mounts;
 using OnARail.NetProtocols;
 using Terraria;
@@ -16,8 +15,7 @@ using Terraria.ModLoader.IO;
 namespace OnARail {
 	partial class OnARailPlayer : ModPlayer {
 		public int MyTrainId { get; private set; }
-
-		private bool NeedsInitialization = false;
+		
 		private bool IsInitialized = false;
 
 
@@ -34,13 +32,13 @@ namespace OnARail {
 		////////////////
 
 		public override void Load( TagCompound tags ) {
-			if( !tags.ContainsKey("is_init") ) {
-				this.NeedsInitialization = true;
+			if( tags.ContainsKey("is_init") ) {
+				this.IsInitialized = tags.GetBool( "is_init" );
 			}
 		}
 
 		public override TagCompound Save() {
-			return new TagCompound { { "is_init", this.IsInitialized} };
+			return new TagCompound { {"is_init", this.IsInitialized} };
 		}
 
 
@@ -66,13 +64,24 @@ namespace OnARail {
 		////////////////
 
 		private void OnEnterWorldForSingle() {
+			if( !this.IsInitialized ) {
+				this.IsInitialized = true;
+				
+				this.FinishSetup();
+			}
 		}
 
 		private void OnEnterWorldForClient() {
 			PacketProtocol.QuickRequestToServer<ModSettingsProtocol>();
+			if( !this.IsInitialized ) {
+				this.IsInitialized = true;
+
+				PacketProtocol.QuickRequestToServer<TrainSpawnProtocol>();
+			}
 		}
 
 		private void OnEnterWorldForServer() {
+			this.IsInitialized = true;
 		}
 
 
@@ -80,31 +89,19 @@ namespace OnARail {
 
 		public override void SetupStartInventory( IList<Item> items, bool mediumcore_death ) {
 			if( mediumcore_death ) { return; }
-
-			if( this.NeedsInitialization ) {
-				this.NeedsInitialization = false;
-
+			
+			if( !this.IsInitialized ) {
 				var tracks_item = new Item();
 				tracks_item.SetDefaults( ItemID.MinecartTrack );
 				tracks_item.stack = 999;
 
 				items.Add( tracks_item );
-
-				Promises.AddWorldLoadOncePromise( () => {
-					if( Main.netMode == 0 ) {
-						this.FinishSetup();
-					} else if( Main.netMode == 1 ) {
-						PacketProtocol.QuickRequestToServer<TrainSpawnProtocol>();
-					}
-				} );
-
-				this.IsInitialized = true;
 			}
 		}
 
 
 		internal void FinishSetup() {
-			this.MyTrainId = TrainEntityHandler.SpawnTrain( this.player.position );
+			this.MyTrainId = TrainEntityHandler.SpawnTrain( this.player );
 		}
 
 

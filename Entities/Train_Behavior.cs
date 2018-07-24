@@ -6,7 +6,7 @@ using OnARail.Buffs;
 using Terraria;
 
 
-namespace OnARail.CustomEntities {
+namespace OnARail.Entities {
 	class TrainBehaviorEntityComponent : CustomEntityComponent {
 		[JsonIgnore]
 		public int IsMountedBy = -1;

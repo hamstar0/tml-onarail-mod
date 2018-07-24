@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Terraria;
 
 
-namespace OnARail.CustomEntities {
+namespace OnARail.Entities {
 	class TrainMouseInteractionEntityComponent : IsClickableEntityComponent {
 		public const float BoardingDistance = 96;
 

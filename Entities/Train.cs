@@ -8,17 +8,18 @@ using Microsoft.Xna.Framework;
 using Terraria;
 
 
-namespace OnARail.CustomEntities {
+namespace OnARail.Entities {
 	class TrainEntityHandler {
 		private static IList<CustomEntityComponent> CommonComponents;
 
 
 		////////////////
 
-		public static int SpawnTrain( Vector2 pos ) {
-			var ent = new CustomEntity( TrainEntityHandler.CommonComponents );
+		public static int SpawnTrain( Player player ) {
+			var ent = new CustomEntity( player.name+"'s Train", TrainEntityHandler.CommonComponents );
 			var draw_comp = ent.GetComponentByType<TrainDrawInGameEntityComponent>();
 
+			Vector2 pos = player.position;
 			pos.X = MathHelper.Clamp( pos.X, 160, ( Main.maxTilesX - 10 ) * 16 );
 			pos.Y = MathHelper.Clamp( pos.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
 
@@ -90,8 +91,8 @@ namespace OnARail.CustomEntities {
 					new TrainRespectsTerrainEntityComponent(),
 					new TrainRespectsGravityEntityComponent(),
 					new TrainRailBoundEntityComponent(),
-					new PeriodicSyncEntityComponent()
-					//new PerWorldSaveEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
+					new PeriodicSyncEntityComponent(),
+					new PerWorldSaveEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
 				};
 			} );
 		}
