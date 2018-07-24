@@ -5,7 +5,7 @@ Future
 
 
 
-v2
+v3
 -	Implement engine upgrades
 -	Implement cars
 -	Implement track laying accessory
@@ -15,7 +15,7 @@ v2
 		-	Can only be placed with a set range of one another
 		-	Needs Tunnel Passes to be used; bought from Train Man; expensive
 -	Implement Train Man npc (sells train stuff)
-v1
+v2
 -	Implement train fuel feeding
 	-	@Fuels
 		-	Fissile Material (crafted from martian plating + ectoplasm): +100, max 700
@@ -31,9 +31,10 @@ v1
 	-	Implement clicking with mouse item on train to add fuel items
 	-	Add a temperature indicator
 	-	Add a tooltip indicating to feed fuel into the train
+v1
 -	Add buff icon
--	Set merchant to sell basic rails
 
+-	Set merchant to sell basic rails
 -	Initialize player train
 -	Initialize player with 1k train tracks
 -	Fix custom entity invisibly following player

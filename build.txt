@@ -1,5 +1,5 @@
 author = hamstar
-version = 0.0.8
+version = 0.0.9
 displayName = On A Rail
 modReferences = HamstarHelpers@2.0.0
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*

@@ -14,6 +14,7 @@ namespace OnARail {
 		public bool DebugModeInfo = false;
 
 		public bool SaveTrainDataAsJson = true;
+		public bool MerchantSellsRails = true;
 
 
 

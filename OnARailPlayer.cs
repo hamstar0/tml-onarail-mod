@@ -46,7 +46,7 @@ namespace OnARail {
 
 		////////////////
 
-		/*public override void SyncPlayer( int to_who, int from_who, bool new_player ) {
+		public override void SyncPlayer( int to_who, int from_who, bool new_player ) {
 			if( Main.netMode == 2 ) {
 				if( to_who == -1 && from_who == this.player.whoAmI ) {
 					this.OnEnterWorldForServer();
@@ -60,7 +60,20 @@ namespace OnARail {
 			} else if( Main.netMode == 1 ) {
 				this.OnEnterWorldForClient();
 			}
-		}*/
+		}
+
+
+		////////////////
+
+		private void OnEnterWorldForSingle() {
+		}
+
+		private void OnEnterWorldForClient() {
+			PacketProtocol.QuickRequestToServer<ModSettingsProtocol>();
+		}
+
+		private void OnEnterWorldForServer() {
+		}
 
 
 		////////////////
