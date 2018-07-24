@@ -36,6 +36,16 @@ namespace OnARail.CustomEntities {
 
 		////////////////
 
+		public override bool PreDraw( SpriteBatch sb, CustomEntity ent ) {
+			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
+
+			if( train_comp.IsMountedBy != -1 ) {
+				return false;
+			}
+
+			return base.PreDraw( sb, ent );
+		}
+
 		public override void PostDraw( SpriteBatch sb, CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 			var mouse_comp = ent.GetComponentByType<TrainMouseInteractionEntityComponent>();

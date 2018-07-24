@@ -1,6 +1,7 @@
 Future
 -	(Late game) fast travel via clicking on rails on the map
 -	Prevent building rails without supports (16 blocks per support, 32 blocks per grounded support)
+-	Improve fuels to use items that incorporate base fuels as recipe ingredients
 
 
 
@@ -8,14 +9,34 @@ v2
 -	Implement engine upgrades
 -	Implement cars
 -	Implement track laying accessory
+-	Implement Train Tunnels
+	-	@Plan
+		-	Rapidly relocates a train from one tunnel entrance to another
+		-	Can only be placed with a set range of one another
+		-	Needs Tunnel Passes to be used; bought from Train Man; expensive
+-	Implement Train Man npc (sells train stuff)
 v1
--	Implement advanced train mechanics
-	-	Implement fuel feeding
-	-	Fix board/unboard alignment and orientation
+-	Implement train fuel feeding
+	-	@Fuels
+		-	Fissile Material (crafted from martian plating + ectoplasm): +100, max 700
+		-	Rocket Fuel (crafted from living fire + cursed flame/ichor): +25, max 400
+		-	Spooky Wood: +200, max 0
+		-	Pink Gel: +25, max 250
+		-	Lava: +100, max 200
+		-	Coal (craftable from torches + clay): +10, max 200
+		-	Gel: +2, max 125
+		-	Wood: +5, max 100
+	-	Implement acceleration + max speed scaling based on temperature
+	-	Implement invalid fuel item indications
+	-	Implement clicking with mouse item on train to add fuel items
+	-	Add a temperature indicator
+	-	Add a tooltip indicating to feed fuel into the train
+-	Add buff icon
+-	Set merchant to sell basic rails
+
+-	Initialize player train
 -	Initialize player with 1k train tracks
 -	Fix custom entity invisibly following player
--	Update buff icon
-
 -	@Set train entity to render with lighting
 -	Implement spawn hijacking
 -	Implement basic train entity
@@ -44,7 +65,7 @@ v1
 Plan 1
 -	Every player is bound to a Train (permanent minecart)
 -	Train replaces player's spawn and recall destination
--	Players auto-switch to the train when using a minecart very close to the train location
+-	~~Players auto-switch to the train when using a minecart very close to the train location~~
 -	Trains have storage for fuel items
 -	Trains can pull cars
 	-	Storage cars

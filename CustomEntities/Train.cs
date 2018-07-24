@@ -15,7 +15,7 @@ namespace OnARail.CustomEntities {
 
 		////////////////
 
-		public static int CreateTrain( Vector2 pos ) {
+		public static int SpawnTrain( Vector2 pos ) {
 			var ent = new CustomEntity( TrainEntityHandler.CommonComponents );
 			var draw_comp = ent.GetComponentByType<TrainDrawInGameEntityComponent>();
 
@@ -26,7 +26,13 @@ namespace OnARail.CustomEntities {
 			ent.width = draw_comp.Texture.Width;
 			ent.height = ( draw_comp.Texture.Height / draw_comp.FrameCount ) - 12;
 
-			return CustomEntityManager.Instance.Add( ent );
+			int who = CustomEntityManager.Instance.Add( ent );
+
+			if( Main.netMode != 0 ) {
+				ent.Sync();
+			}
+
+			return who;
 		}
 
 
@@ -45,10 +51,10 @@ namespace OnARail.CustomEntities {
 
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
-			train_comp.DismountTrain_NoSync( ent );
-
-			if( Main.netMode != 0 ) {
-				ent.Sync();
+			if( train_comp.DismountTrain_NoSync( ent ) ) {
+				if( Main.netMode != 0 ) {
+					ent.Sync();
+				}
 			}
 		}
 
