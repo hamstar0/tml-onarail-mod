@@ -44,7 +44,7 @@ namespace OnARail.Entities {
 				return;
 			}
 
-			CustomEntity ent = CustomEntityManager.Instance[ myplayer.MyTrainId ];
+			CustomEntity ent = CustomEntityManager.Instance.Get( myplayer.MyTrainId );
 			if( ent == null ) {
 				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.ActivateTrainEntity - Player " + player.name + " (" + player.whoAmI + ") has invalid train." );
 				return;
@@ -69,7 +69,7 @@ namespace OnARail.Entities {
 				return;
 			}
 
-			CustomEntity ent = CustomEntityManager.Instance[ myplayer.MyTrainId ];
+			CustomEntity ent = CustomEntityManager.Instance.Get( myplayer.MyTrainId );
 
 			//if( player.whoAmI == Main.myPlayer ) {
 			//	Main.BlackFadeIn = 255;
