@@ -1,5 +1,4 @@
 ﻿using HamstarHelpers.Components.CustomEntity;
-using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DebugHelpers;
 using Newtonsoft.Json;
 using OnARail.Buffs;
@@ -10,6 +9,8 @@ namespace OnARail.Entities {
 	class TrainBehaviorEntityComponent : CustomEntityComponent {
 		[JsonIgnore]
 		public int IsMountedBy = -1;
+
+		public string OwnerUID;
 
 
 

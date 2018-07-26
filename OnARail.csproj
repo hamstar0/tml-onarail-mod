@@ -74,6 +74,7 @@
     <Compile Include="NetProtocols\TrainSpawn.cs" />
     <Compile Include="OnARailMod_Meta.cs" />
     <Compile Include="OnARailNPC.cs" />
+    <Compile Include="OnARailPlayer_Load.cs" />
     <Compile Include="OnARailPlayer.cs" />
     <Compile Include="OnARailMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

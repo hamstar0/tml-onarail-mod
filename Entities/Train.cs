@@ -16,6 +16,13 @@ namespace OnARail.Entities {
 		////////////////
 
 		public static int SpawnTrain( Player player ) {
+			bool success;
+			string uid = PlayerIdentityHelpers.GetUniqueId( player, out success );
+			if( !success ) {
+				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.SpawnTrain - Player uid not found for " + player.name );
+				return -1;
+			}
+
 			var ent = new CustomEntity( player.name+"'s Train", TrainEntityHandler.CommonComponents );
 			var draw_comp = ent.GetComponentByType<TrainDrawInGameEntityComponent>();
 
@@ -25,9 +32,12 @@ namespace OnARail.Entities {
 
 			ent.position = pos;
 			ent.width = draw_comp.Texture.Width;
-			ent.height = ( draw_comp.Texture.Height / draw_comp.FrameCount ) - 12;
+			ent.height = (draw_comp.Texture.Height / draw_comp.FrameCount) - 12;
 
 			int who = CustomEntityManager.Instance.Add( ent );
+
+			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
+			train_comp.OwnerUID = uid;
 
 			if( Main.netMode != 0 ) {
 				ent.Sync();
@@ -37,21 +47,44 @@ namespace OnARail.Entities {
 		}
 
 
-		public static void ActivateTrainEntity( Player player ) {
+		public static int FindMyTrain( Player player ) {
+			bool success;
+			string uid = PlayerIdentityHelpers.GetUniqueId( player, out success );
+			if( !success ) {
+				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.FindMyTrain - Player uid not found for " + player.name );
+				return -1;
+			}
+
+			ISet<CustomEntity> ents = CustomEntityManager.Instance.GetByComponentType<TrainBehaviorEntityComponent>();
+
+			foreach( var ent in ents ) {
+				var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
+
+				if( train_comp.OwnerUID == uid ) {
+					return ent.whoAmI;
+				}
+			}
+
+			return -1;
+		}
+
+
+		////////////////
+
+		public static void DismountTrainEntity( Player player ) {
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
-			if( myplayer.MyTrainId == -1 ) {
+			if( myplayer.MyTrainID == -1 ) {
 				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.ActivateTrainEntity - Player "+player.name+" ("+player.whoAmI+") has no train." );
 				return;
 			}
 
-			CustomEntity ent = CustomEntityManager.Instance.Get( myplayer.MyTrainId );
+			CustomEntity ent = CustomEntityManager.Instance.Get( myplayer.MyTrainID );
 			if( ent == null ) {
 				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.ActivateTrainEntity - Player " + player.name + " (" + player.whoAmI + ") has invalid train." );
 				return;
 			}
 
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
 			if( train_comp.DismountTrain_NoSync( ent ) ) {
 				if( Main.netMode != 0 ) {
 					ent.Sync();
@@ -62,14 +95,14 @@ namespace OnARail.Entities {
 
 		////////////////
 
-		public static void WarpPlayer( Player player ) {
+		public static void WarpPlayerToTrain( Player player ) {
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
-			if( myplayer.MyTrainId == -1 ) {
+			if( myplayer.MyTrainID == -1 ) {
 				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.WarpPlayer - Player " + player.name + " (" + player.whoAmI + ") has no train." );
 				return;
 			}
 
-			CustomEntity ent = CustomEntityManager.Instance.Get( myplayer.MyTrainId );
+			CustomEntity ent = CustomEntityManager.Instance.Get( myplayer.MyTrainID );
 
 			//if( player.whoAmI == Main.myPlayer ) {
 			//	Main.BlackFadeIn = 255;

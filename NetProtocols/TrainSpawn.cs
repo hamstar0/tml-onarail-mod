@@ -13,7 +13,7 @@ namespace OnARail.NetProtocols {
 			Player player = Main.player[ from_who ];
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
 
-			myplayer.FinishSetup();
+			myplayer.SpawnMyTrain();
 
 			return true;
 		}

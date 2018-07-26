@@ -28,7 +28,7 @@ namespace OnARail.Buffs {
 				Player player2 = Main.player[ who ];
 
 				if( player2.active || (player2.active && player2.dead) ) {
-					TrainEntityHandler.ActivateTrainEntity( player2 );
+					TrainEntityHandler.DismountTrainEntity( player2 );
 				}
 				return false;
 			} );

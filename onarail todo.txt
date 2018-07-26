@@ -33,8 +33,8 @@ v2
 	-	Add a tooltip indicating to feed fuel into the train
 v1
 -	Add buff icon
--	Fix mounting while dead
 
+-	Fix mounting while dead
 -	Set merchant to sell basic rails
 -	Initialize player train
 -	Initialize player with 1k train tracks

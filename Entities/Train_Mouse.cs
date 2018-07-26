@@ -28,12 +28,14 @@ namespace OnARail.Entities {
 			this.IsMouseHovering = player.Distance( ent.Center ) <= TrainMouseInteractionEntityComponent.BoardingDistance;
 
 			if( this.IsMouseHovering ) {
-				if( Main.mouseRight ) {
-					var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
+				if( !player.dead ) {
+					if( Main.mouseRight ) {
+						var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
-					if( train_comp.MountTrain_NoSync( ent, player ) ) {
-						if( Main.netMode != 0 ) {
-							ent.Sync();
+						if( train_comp.MountTrain_NoSync( ent, player ) ) {
+							if( Main.netMode != 0 ) {
+								ent.Sync();
+							}
 						}
 					}
 				}
