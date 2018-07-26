@@ -3,6 +3,7 @@ using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DebugHelpers;
 using Newtonsoft.Json;
+using OnARail.Buffs;
 using Terraria;
 
 
@@ -28,14 +29,12 @@ namespace OnARail.Entities {
 			this.IsMouseHovering = player.Distance( ent.Center ) <= TrainMouseInteractionEntityComponent.BoardingDistance;
 
 			if( this.IsMouseHovering ) {
-				if( !player.dead ) {
-					if( Main.mouseRight ) {
-						var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
+				if( Main.mouseRight ) {
+					if( !player.dead ) {
+						int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
 
-						if( train_comp.MountTrain_NoSync( ent, player ) ) {
-							if( Main.netMode != 0 ) {
-								ent.Sync();
-							}
+						if( player.FindBuffIndex( train_buff_id ) == -1 ) {
+							player.AddBuff( train_buff_id, 3 );
 						}
 					}
 				}

@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.Services.Promises;
+using Microsoft.Xna.Framework;
+using OnARail.Entities;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -6,6 +8,14 @@ using Terraria.ModLoader;
 
 namespace OnARail.Mounts {
 	class TrainMount : ModMountData {
+		public TrainMount() : base() {
+			Promises.AddCustomPromiseForObject( DecentralizedPlayerUpdates.Instance, () => {
+				this.RunUpdateForPlayer( DecentralizedPlayerUpdates.Instance.MyPlayer );
+				return true;
+			} );
+		}
+
+
 		public override void SetDefaults() {
 			int total_frames = 4;
 
@@ -60,10 +70,22 @@ namespace OnARail.Mounts {
 			}
 		}
 
+
+		////////////////
+
 		public override void UpdateEffects( Player player ) {
 			if( Math.Abs( player.velocity.X ) > 4f ) {
 				//Rectangle rect = player.getRect();
 				//Dust.NewDust( new Vector2( rect.X, rect.Y ), rect.Width, rect.Height, this.mod.DustType( "Smoke" ) );
+			}
+		}
+		
+
+		internal void RunUpdateForPlayer( Player player ) {
+			if( player.mount.Active && player.mount.Type == this.Type ) {
+				TrainEntityHandler.SetTrainEntityFollowing( player );
+			} else {
+				TrainEntityHandler.SetTrainEntityStanding( player );
 			}
 		}
 	}

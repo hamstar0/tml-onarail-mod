@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Helpers.DebugHelpers;
@@ -71,21 +72,40 @@ namespace OnARail.Entities {
 
 		////////////////
 
-		public static void DismountTrainEntity( Player player ) {
+		public static void SetTrainEntityFollowing( Player player ) {
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
 			if( myplayer.MyTrainID == -1 ) {
-				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.ActivateTrainEntity - Player "+player.name+" ("+player.whoAmI+") has no train." );
-				return;
+				throw new Exception( "OnARail.CustomEntities.TrainEntityHandler.SetTrainEntityFollowing - Player " + player.name + " (" + player.whoAmI + ") has no train." );
 			}
 
 			CustomEntity ent = CustomEntityManager.Instance.Get( myplayer.MyTrainID );
 			if( ent == null ) {
-				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.ActivateTrainEntity - Player " + player.name + " (" + player.whoAmI + ") has invalid train." );
-				return;
+				throw new Exception( "OnARail.CustomEntities.TrainEntityHandler.SetTrainEntityFollowing - Player " + player.name + " (" + player.whoAmI + ") has invalid train." );
 			}
 
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-			if( train_comp.DismountTrain_NoSync( ent ) ) {
+
+			if( train_comp.SetTrainEntityFollowing_NoSync( ent, player ) ) {
+				if( Main.netMode != 0 ) {
+					ent.Sync();
+				}
+			}
+		}
+
+
+		public static void SetTrainEntityStanding( Player player ) {
+			var myplayer = player.GetModPlayer<OnARailPlayer>();
+			if( myplayer.MyTrainID == -1 ) {
+				throw new Exception( "OnARail.CustomEntities.TrainEntityHandler.SetTrainEntityStanding - Player " + player.name + " (" + player.whoAmI + ") has no train." );
+			}
+
+			CustomEntity ent = CustomEntityManager.Instance.Get( myplayer.MyTrainID );
+			if( ent == null ) {
+				throw new Exception( "OnARail.CustomEntities.TrainEntityHandler.SetTrainEntityStanding - Player " + player.name + " (" + player.whoAmI + ") has invalid train." );
+			}
+
+			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
+			if( train_comp.SetTrainEntityStanding_NoSync( ent ) ) {
 				if( Main.netMode != 0 ) {
 					ent.Sync();
 				}

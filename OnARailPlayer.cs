@@ -1,14 +1,25 @@
 ﻿using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
+using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
 using OnARail.Entities;
-using OnARail.Mounts;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 
 namespace OnARail {
+	class DecentralizedPlayerUpdates {
+		internal static DecentralizedPlayerUpdates Instance = new DecentralizedPlayerUpdates();
+		
+
+		////////////////
+
+		public Player MyPlayer;
+	}
+
+
+
 	partial class OnARailPlayer : ModPlayer {
 		public int MyTrainID { get; private set; }
 		
@@ -71,6 +82,8 @@ namespace OnARail {
 			}
 
 			this.PrevPosition = this.player.position;
+
+			Promises.TriggerCustomPromiseForObject( DecentralizedPlayerUpdates.Instance );
 		}
 
 
@@ -83,13 +96,6 @@ namespace OnARail {
 				LogHelpers.Log( "OnARail.OnARailPlayer.SpawnMyTrain - Could not spawn train for " + this.player.name );
 				return;
 			}
-		}
-
-
-		public void MountTrainMount() {
-			int mount_type = this.mod.MountType<TrainMount>();
-
-			this.player.mount.SetMount( mount_type, this.player );
 		}
 	}
 }

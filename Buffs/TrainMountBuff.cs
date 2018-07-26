@@ -1,11 +1,19 @@
-using HamstarHelpers.Services.Timers;
-using OnARail.Entities;
+using HamstarHelpers.Services.Promises;
+using OnARail.Mounts;
 using Terraria;
 using Terraria.ModLoader;
 
 
 namespace OnARail.Buffs {
 	public class TrainMountBuff : ModBuff {
+		public TrainMountBuff() : base() {
+			Promises.AddCustomPromiseForObject( DecentralizedPlayerUpdates.Instance, () => {
+				this.RunUpdateForPlayer( DecentralizedPlayerUpdates.Instance.MyPlayer );
+				return true;
+			} );
+		}
+
+
 		public override void SetDefaults() {
 			this.DisplayName.SetDefault("Train");
 			this.Description.SetDefault("Choo Choo");
@@ -15,23 +23,26 @@ namespace OnARail.Buffs {
 		}
 
 
-		public override void Update( Player player, ref int buff_idx ) {
-			if( player.buffType[buff_idx] != this.Type ) {
-				return;
-			}
+		////////////////
+
+		internal void RunUpdateForPlayer( Player player ) {
+			bool has_buff = player.FindBuffIndex( this.Type ) != -1;
+
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
 			int who = player.whoAmI;
-
-			myplayer.MountTrainMount();
+			int mount_type = this.mod.MountType<TrainMount>();
 			
-			Timers.SetTimer( "TrainMountFor" + who, 3, () => {
-				Player player2 = Main.player[ who ];
-
-				if( player2.active || (player2.active && player2.dead) ) {
-					TrainEntityHandler.DismountTrainEntity( player2 );
+			if( has_buff ) {
+				if( !player.mount.Active ) {
+					player.mount.SetMount( mount_type, player );
+				} else {
+					if( player.mount.Type != mount_type ) {
+						player.ClearBuff( this.Type );
+					}
 				}
-				return false;
-			} );
+			} else {
+				player.mount.Dismount( player );
+			}
 		}
 	}
 }

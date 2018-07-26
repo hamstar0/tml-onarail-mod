@@ -2,6 +2,7 @@
 using HamstarHelpers.Helpers.DebugHelpers;
 using Newtonsoft.Json;
 using OnARail.Buffs;
+using OnARail.Mounts;
 using Terraria;
 
 
@@ -38,21 +39,23 @@ namespace OnARail.Entities {
 
 		////////////////
 
-		public bool MountTrain_NoSync( CustomEntity ent, Player player ) {
+		public bool SetTrainEntityFollowing_NoSync( CustomEntity ent, Player player ) {
 			if( this.IsMountedBy != -1 ) {
 				return false;
 			}
 
+			var mymod = OnARailMod.Instance;
+
 			this.IsMountedBy = player.whoAmI;
 
 			player.position = ent.position;
-			player.AddBuff( OnARailMod.Instance.BuffType<TrainMountBuff>(), 3 );
+			player.position.Y -= mymod.GetMount<TrainMount>().mountData.heightBoost;
 
 			return true;
 		}
 
 
-		public bool DismountTrain_NoSync( CustomEntity ent ) {
+		public bool SetTrainEntityStanding_NoSync( CustomEntity ent ) {
 			if( this.IsMountedBy == -1 ) {
 				return false;
 			}
