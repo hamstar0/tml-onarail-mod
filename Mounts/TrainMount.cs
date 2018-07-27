@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Services.Promises;
+﻿using HamstarHelpers.Components.CustomEntity.Components;
+using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
 using OnARail.Entities;
 using System;
@@ -8,13 +9,10 @@ using Terraria.ModLoader;
 
 namespace OnARail.Mounts {
 	class TrainMount : ModMountData {
-		public TrainMount() : base() {
-			Promises.AddCustomPromiseForObject( DecentralizedPlayerUpdates.Instance, () => {
-				this.RunUpdateForPlayer( DecentralizedPlayerUpdates.Instance.MyPlayer );
-				return true;
-			} );
-		}
+		private bool HasPromise = false;
 
+
+		////////////////
 
 		public override void SetDefaults() {
 			int total_frames = 4;
@@ -68,20 +66,26 @@ namespace OnARail.Mounts {
 				this.mountData.textureWidth = this.mountData.backTexture.Width;
 				this.mountData.textureHeight = this.mountData.backTexture.Height;
 			}
+
+			if( !this.HasPromise ) {
+				this.HasPromise = true;
+
+				Promises.AddCustomPromiseForObject( DecentralizedPlayerUpdates.Instance, () => {
+					this.RunUpdateForPlayer( DecentralizedPlayerUpdates.Instance.MyPlayer );
+					return true;
+				} );
+			}
 		}
 
 
 		////////////////
-
-		public override void UpdateEffects( Player player ) {
-			if( Math.Abs( player.velocity.X ) > 4f ) {
-				//Rectangle rect = player.getRect();
-				//Dust.NewDust( new Vector2( rect.X, rect.Y ), rect.Width, rect.Height, this.mod.DustType( "Smoke" ) );
-			}
-		}
 		
-
 		internal void RunUpdateForPlayer( Player player ) {
+			if( !PerWorldSaveEntityComponent.IsLoaded ) { return; }
+
+			var myplayer = player.GetModPlayer<OnARailPlayer>();
+			if( !myplayer.IsLoaded ) { return; }
+
 			if( player.mount.Active && player.mount.Type == this.Type ) {
 				TrainEntityHandler.SetTrainEntityFollowing( player );
 			} else {

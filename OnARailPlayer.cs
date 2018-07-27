@@ -1,4 +1,6 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Components.CustomEntity;
+using HamstarHelpers.Components.CustomEntity.Components;
+using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
@@ -11,19 +13,21 @@ using Terraria.ModLoader.IO;
 namespace OnARail {
 	class DecentralizedPlayerUpdates {
 		internal static DecentralizedPlayerUpdates Instance = new DecentralizedPlayerUpdates();
-		
-
-		////////////////
 
 		public Player MyPlayer;
 	}
 
 
 
+
 	partial class OnARailPlayer : ModPlayer {
+		public bool IsLoaded { get { return this.MyTrainID != -1; } }
+
+
 		public int MyTrainID { get; private set; }
 		
 		private bool IsInitializedwithTrain = false;
+		private Vector2 PrevPosition = default( Vector2 );
 
 
 
@@ -70,19 +74,20 @@ namespace OnARail {
 
 		////////////////
 
-		private Vector2 PrevPosition = default( Vector2 );
-
 		public override void PreUpdate() {
 			if( this.player.dead ) { return; }
 
-			if( Vector2.Distance( this.player.position, PlayerHelpers.GetSpawnPoint(this.player) ) <= 8 ) {
-				if( Vector2.Distance( this.player.position, this.PrevPosition ) > 16 * 4 ) {
-					TrainEntityHandler.WarpPlayerToTrain( player );
+			if( this.IsLoaded ) {
+				if( Vector2.Distance( this.player.position, PlayerHelpers.GetSpawnPoint( this.player ) ) <= 8 ) {
+					if( Vector2.Distance( this.player.position, this.PrevPosition ) > 16 * 4 ) {
+						TrainEntityHandler.WarpPlayerToTrain( player );
+					}
 				}
+
+				this.PrevPosition = this.player.position;
 			}
 
-			this.PrevPosition = this.player.position;
-
+			DecentralizedPlayerUpdates.Instance.MyPlayer = this.player;
 			Promises.TriggerCustomPromiseForObject( DecentralizedPlayerUpdates.Instance );
 		}
 

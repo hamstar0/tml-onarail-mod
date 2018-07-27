@@ -6,20 +6,26 @@ using Terraria.ModLoader;
 
 namespace OnARail.Buffs {
 	public class TrainMountBuff : ModBuff {
-		public TrainMountBuff() : base() {
-			Promises.AddCustomPromiseForObject( DecentralizedPlayerUpdates.Instance, () => {
-				this.RunUpdateForPlayer( DecentralizedPlayerUpdates.Instance.MyPlayer );
-				return true;
-			} );
-		}
+		private bool HasPromise = false;
 
+
+		////////////////
 
 		public override void SetDefaults() {
-			this.DisplayName.SetDefault("Train");
-			this.Description.SetDefault("Choo Choo");
+			this.DisplayName.SetDefault( "Train" );
+			this.Description.SetDefault( "Choo Choo" );
 
 			Main.buffNoTimeDisplay[ this.Type ] = true;
 			Main.buffNoSave[ this.Type ] = true;
+
+			if( !this.HasPromise ) {
+				this.HasPromise = true;
+
+				Promises.AddCustomPromiseForObject( DecentralizedPlayerUpdates.Instance, () => {
+					this.RunUpdateForPlayer( DecentralizedPlayerUpdates.Instance.MyPlayer );
+					return true;
+				} );
+			}
 		}
 
 
@@ -41,7 +47,9 @@ namespace OnARail.Buffs {
 					}
 				}
 			} else {
-				player.mount.Dismount( player );
+				if( player.mount.Type == mount_type ) {
+					player.mount.Dismount( player );
+				}
 			}
 		}
 	}

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
+using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
@@ -20,7 +20,7 @@ namespace OnARail.Entities {
 			bool success;
 			string uid = PlayerIdentityHelpers.GetUniqueId( player, out success );
 			if( !success ) {
-				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.SpawnTrain - Player uid not found for " + player.name );
+				LogHelpers.Log( "OnARail.TrainEntityHandler.SpawnTrain - Player uid not found for " + player.name );
 				return -1;
 			}
 
@@ -49,10 +49,14 @@ namespace OnARail.Entities {
 
 
 		public static int FindMyTrain( Player player ) {
+			if( !PerWorldSaveEntityComponent.IsLoaded ) {
+				throw new HamstarException( "OnARail.TrainEntityHandler.FindMyTrain - Entities not loaded." );
+			}
+
 			bool success;
 			string uid = PlayerIdentityHelpers.GetUniqueId( player, out success );
 			if( !success ) {
-				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.FindMyTrain - Player uid not found for " + player.name );
+				LogHelpers.Log( "OnARail.TrainEntityHandler.FindMyTrain - Player uid not found for " + player.name );
 				return -1;
 			}
 
@@ -73,14 +77,18 @@ namespace OnARail.Entities {
 		////////////////
 
 		public static void SetTrainEntityFollowing( Player player ) {
+			if( !PerWorldSaveEntityComponent.IsLoaded ) {
+				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityFollowing - Entities not loaded." );
+			}
+
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
 			if( myplayer.MyTrainID == -1 ) {
-				throw new Exception( "OnARail.CustomEntities.TrainEntityHandler.SetTrainEntityFollowing - Player " + player.name + " (" + player.whoAmI + ") has no train." );
+				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityFollowing - Player " + player.name + " (" + player.whoAmI + ") has no train." );
 			}
 
 			CustomEntity ent = CustomEntityManager.Instance.Get( myplayer.MyTrainID );
 			if( ent == null ) {
-				throw new Exception( "OnARail.CustomEntities.TrainEntityHandler.SetTrainEntityFollowing - Player " + player.name + " (" + player.whoAmI + ") has invalid train." );
+				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityFollowing - Player " + player.name + " (" + player.whoAmI + ") has invalid train." );
 			}
 
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
@@ -94,18 +102,22 @@ namespace OnARail.Entities {
 
 
 		public static void SetTrainEntityStanding( Player player ) {
+			if( !PerWorldSaveEntityComponent.IsLoaded ) {
+				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityStanding - Entities not loaded." );
+			}
+
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
 			if( myplayer.MyTrainID == -1 ) {
-				throw new Exception( "OnARail.CustomEntities.TrainEntityHandler.SetTrainEntityStanding - Player " + player.name + " (" + player.whoAmI + ") has no train." );
+				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityStanding - Player " + player.name + " (" + player.whoAmI + ") has no train." );
 			}
 
 			CustomEntity ent = CustomEntityManager.Instance.Get( myplayer.MyTrainID );
 			if( ent == null ) {
-				throw new Exception( "OnARail.CustomEntities.TrainEntityHandler.SetTrainEntityStanding - Player " + player.name + " (" + player.whoAmI + ") has invalid train." );
+				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityStanding - Player " + player.name + " (" + player.whoAmI + ") has invalid train." );
 			}
 
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-			if( train_comp.SetTrainEntityStanding_NoSync( ent ) ) {
+			if( train_comp.SetTrainEntityStanding_NoSync( ent, player ) ) {
 				if( Main.netMode != 0 ) {
 					ent.Sync();
 				}
@@ -116,10 +128,13 @@ namespace OnARail.Entities {
 		////////////////
 
 		public static void WarpPlayerToTrain( Player player ) {
+			if( !PerWorldSaveEntityComponent.IsLoaded ) {
+				throw new HamstarException( "OnARail.TrainEntityHandler.WarpPlayerToTrain - Entities not loaded." );
+			}
+
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
 			if( myplayer.MyTrainID == -1 ) {
-				LogHelpers.Log( "OnARail.CustomEntities.TrainEntityHandler.WarpPlayer - Player " + player.name + " (" + player.whoAmI + ") has no train." );
-				return;
+				throw new HamstarException( "OnARail.TrainEntityHandler.WarpPlayerToTrain - Player " + player.name + " (" + player.whoAmI + ") has no train." );
 			}
 
 			CustomEntity ent = CustomEntityManager.Instance.Get( myplayer.MyTrainID );
