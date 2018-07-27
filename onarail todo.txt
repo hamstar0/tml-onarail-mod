@@ -33,8 +33,8 @@ v2
 	-	Add a tooltip indicating to feed fuel into the train
 v1
 -	@Add entity syncing to clients on load
--	Add buff icon
 
+-	Add buff icon
 -	Warp to center of train
 -	Increase train size 2x + improve seat position
 -	Display map icon centered on train and scaled by 1/2
