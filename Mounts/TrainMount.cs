@@ -19,7 +19,7 @@ namespace OnARail.Mounts {
 
 			var player_y_offsets = new int[ total_frames ];
 			for( int i = 0; i < player_y_offsets.Length; i++ ) {
-				player_y_offsets[i] = 8+(i%2);
+				player_y_offsets[i] = 32;
 			}
 
 			this.mountData.Minecart = true;
@@ -30,25 +30,25 @@ namespace OnARail.Mounts {
 			//this.mountData.extraBuff = 185;
 			this.mountData.flightTimeMax = 0;
 			this.mountData.fallDamage = 1f;
-			this.mountData.runSpeed = 10f;
+			this.mountData.runSpeed = 20f;	//10f;
 			this.mountData.dashSpeed = 10f;
-			this.mountData.acceleration = 0.03f;
-			this.mountData.jumpHeight = 12;
+			this.mountData.acceleration = 0.05f;	//0.03f;
+			this.mountData.jumpHeight = 6;	//12;
 			this.mountData.jumpSpeed = 5.15f;
 			this.mountData.blockExtraJumps = true;
 
 			this.mountData.totalFrames = total_frames;
-			this.mountData.heightBoost = 10;
+			this.mountData.heightBoost = 30;
 			this.mountData.playerYOffsets = player_y_offsets;
-			this.mountData.xOffset = 1;
-			this.mountData.yOffset = 16;
+			this.mountData.xOffset = 8;
+			this.mountData.yOffset = 2;
 			this.mountData.bodyFrame = 3;
 			this.mountData.playerHeadOffset = 14;
 
 			this.mountData.standingFrameCount = 1;
 			this.mountData.standingFrameDelay = 12;
 			this.mountData.standingFrameStart = 0;
-			this.mountData.runningFrameCount = 3;
+			this.mountData.runningFrameCount = 4;
 			this.mountData.runningFrameDelay = 12;
 			this.mountData.runningFrameStart = 0;
 			this.mountData.flyingFrameCount = 0;
@@ -57,8 +57,8 @@ namespace OnARail.Mounts {
 			this.mountData.inAirFrameCount = 0;
 			this.mountData.inAirFrameDelay = 0;
 			this.mountData.inAirFrameStart = 0;
-			this.mountData.idleFrameCount = 0;
-			this.mountData.idleFrameDelay = 0;
+			this.mountData.idleFrameCount = 4;
+			this.mountData.idleFrameDelay = 12;
 			this.mountData.idleFrameStart = 0;
 			this.mountData.idleFrameLoop = false;
 
@@ -88,6 +88,12 @@ namespace OnARail.Mounts {
 
 			if( player.mount.Active && player.mount.Type == this.Type ) {
 				TrainEntityHandler.SetTrainEntityFollowing( player );
+				
+				if( player.direction > 0 ) {
+					this.mountData.xOffset = 8;
+				} else {
+					this.mountData.xOffset = -8;
+				}
 			} else {
 				TrainEntityHandler.SetTrainEntityStanding( player );
 			}

@@ -10,7 +10,7 @@ using Terraria;
 
 
 namespace OnARail.Entities {
-	class TrainEntityHandler {
+	public class TrainEntityHandler {
 		private static IList<CustomEntityComponent> CommonComponents;
 
 
@@ -27,13 +27,13 @@ namespace OnARail.Entities {
 			var ent = new CustomEntity( player.name+"'s Train", TrainEntityHandler.CommonComponents );
 			var draw_comp = ent.GetComponentByType<TrainDrawInGameEntityComponent>();
 
-			Vector2 pos = player.position;
+			Vector2 pos = player.Center;
 			pos.X = MathHelper.Clamp( pos.X, 160, ( Main.maxTilesX - 10 ) * 16 );
 			pos.Y = MathHelper.Clamp( pos.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
 
-			ent.position = pos;
+			ent.Center = pos;
 			ent.width = draw_comp.Texture.Width;
-			ent.height = (draw_comp.Texture.Height / draw_comp.FrameCount) - 12;
+			ent.height = (draw_comp.Texture.Height / draw_comp.FrameCount) - 8;
 
 			int who = CustomEntityManager.Instance.Add( ent );
 
@@ -143,7 +143,7 @@ namespace OnARail.Entities {
 			//	Main.BlackFadeIn = 255;
 			//}
 
-			PlayerHelpers.Teleport( player, ent.position );
+			PlayerHelpers.Teleport( player, ent.Center + new Vector2(0, -12) );
 		}
 
 

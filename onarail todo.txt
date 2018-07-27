@@ -34,13 +34,13 @@ v2
 v1
 -	@Add entity syncing to clients on load
 -	Add buff icon
+
 -	Warp to center of train
--	Display map icon centered on train and scaled by 1/2
 -	Increase train size 2x + improve seat position
+-	Display map icon centered on train and scaled by 1/2
 -	Reduce hover icon pulsate range
 -	Set train direction to match player direction on dismount
 -	Adjust train stats
-
 -	Debug train not sticking to player when mounted (reactivates even when mounted; window switch bug?)
 -	Raise train by mount added height
 -	Fix mounting while dead

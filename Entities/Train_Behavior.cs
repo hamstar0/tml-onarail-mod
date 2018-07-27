@@ -47,10 +47,9 @@ namespace OnARail.Entities {
 
 			this.IsMountedBy = player.whoAmI;
 
-			player.Center = ent.Center;
-			player.position.Y -= 2;
-			//player.MountedCenter = ent.Center;
-			//player.position.Y -= mymod.GetMount<TrainMount>().mountData.heightBoost;
+			//player.Center = ent.Center;
+			player.MountedCenter = ent.Center;
+			player.position.Y -= 12;
 
 			return true;
 		}
@@ -61,9 +60,15 @@ namespace OnARail.Entities {
 				return false;
 			}
 
+			var mymod = OnARailMod.Instance;
+
 			this.IsMountedBy = -1;
 
 			ent.Center = player.Center;
+			ent.position.Y -= 12;
+			ent.direction = player.direction;
+
+			player.position.Y -= 12;
 
 			return true;
 		}

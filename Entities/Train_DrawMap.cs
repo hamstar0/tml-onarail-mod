@@ -4,6 +4,6 @@ using HamstarHelpers.Helpers.DebugHelpers;
 
 namespace OnARail.Entities {
 	class TrainDrawOnMapEntityComponent : DrawsOnMapEntityComponent {
-		public TrainDrawOnMapEntityComponent() : base( "OnARail/Entities/TrainIcon", 1, 0.5f ) { }
+		public TrainDrawOnMapEntityComponent() : base( "OnARail", "Entities/TrainIcon", 1, 0.25f ) { }
 	}
 }
