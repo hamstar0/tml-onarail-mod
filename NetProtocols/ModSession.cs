@@ -11,7 +11,7 @@ namespace OnARail.NetProtocols {
 		////////////////
 
 		public override void SetServerDefaults() {
-			this.Data = OnARailMod.Instance.Config;
+			this.Data = (OnARailConfigData)OnARailMod.Instance.Config.Clone();
 		}
 
 		protected override void ReceiveWithClient() {

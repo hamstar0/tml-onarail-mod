@@ -18,10 +18,6 @@ namespace OnARail {
 
 
 
-		//public string _OLD_SETTINGS_BELOW_ = "";
-
-
-
 		////////////////
 
 		public bool UpdateToLatestVersion( OnARailMod mymod ) {

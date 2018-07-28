@@ -31,9 +31,9 @@ v2
 	-	Implement clicking with mouse item on train to add fuel items
 	-	Add a temperature indicator
 	-	Add a tooltip indicating to feed fuel into the train
+
 v1
 -	@Add entity syncing to clients on load
-
 -	Add buff icon
 -	Warp to center of train
 -	Increase train size 2x + improve seat position
