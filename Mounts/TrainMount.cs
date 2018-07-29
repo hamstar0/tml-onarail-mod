@@ -33,7 +33,7 @@ namespace OnARail.Mounts {
 			this.mountData.runSpeed = 20f;	//10f;
 			this.mountData.dashSpeed = 10f;
 			this.mountData.acceleration = 0.05f;	//0.03f;
-			this.mountData.jumpHeight = 6;	//12;
+			this.mountData.jumpHeight = 2;	//12;
 			this.mountData.jumpSpeed = 5.15f;
 			this.mountData.blockExtraJumps = true;
 
@@ -81,7 +81,7 @@ namespace OnARail.Mounts {
 		////////////////
 		
 		internal void RunUpdateForPlayer( Player player ) {
-			if( !PerWorldSaveEntityComponent.IsLoaded ) { return; }
+			if( !SaveableEntityComponent.IsLoaded ) { return; }
 
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
 			if( !myplayer.IsLoaded ) { return; }

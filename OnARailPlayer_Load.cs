@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Services.Promises;
 using OnARail.Entities;
 using OnARail.NetProtocols;
 using Terraria;
@@ -42,7 +44,10 @@ namespace OnARail {
 				
 				PacketProtocol.QuickRequestToServer<TrainSpawnProtocol>();
 			} else {
-				this.ReclaimTrain();
+				Promises.AddCustomPromiseForObject( SaveableEntityComponent.LoadHook, () => {
+					this.ReclaimTrain();
+					return false;
+				} );
 			}
 		}
 

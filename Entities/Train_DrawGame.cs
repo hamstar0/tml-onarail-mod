@@ -1,6 +1,7 @@
 ﻿using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.HudHelpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -37,7 +38,11 @@ namespace OnARail.Entities {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 			var mouse_comp = ent.GetComponentByType<TrainMouseInteractionEntityComponent>();
 			
-			if( mouse_comp.IsMouseHovering && train_comp.IsMountedBy == -1 ) {
+			if( mouse_comp.IsMouseHovering && train_comp.IsMountedBy == -1 && train_comp.IsLocallyOwned(ent) ) {
+				var text_pos = new Vector2(
+					Main.mouseX + 16,
+					Main.mouseY + 16
+				);
 				var pos = new Vector2(
 					Main.mouseX - this.TrainIcon.Width,
 					Main.mouseY - this.TrainIcon.Height
@@ -52,6 +57,8 @@ namespace OnARail.Entities {
 				}
 				
 				sb.Draw( this.TrainIcon, pos, null, Color.White, 0f, default( Vector2 ), scale, dir, 1f );
+
+				HudHelpers.DrawGlowingString( ent.DisplayName, text_pos, 1f );
 			}
 		}
 	}

@@ -6,6 +6,7 @@ using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
+using OnARail.Buffs;
 using Terraria;
 
 
@@ -28,12 +29,13 @@ namespace OnARail.Entities {
 			var draw_comp = ent.GetComponentByType<TrainDrawInGameEntityComponent>();
 
 			Vector2 pos = player.Center;
+			pos.Y -= 16;
 			pos.X = MathHelper.Clamp( pos.X, 160, ( Main.maxTilesX - 10 ) * 16 );
 			pos.Y = MathHelper.Clamp( pos.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
 
 			ent.Center = pos;
 			ent.width = draw_comp.Texture.Width;
-			ent.height = (draw_comp.Texture.Height / draw_comp.FrameCount) - 8;
+			ent.height = (draw_comp.Texture.Height / draw_comp.FrameCount) - 16;
 
 			int who = CustomEntityManager.Instance.Add( ent );
 
@@ -49,7 +51,7 @@ namespace OnARail.Entities {
 
 
 		public static int FindMyTrain( Player player ) {
-			if( !PerWorldSaveEntityComponent.IsLoaded ) {
+			if( !SaveableEntityComponent.IsLoaded ) {
 				throw new HamstarException( "OnARail.TrainEntityHandler.FindMyTrain - Entities not loaded." );
 			}
 
@@ -77,7 +79,7 @@ namespace OnARail.Entities {
 		////////////////
 
 		public static void SetTrainEntityFollowing( Player player ) {
-			if( !PerWorldSaveEntityComponent.IsLoaded ) {
+			if( !SaveableEntityComponent.IsLoaded ) {
 				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityFollowing - Entities not loaded." );
 			}
 
@@ -102,7 +104,7 @@ namespace OnARail.Entities {
 
 
 		public static void SetTrainEntityStanding( Player player ) {
-			if( !PerWorldSaveEntityComponent.IsLoaded ) {
+			if( !SaveableEntityComponent.IsLoaded ) {
 				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityStanding - Entities not loaded." );
 			}
 
@@ -128,7 +130,7 @@ namespace OnARail.Entities {
 		////////////////
 
 		public static void WarpPlayerToTrain( Player player ) {
-			if( !PerWorldSaveEntityComponent.IsLoaded ) {
+			if( !SaveableEntityComponent.IsLoaded ) {
 				throw new HamstarException( "OnARail.TrainEntityHandler.WarpPlayerToTrain - Entities not loaded." );
 			}
 
@@ -143,7 +145,11 @@ namespace OnARail.Entities {
 			//	Main.BlackFadeIn = 255;
 			//}
 
-			PlayerHelpers.Teleport( player, ent.Center + new Vector2(0, -12) );
+			PlayerHelpers.Teleport( player, ent.Center + new Vector2(0, -16) );
+			
+			// Also mount train
+			int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
+			player.AddBuff( train_buff_id, 3 );
 		}
 
 
@@ -160,7 +166,7 @@ namespace OnARail.Entities {
 					new TrainRespectsGravityEntityComponent(),
 					new TrainRailBoundEntityComponent(),
 					new PeriodicSyncEntityComponent(),
-					new PerWorldSaveEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
+					new SaveableEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
 				};
 			} );
 		}

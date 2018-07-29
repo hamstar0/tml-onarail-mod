@@ -1,7 +1,7 @@
 ﻿using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.PlayerHelpers;
 using Newtonsoft.Json;
-using OnARail.Mounts;
 using Terraria;
 
 
@@ -71,6 +71,24 @@ namespace OnARail.Entities {
 			player.position.Y -= 12;
 
 			return true;
+		}
+
+
+		////////////////
+
+		public bool IsLocallyOwned( CustomEntity ent ) {
+			bool success;
+
+			if( string.IsNullOrEmpty( this.OwnerUID ) ) {
+				return true;
+			}
+
+			string uid = PlayerIdentityHelpers.GetUniqueId( Main.LocalPlayer, out success );
+			if( !success ) {
+				return false;
+			}
+
+			return this.OwnerUID == uid;
 		}
 	}
 }

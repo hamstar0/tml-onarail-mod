@@ -31,10 +31,14 @@ namespace OnARail.Entities {
 			if( this.IsMouseHovering ) {
 				if( Main.mouseRight ) {
 					if( !player.dead ) {
-						int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
+						var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
-						if( player.FindBuffIndex( train_buff_id ) == -1 ) {
-							player.AddBuff( train_buff_id, 3 );
+						if( train_comp.IsLocallyOwned( ent ) ) {
+							int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
+
+							if( player.FindBuffIndex( train_buff_id ) == -1 ) {
+								player.AddBuff( train_buff_id, 3 );
+							}
 						}
 					}
 				}
