@@ -9,7 +9,7 @@ using Terraria;
 
 namespace OnARail.Entities {
 	class TrainDrawInGameEntityComponent : DrawsInGameEntityComponent {
-		private Texture2D TrainIcon;
+		private readonly Texture2D TrainIcon;
 		private float PulseScaleAnimation = 0f;
 
 
@@ -48,7 +48,7 @@ namespace OnARail.Entities {
 					Main.mouseY - this.TrainIcon.Height
 				);
 				float scale = 1.5f + ( ( this.PulseScaleAnimation > 0 ? this.PulseScaleAnimation : -this.PulseScaleAnimation ) / 240f );
-				SpriteEffects dir = DrawsInGameEntityComponent.GetOrientation( ent );
+				SpriteEffects dir = DrawsInGameEntityComponent.GetOrientation( ent.Core );
 
 				if( this.PulseScaleAnimation >= 26 ) {
 					this.PulseScaleAnimation = -this.PulseScaleAnimation;
@@ -58,7 +58,7 @@ namespace OnARail.Entities {
 				
 				sb.Draw( this.TrainIcon, pos, null, Color.White, 0f, default( Vector2 ), scale, dir, 1f );
 
-				HudHelpers.DrawGlowingString( ent.DisplayName, text_pos, 1f );
+				HudHelpers.DrawGlowingString( ent.Core.DisplayName, text_pos, 1f );
 			}
 		}
 	}

@@ -69,9 +69,9 @@ namespace OnARail.Mounts {
 
 			if( !this.HasPromise ) {
 				this.HasPromise = true;
-
-				Promises.AddCustomPromiseForObject( DecentralizedPlayerUpdates.Instance, () => {
-					this.RunUpdateForPlayer( DecentralizedPlayerUpdates.Instance.MyPlayer );
+				
+				Promises.AddValidatedPromise( PlayerPromiseValidator.Instance, () => {
+					this.RunUpdateForPlayer( PlayerPromiseValidator.Instance.MyPlayer );
 					return true;
 				} );
 			}

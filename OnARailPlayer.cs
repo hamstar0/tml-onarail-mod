@@ -1,6 +1,4 @@
-﻿using HamstarHelpers.Components.CustomEntity;
-using HamstarHelpers.Components.CustomEntity.Components;
-using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
@@ -11,10 +9,24 @@ using Terraria.ModLoader.IO;
 
 
 namespace OnARail {
-	class DecentralizedPlayerUpdates {
-		internal static DecentralizedPlayerUpdates Instance = new DecentralizedPlayerUpdates();
+	internal class PlayerPromiseValidator : PromiseValidator {
+		internal readonly static object MyValidatorKey;
+		internal readonly static PlayerPromiseValidator Instance;
+
+		////////////////
+
+		static PlayerPromiseValidator() {
+			PlayerPromiseValidator.MyValidatorKey = new object();
+			PlayerPromiseValidator.Instance = new PlayerPromiseValidator();
+		}
+
+		////////////////
 
 		public Player MyPlayer;
+
+		////////////////
+
+		private PlayerPromiseValidator() : base( PlayerPromiseValidator.MyValidatorKey ) { }
 	}
 
 
@@ -87,8 +99,9 @@ namespace OnARail {
 				this.PrevPosition = this.player.position;
 			}
 
-			DecentralizedPlayerUpdates.Instance.MyPlayer = this.player;
-			Promises.TriggerCustomPromiseForObject( DecentralizedPlayerUpdates.Instance );
+			PlayerPromiseValidator.Instance.MyPlayer = this.player;
+
+			Promises.TriggerValidatedPromise( PlayerPromiseValidator.Instance, PlayerPromiseValidator.MyValidatorKey );
 		}
 
 

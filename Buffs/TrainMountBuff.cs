@@ -13,7 +13,7 @@ namespace OnARail.Buffs {
 
 		public override void SetDefaults() {
 			this.DisplayName.SetDefault( "Train" );
-			this.Description.SetDefault( "Choo Choo" );
+			this.Description.SetDefault( "Choo Choo!" );
 
 			Main.buffNoTimeDisplay[ this.Type ] = true;
 			Main.buffNoSave[ this.Type ] = true;
@@ -21,8 +21,8 @@ namespace OnARail.Buffs {
 			if( !this.HasPromise ) {
 				this.HasPromise = true;
 
-				Promises.AddCustomPromiseForObject( DecentralizedPlayerUpdates.Instance, () => {
-					this.RunUpdateForPlayer( DecentralizedPlayerUpdates.Instance.MyPlayer );
+				Promises.AddValidatedPromise( PlayerPromiseValidator.Instance, () => {
+					this.RunUpdateForPlayer( PlayerPromiseValidator.Instance.MyPlayer );
 					return true;
 				} );
 			}

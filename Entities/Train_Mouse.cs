@@ -26,7 +26,7 @@ namespace OnARail.Entities {
 		protected override void OnMouseHover( CustomEntity ent ) {
 			Player player = Main.LocalPlayer;
 
-			this.IsMouseHovering = player.Distance( ent.Center ) <= TrainMouseInteractionEntityComponent.BoardingDistance;
+			this.IsMouseHovering = player.Distance( ent.Core.Center ) <= TrainMouseInteractionEntityComponent.BoardingDistance;
 
 			if( this.IsMouseHovering ) {
 				if( Main.mouseRight ) {

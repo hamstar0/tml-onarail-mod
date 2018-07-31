@@ -33,6 +33,7 @@ v2
 	-	Add a tooltip indicating to feed fuel into the train
 v1.1
 -	Finish MP test
+-	@Finish entity sync
 
 -	Show train's name on mouse hover
 -	Block attempts at mounting other players' trains

@@ -44,7 +44,7 @@ namespace OnARail {
 				
 				PacketProtocol.QuickRequestToServer<TrainSpawnProtocol>();
 			} else {
-				Promises.AddCustomPromiseForObject( SaveableEntityComponent.LoadHook, () => {
+				Promises.AddValidatedPromise( SaveableEntityComponent.LoadAllValidator, () => {
 					this.ReclaimTrain();
 					return false;
 				} );

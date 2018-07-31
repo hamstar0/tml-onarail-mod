@@ -16,6 +16,12 @@ namespace OnARail.Entities {
 
 		////////////////
 
+		public override CustomEntityComponent Clone() {
+			return (TrainBehaviorEntityComponent)this.MemberwiseClone();
+		}
+
+		////////////////
+
 		public override void Update( CustomEntity ent ) {
 			if( this.IsMountedBy != -1 ) {
 				Player player = Main.player[ this.IsMountedBy ];
@@ -31,7 +37,7 @@ namespace OnARail.Entities {
 				}
 				return;
 			} else {
-				ent.Center = player.Center;
+				ent.Core.Center = player.Center;
 			}
 		}
 
@@ -48,7 +54,7 @@ namespace OnARail.Entities {
 			this.IsMountedBy = player.whoAmI;
 
 			//player.Center = ent.Center;
-			player.MountedCenter = ent.Center;
+			player.MountedCenter = ent.Core.Center;
 			player.position.Y -= 12;
 
 			return true;
@@ -64,9 +70,9 @@ namespace OnARail.Entities {
 
 			this.IsMountedBy = -1;
 
-			ent.Center = player.Center;
-			ent.position.Y -= 12;
-			ent.direction = player.direction;
+			ent.Core.Center = player.Center;
+			ent.Core.position.Y -= 12;
+			ent.Core.direction = player.direction;
 
 			player.position.Y -= 12;
 

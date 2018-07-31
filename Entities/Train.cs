@@ -12,7 +12,7 @@ using Terraria;
 
 namespace OnARail.Entities {
 	public class TrainEntityHandler {
-		private static IList<CustomEntityComponent> CommonComponents;
+		public static int TrainEntityID { get; private set; }
 
 
 		////////////////
@@ -25,7 +25,9 @@ namespace OnARail.Entities {
 				return -1;
 			}
 
-			var ent = new CustomEntity( player.name+"'s Train", TrainEntityHandler.CommonComponents );
+			var ent = CustomEntityManager.Instance.CreateEntityFromTemplate( TrainEntityHandler.TrainEntityID );
+			ent.Core.DisplayName = player.name + "'s Train";
+			
 			var draw_comp = ent.GetComponentByType<TrainDrawInGameEntityComponent>();
 
 			Vector2 pos = player.Center;
@@ -33,10 +35,8 @@ namespace OnARail.Entities {
 			pos.X = MathHelper.Clamp( pos.X, 160, ( Main.maxTilesX - 10 ) * 16 );
 			pos.Y = MathHelper.Clamp( pos.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
 
-			ent.Center = pos;
-			ent.width = draw_comp.Texture.Width;
-			ent.height = (draw_comp.Texture.Height / draw_comp.FrameCount) - 16;
-
+			ent.Core.Center = pos;
+			
 			int who = CustomEntityManager.Instance.Add( ent );
 
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
@@ -68,7 +68,7 @@ namespace OnARail.Entities {
 				var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
 				if( train_comp.OwnerUID == uid ) {
-					return ent.whoAmI;
+					return ent.Core.whoAmI;
 				}
 			}
 
@@ -145,7 +145,7 @@ namespace OnARail.Entities {
 			//	Main.BlackFadeIn = 255;
 			//}
 
-			PlayerHelpers.Teleport( player, ent.Center + new Vector2(0, -16) );
+			PlayerHelpers.Teleport( player, ent.Core.Center + new Vector2(0, -16) );
 			
 			// Also mount train
 			int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
@@ -156,8 +156,10 @@ namespace OnARail.Entities {
 		////////////////
 
 		internal TrainEntityHandler() {
+			//ent.width = draw_comp.Texture.Width;
+			//ent.height = draw_comp.Texture.Height / draw_comp.FrameCount) - 16;
 			Promises.AddPostModLoadPromise( () => {
-				TrainEntityHandler.CommonComponents = new List<CustomEntityComponent> {
+				var comps = new List<CustomEntityComponent> {
 					new TrainBehaviorEntityComponent(),
 					new TrainDrawInGameEntityComponent(),
 					new TrainDrawOnMapEntityComponent(),
@@ -168,6 +170,8 @@ namespace OnARail.Entities {
 					new PeriodicSyncEntityComponent(),
 					new SaveableEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
 				};
+
+				TrainEntityHandler.TrainEntityID = CustomEntityManager.Instance.AddEntityTemplate( "Unnamed Train", 64, 48, comps );
 			} );
 		}
 	}
