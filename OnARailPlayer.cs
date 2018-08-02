@@ -88,7 +88,7 @@ namespace OnARail {
 
 		public override void PreUpdate() {
 			if( this.player.dead ) { return; }
-
+			
 			if( this.IsLoaded ) {
 				if( Vector2.Distance( this.player.position, PlayerHelpers.GetSpawnPoint( this.player ) ) <= 8 ) {
 					if( Vector2.Distance( this.player.position, this.PrevPosition ) > 16 * 4 ) {

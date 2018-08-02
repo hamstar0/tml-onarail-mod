@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.Components.CustomEntity.Components;
+using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
 using OnARail.Entities;
@@ -40,7 +41,7 @@ namespace OnARail.Mounts {
 			this.mountData.totalFrames = total_frames;
 			this.mountData.heightBoost = 30;
 			this.mountData.playerYOffsets = player_y_offsets;
-			this.mountData.xOffset = 8;
+			this.mountData.xOffset = 0;//8;
 			this.mountData.yOffset = 2;
 			this.mountData.bodyFrame = 3;
 			this.mountData.playerHeadOffset = 14;
@@ -87,15 +88,17 @@ namespace OnARail.Mounts {
 			if( !myplayer.IsLoaded ) { return; }
 
 			if( player.mount.Active && player.mount.Type == this.Type ) {
-				TrainEntityHandler.SetTrainEntityFollowing( player );
+				TrainEntityHandler.SetTrainEntityFollowing_Synced( player );
 				
-				if( player.direction > 0 ) {
-					this.mountData.xOffset = 8;
+				if( player.onTrack ) {
+					if( PlayerMovementHelpers.IsOnFloor(player) ) {
+						this.mountData.yOffset = 2;
+					}
 				} else {
-					this.mountData.xOffset = -8;
+					this.mountData.yOffset = 12;
 				}
 			} else {
-				TrainEntityHandler.SetTrainEntityStanding( player );
+				TrainEntityHandler.SetTrainEntityStanding_Synced( player );
 			}
 		}
 	}

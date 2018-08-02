@@ -55,7 +55,7 @@ namespace OnARail.Entities {
 
 			//player.Center = ent.Center;
 			player.MountedCenter = ent.Core.Center;
-			player.position.Y -= 12;
+			player.position.Y -= 22f;
 
 			return true;
 		}
@@ -65,13 +65,13 @@ namespace OnARail.Entities {
 			if( this.IsMountedBy == -1 ) {
 				return false;
 			}
-
+			
 			var mymod = OnARailMod.Instance;
 
 			this.IsMountedBy = -1;
 
 			ent.Core.Center = player.Center;
-			ent.Core.position.Y -= 12;
+			ent.Core.position.Y -= 16;
 			ent.Core.direction = player.direction;
 
 			player.position.Y -= 12;

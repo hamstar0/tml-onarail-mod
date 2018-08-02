@@ -78,7 +78,7 @@ namespace OnARail.Entities {
 
 		////////////////
 
-		public static void SetTrainEntityFollowing( Player player ) {
+		public static void SetTrainEntityFollowing_Synced( Player player ) {
 			if( !SaveableEntityComponent.IsLoaded ) {
 				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityFollowing - Entities not loaded." );
 			}
@@ -103,7 +103,7 @@ namespace OnARail.Entities {
 		}
 
 
-		public static void SetTrainEntityStanding( Player player ) {
+		public static void SetTrainEntityStanding_Synced( Player player ) {
 			if( !SaveableEntityComponent.IsLoaded ) {
 				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityStanding - Entities not loaded." );
 			}
