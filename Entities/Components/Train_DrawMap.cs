@@ -4,7 +4,7 @@ using HamstarHelpers.Helpers.DebugHelpers;
 using Microsoft.Xna.Framework.Graphics;
 
 
-namespace OnARail.Entities {
+namespace OnARail.Entities.Components {
 	class TrainDrawOnMapEntityComponent : DrawsOnMapEntityComponent {
 		public TrainDrawOnMapEntityComponent() : base( "OnARail", "Entities/TrainIcon", 1, 0.25f ) { }
 

@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Terraria;
 
 
-namespace OnARail.Entities {
+namespace OnARail.Entities.Components {
 	class TrainBehaviorEntityComponent : CustomEntityComponent {
 		[JsonIgnore]
 		public int IsMountedBy = -1;

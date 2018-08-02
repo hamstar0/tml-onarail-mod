@@ -3,7 +3,7 @@ using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Helpers.DebugHelpers;
 
 
-namespace OnARail.Entities {
+namespace OnARail.Entities.Components {
 	class TrainRespectsTerrainEntityComponent : RespectsTerrainEntityComponent {
 		public override void UpdateSingle( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();

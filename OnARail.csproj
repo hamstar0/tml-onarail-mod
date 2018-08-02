@@ -67,11 +67,11 @@
     <Compile Include="Buffs\TrainMountBuff.cs" />
     <Compile Include="Commands\DebugCommand.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Entities\Train_Behavior.cs" />
-    <Compile Include="Entities\Train_DrawMap.cs" />
-    <Compile Include="Entities\Train_Misc.cs" />
-    <Compile Include="Entities\Train_DrawGame.cs" />
-    <Compile Include="Entities\Train_Mouse.cs" />
+    <Compile Include="Entities\Components\Train_Behavior.cs" />
+    <Compile Include="Entities\Components\Train_DrawMap.cs" />
+    <Compile Include="Entities\Components\Train_Misc.cs" />
+    <Compile Include="Entities\Components\Train_DrawGame.cs" />
+    <Compile Include="Entities\Components\Train_Mouse.cs" />
     <Compile Include="Mounts\TrainMount.cs" />
     <Compile Include="NetProtocols\ModSettings.cs" />
     <Compile Include="NetProtocols\TrainSpawn.cs" />

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
 
-namespace OnARail.Entities {
+namespace OnARail.Entities.Components {
 	class TrainDrawInGameEntityComponent : DrawsInGameEntityComponent {
 		private readonly Texture2D TrainIcon;
 		private float PulseScaleAnimation = 0f;

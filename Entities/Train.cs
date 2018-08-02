@@ -7,6 +7,7 @@ using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
 using OnARail.Buffs;
+using OnARail.Entities.Components;
 using Terraria;
 
 

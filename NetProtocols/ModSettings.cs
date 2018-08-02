@@ -10,9 +10,13 @@ namespace OnARail.NetProtocols {
 
 		////////////////
 
-		public override void SetServerDefaults() {
+		private ModSettingsProtocol() { }
+
+		protected override void SetServerDefaults() {
 			this.Data = (OnARailConfigData)OnARailMod.Instance.Config.Clone();
 		}
+
+		////////////////
 
 		protected override void ReceiveWithClient() {
 			var mymod = OnARailMod.Instance;

@@ -5,7 +5,9 @@ using Terraria;
 
 namespace OnARail.NetProtocols {
 	class TrainSpawnProtocol : PacketProtocol {
-		public override void SetServerDefaults() { }
+		private TrainSpawnProtocol() { }
+
+		protected override void SetServerDefaults() { }
 		
 		////////////////
 
