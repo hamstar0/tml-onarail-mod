@@ -5,6 +5,7 @@ using HamstarHelpers.Helpers.DebugHelpers;
 using Newtonsoft.Json;
 using OnARail.Buffs;
 using Terraria;
+using Terraria.ID;
 
 
 namespace OnARail.Entities {
@@ -27,10 +28,10 @@ namespace OnARail.Entities {
 			Player player = Main.LocalPlayer;
 
 			this.IsMouseHovering = player.Distance( ent.Core.Center ) <= TrainMouseInteractionEntityComponent.BoardingDistance;
-
+			
 			if( this.IsMouseHovering ) {
 				if( Main.mouseRight ) {
-					if( !player.dead ) {
+					if( !player.dead && !(player.showItemIcon && player.showItemIcon2 == ItemID.Minecart) ) {
 						var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
 						if( train_comp.IsLocallyOwned( ent ) ) {
@@ -44,11 +45,14 @@ namespace OnARail.Entities {
 				}
 			}
 		}
-
-		public override void Update( CustomEntity ent ) {
+		
+		public override void UpdateSingle( CustomEntity ent ) {
 			this.IsMouseHovering = false;
-
-			base.Update( ent );
+			base.UpdateSingle( ent );
+		}
+		public override void UpdateClient( CustomEntity ent ) {
+			this.IsMouseHovering = false;
+			base.UpdateClient( ent );
 		}
 	}
 }

@@ -73,7 +73,7 @@
     <Compile Include="Entities\Train_DrawGame.cs" />
     <Compile Include="Entities\Train_Mouse.cs" />
     <Compile Include="Mounts\TrainMount.cs" />
-    <Compile Include="NetProtocols\ModSession.cs" />
+    <Compile Include="NetProtocols\ModSettings.cs" />
     <Compile Include="NetProtocols\TrainSpawn.cs" />
     <Compile Include="OnARailMod_Meta.cs" />
     <Compile Include="OnARailNPC.cs" />

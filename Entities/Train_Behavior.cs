@@ -22,14 +22,24 @@ namespace OnARail.Entities {
 
 		////////////////
 
-		public override void Update( CustomEntity ent ) {
+		private void UpdateMe( CustomEntity ent ) {
 			if( this.IsMountedBy != -1 ) {
 				Player player = Main.player[ this.IsMountedBy ];
 
 				this.UpdateMounted( ent, player );
 			}
 		}
-		
+
+		public override void UpdateSingle( CustomEntity ent ) {
+			this.UpdateMe( ent );
+		}
+		public override void UpdateClient( CustomEntity ent ) {
+			this.UpdateMe( ent );
+		}
+		public override void UpdateServer( CustomEntity ent ) {
+			this.UpdateMe( ent );
+		}
+
 		private void UpdateMounted( CustomEntity ent, Player player ) {
 			if( player == null || !player.active || player.dead ) {
 				if( this.IsMountedBy == player.whoAmI ) {
