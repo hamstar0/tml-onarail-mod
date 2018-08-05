@@ -10,11 +10,15 @@ namespace OnARail.Entities.Components {
 		[JsonIgnore]
 		public int IsMountedBy = -1;
 
-		public string OwnerUID;
+		public string OwnerUID = "";
 
 
 
 		////////////////
+
+		public TrainBehaviorEntityComponent() {
+			this.ConfirmLoad();
+		}
 
 		public override CustomEntityComponent Clone() {
 			return (TrainBehaviorEntityComponent)this.MemberwiseClone();

@@ -23,7 +23,13 @@ namespace OnARail.Entities.Components {
 
 
 		////////////////
-		
+
+		public TrainMouseInteractionEntityComponent() {
+			this.ConfirmLoad();
+		}
+
+		////////////////
+
 		protected override void OnMouseHover( CustomEntity ent ) {
 			Player player = Main.LocalPlayer;
 

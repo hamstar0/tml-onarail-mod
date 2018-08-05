@@ -5,6 +5,10 @@ using HamstarHelpers.Helpers.DebugHelpers;
 
 namespace OnARail.Entities.Components {
 	class TrainRespectsTerrainEntityComponent : RespectsTerrainEntityComponent {
+		public TrainRespectsTerrainEntityComponent() {
+			this.ConfirmLoad();
+		}
+
 		public override void UpdateSingle( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
@@ -30,6 +34,10 @@ namespace OnARail.Entities.Components {
 
 
 	class TrainRespectsGravityEntityComponent : RespectsGravityEntityComponent {
+		public TrainRespectsGravityEntityComponent() {
+			this.ConfirmLoad();
+		}
+
 		public override void UpdateSingle( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
@@ -55,6 +63,10 @@ namespace OnARail.Entities.Components {
 
 
 	class TrainRailBoundEntityComponent : RailBoundEntityComponent {
+		public TrainRailBoundEntityComponent() {
+			this.ConfirmLoad();
+		}
+
 		public override void UpdateSingle( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
