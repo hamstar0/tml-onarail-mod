@@ -95,19 +95,15 @@ namespace OnARail {
 			}
 
 			if( this.MyTrainWho != -1 && LoadHelpers.IsWorldSafelyBeingPlayed() ) {
-				if( Vector2.Distance( this.player.position, PlayerHelpers.GetSpawnPoint( this.player ) ) <= 8 ) {
-					if( Vector2.Distance( this.player.position, this.PrevPosition ) > 16 * 4 ) {
-						if( ( (OnARailMod)this.mod ).Config.DebugModeInfo ) {
-							Main.NewText( "Warping to train..." );
-						}
-
-						CustomEntity ent = CustomEntityManager.Get( this.MyTrainWho );
-						var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
-						if( train_comp.IsMountedBy != -1 ) {
-							PlayerHelpers.Teleport( this.player, this.PrevPosition );
+				if( Vector2.Distance( this.player.position, PlayerHelpers.GetSpawnPoint( this.player ) ) <= 8 ) {	// at spawn
+					if( Vector2.Distance( this.player.position, this.PrevPosition ) > 16 * 4 ) {	// 4+ blocks away from prev location
+						if( Main.netMode == 0 ) {
+							this.HandleRecall();
 						} else {
-							TrainEntityHandler.WarpPlayerToTrain( player );
+							Timers.SetTimer( "OnARailPlayerEvac", 15, () => {
+								this.HandleRecall();
+								return false;
+							} );
 						}
 					}
 				}
@@ -146,6 +142,22 @@ namespace OnARail {
 			if( this.MyTrainWho == -1 ) {
 				LogHelpers.Log( "OnARail.OnARailPlayer.SpawnMyTrain - Could not spawn train for " + this.player.name );
 				return;
+			}
+		}
+
+
+		private void HandleRecall() {
+			CustomEntity ent = CustomEntityManager.GetEntityByWho( this.MyTrainWho );
+			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
+
+			if( train_comp.IsMountedBy != -1 ) {
+				PlayerHelpers.Teleport( this.player, this.PrevPosition );
+			} else {
+				if( ( (OnARailMod)this.mod ).Config.DebugModeInfo ) {
+					Main.NewText( "Warping to train..." );
+				}
+
+				TrainEntityHandler.WarpPlayerToTrain( player );
 			}
 		}
 	}

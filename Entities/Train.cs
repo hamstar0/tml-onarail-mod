@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
+using HamstarHelpers.Components.CustomEntity.Templates;
 using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
@@ -32,7 +33,7 @@ namespace OnARail.Entities {
 				return -1;
 			}
 
-			var ent = CustomEntityTemplates.CreateFromTemplateByID( TrainEntityHandler.TrainEntityID );
+			var ent = CustomEntityTemplateManager.CreateEntityByID( TrainEntityHandler.TrainEntityID );
 			ent.Core.DisplayName = player.name + "'s Train";
 
 			Vector2 pos = player.Center;
@@ -42,7 +43,7 @@ namespace OnARail.Entities {
 
 			ent.Core.Center = pos;
 			
-			int who = CustomEntityManager.Add( ent );
+			int who = CustomEntityManager.AddEntity( ent );
 
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 			train_comp.OwnerUID = uid;
@@ -67,7 +68,7 @@ namespace OnARail.Entities {
 				return -1;
 			}
 
-			ISet<CustomEntity> ents = CustomEntityManager.GetByComponentType<TrainBehaviorEntityComponent>();
+			ISet<CustomEntity> ents = CustomEntityManager.GetEntitiesByComponent<TrainBehaviorEntityComponent>();
 
 			foreach( var ent in ents ) {
 				var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
@@ -93,35 +94,15 @@ namespace OnARail.Entities {
 				throw new HamstarException( "OnARail.TrainEntityHandler.WarpPlayerToTrain - Player " + player.name + " (" + player.whoAmI + ") has no train." );
 			}
 
-			CustomEntity ent = CustomEntityManager.Get( myplayer.MyTrainWho );
+			CustomEntity ent = CustomEntityManager.GetEntityByWho( myplayer.MyTrainWho );
 			if( ent == null ) {
 				throw new HamstarException( "OnARail.TrainEntityHandler.WarpPlayerToTrain - Player " + player.name + " (" + player.whoAmI + ") has no train entity." );
 			}
 			
-Main.NewText( "warps to "+ent.ToString()+" = "+ent.Core.Center );
-			PlayerHelpers.Teleport( player, ent.Core.Center - new Vector2( player.width / 2, ( player.height / 2 ) + 16 ) );
-
-			if( Main.netMode == 0 ) {
-				// Also mount train
-				int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
-				player.AddBuff( train_buff_id, 3 );
-
-			} else {
-				int train_who = myplayer.MyTrainWho;
-				int plr_who = player.whoAmI;
-
-				Timers.SetTimer( "OnARailTrainWarp", 15, () => {
-					CustomEntity myent = CustomEntityManager.Get( train_who );
-
-					Main.player[ plr_who ].position = myent.Core.Center - new Vector2( player.width / 2, ( player.height / 2 ) + 16 );
-
-					// Also mount train
-					int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
-					player.AddBuff( train_buff_id, 3 );
-					
-					return false;
-				} );
-			}
+			PlayerHelpers.Teleport( player, ent.Core.Center - new Vector2( player.width / 2, (player.height / 2 ) + 16) );
+			
+			int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
+			player.AddBuff( train_buff_id, 3 );
 		}
 
 
@@ -141,7 +122,8 @@ Main.NewText( "warps to "+ent.ToString()+" = "+ent.Core.Center );
 					new TrainPeriodicSyncEntityComponent(),
 					new SaveableEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
 				};
-				TrainEntityHandler.TrainEntityID = CustomEntityTemplates.Add( "Unnamed Train", 64, 48, comps );
+
+				TrainEntityHandler.TrainEntityID = CustomEntityTemplateManager.Add( "Unnamed Train", 64, 48, comps );
 			} );
 		}
 	}
