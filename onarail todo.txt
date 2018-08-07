@@ -9,13 +9,14 @@ v3
 -	Implement engine upgrades
 -	Implement cars
 -	Implement track laying accessory
--	Implement Train Tunnels
 	-	@Plan
 		-	Rapidly relocates a train from one tunnel entrance to another
 		-	Can only be placed with a set range of one another
 		-	Needs Tunnel Passes to be used; bought from Train Man; expensive
+-	Implement train breakdowns
 -	Implement Train Man npc (sells train stuff)
 v2
+-	Implement Train Tunnels
 -	Implement train fuel feeding
 	-	@Fuels
 		-	Fissile Material (crafted from martian plating + ectoplasm): +100, max 700
@@ -31,10 +32,30 @@ v2
 	-	Implement clicking with mouse item on train to add fuel items
 	-	Add a temperature indicator
 	-	Add a tooltip indicating to feed fuel into the train
+-	Add defense while riding train
+-	Add train horn
 v1.1
--	Finish MP test
--	@Finish entity sync
+-	Add command to force train spawn
+-	@PacketProtocol and CustomEntity
+	-	Set PacketProtocolData default private constructors to use special objects
 
+-	Fix train dismount position
+-	Prevent train mounting when mounted as minecart
+-	Implement item icon for train mouse hover instead of custom hover icon
+-	Fix train mouse hover to not occur when minecart hover in effect
+-	Failsafe being mounted and having entity lingering
+
+-	Fix dismounted train falling below tracks
+-	Fix MP spawning in-game incorrectly
+	-	Fix warp mounting failing
+		-	Warps always go to initial entity location
+		-	Initial MP warp does not attach to train (buff + mount don't 'stick')
+
+	-	Fix train rail-mount noise spam from entity in MP
+	-	Fix improper train sync from server (player isn't mounted?)
+	-	Disable periodic sync when train is mounted
+	-	Player joins, requests train spawn, server spawns, server syncs train, player doesn't claim
+	-	Player joins, requests train spawn, server spawns at 0,0
 -	Show train's name on mouse hover
 -	Block attempts at mounting other players' trains
 -	Set only one's own train to render on minimap

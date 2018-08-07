@@ -1,8 +1,12 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Components.CustomEntity;
+using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
+using HamstarHelpers.Helpers.TmlHelpers;
 using HamstarHelpers.Services.Promises;
+using HamstarHelpers.Services.Timers;
 using Microsoft.Xna.Framework;
 using OnARail.Entities;
+using OnARail.Entities.Components;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -11,13 +15,13 @@ using Terraria.ModLoader.IO;
 namespace OnARail {
 	internal class PlayerPromiseValidator : PromiseValidator {
 		internal readonly static object MyValidatorKey;
-		internal readonly static PlayerPromiseValidator Instance;
+		internal readonly static PlayerPromiseValidator RunAll;
 
 		////////////////
 
 		static PlayerPromiseValidator() {
 			PlayerPromiseValidator.MyValidatorKey = new object();
-			PlayerPromiseValidator.Instance = new PlayerPromiseValidator();
+			PlayerPromiseValidator.RunAll = new PlayerPromiseValidator();
 		}
 
 		////////////////
@@ -33,10 +37,7 @@ namespace OnARail {
 
 
 	partial class OnARailPlayer : ModPlayer {
-		public bool IsLoaded { get { return this.MyTrainID != -1; } }
-
-
-		public int MyTrainID { get; private set; }
+		public int MyTrainWho { get; private set; }
 		
 		private bool IsInitializedwithTrain = false;
 		private Vector2 PrevPosition = default( Vector2 );
@@ -48,7 +49,7 @@ namespace OnARail {
 		public override bool CloneNewInstances { get { return false; } }
 
 		public override void Initialize() {
-			this.MyTrainID = -1;
+			this.MyTrainWho = -1;
 		}
 
 
@@ -88,29 +89,61 @@ namespace OnARail {
 
 		public override void PreUpdate() {
 			if( this.player.dead ) { return; }
-			
-			if( this.IsLoaded ) {
+
+			if( this.MyTrainWho == -1 ) {
+				this.MyTrainWho = TrainEntityHandler.FindMyTrain( this.player );
+			}
+
+			if( this.MyTrainWho != -1 && LoadHelpers.IsWorldSafelyBeingPlayed() ) {
 				if( Vector2.Distance( this.player.position, PlayerHelpers.GetSpawnPoint( this.player ) ) <= 8 ) {
 					if( Vector2.Distance( this.player.position, this.PrevPosition ) > 16 * 4 ) {
-						TrainEntityHandler.WarpPlayerToTrain( player );
+						if( ( (OnARailMod)this.mod ).Config.DebugModeInfo ) {
+							Main.NewText( "Warping to train..." );
+						}
+
+						CustomEntity ent = CustomEntityManager.Get( this.MyTrainWho );
+						var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
+
+						if( train_comp.IsMountedBy != -1 ) {
+							PlayerHelpers.Teleport( this.player, this.PrevPosition );
+						} else {
+							TrainEntityHandler.WarpPlayerToTrain( player );
+						}
 					}
 				}
 
 				this.PrevPosition = this.player.position;
+
+				PlayerPromiseValidator.RunAll.MyPlayer = this.player;
+				Promises.TriggerValidatedPromise( PlayerPromiseValidator.RunAll, PlayerPromiseValidator.MyValidatorKey );
+			} else {
+				this.player.noItems = true;
+				this.player.noBuilding = true;
+				this.player.stoned = true;
+				this.player.immune = true;
+				this.player.immuneTime = 2;
 			}
+		}
 
-			PlayerPromiseValidator.Instance.MyPlayer = this.player;
 
-			Promises.TriggerValidatedPromise( PlayerPromiseValidator.Instance, PlayerPromiseValidator.MyValidatorKey );
+		////////////////
+
+		public override void OnRespawn( Player player ) {
+			Timers.SetTimer( "OnARailRespawn", 30, () => {
+				if( this.MyTrainWho != -1 ) {
+					TrainEntityHandler.WarpPlayerToTrain( player );
+				}
+				return false;
+			} );
 		}
 
 
 		////////////////
 
 		internal void SpawnMyTrain() {
-			this.MyTrainID = TrainEntityHandler.SpawnTrain( this.player );
+			this.MyTrainWho = TrainEntityHandler.SpawnMyTrain( this.player );
 
-			if( this.MyTrainID == -1 ) {
+			if( this.MyTrainWho == -1 ) {
 				LogHelpers.Log( "OnARail.OnARailPlayer.SpawnMyTrain - Could not spawn train for " + this.player.name );
 				return;
 			}

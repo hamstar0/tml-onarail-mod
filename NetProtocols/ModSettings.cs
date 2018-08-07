@@ -1,6 +1,6 @@
 ﻿using HamstarHelpers.Components.Network;
+using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
-using Terraria;
 
 
 namespace OnARail.NetProtocols {
@@ -10,7 +10,9 @@ namespace OnARail.NetProtocols {
 
 		////////////////
 
-		private ModSettingsProtocol() { }
+		private ModSettingsProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
+
+		////////////////
 
 		protected override void SetServerDefaults() {
 			this.Data = (OnARailConfigData)OnARailMod.Instance.Config.Clone();
@@ -26,11 +28,6 @@ namespace OnARail.NetProtocols {
 			if( mymod.Config.DebugModeInfo ) {
 				LogHelpers.Log( "OnARailMod.NetProtocols.ModSettingsProtocol.ReceiveWithClient - " + this.Data.ToString() );
 			}
-
-			Player player = Main.LocalPlayer;
-			var myplayer = player.GetModPlayer<OnARailPlayer>();
-
-			//myplayer.FinishModSettingsSync();
 		}
 	}
 }

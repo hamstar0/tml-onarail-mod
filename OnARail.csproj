@@ -65,7 +65,6 @@
     <Compile Include="API.cs" />
     <Compile Include="API_Call.cs" />
     <Compile Include="Buffs\TrainMountBuff.cs" />
-    <Compile Include="Commands\DebugCommand.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Entities\Components\Train_Behavior.cs" />
     <Compile Include="Entities\Components\Train_DrawMap.cs" />

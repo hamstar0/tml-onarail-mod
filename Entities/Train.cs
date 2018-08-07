@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
+using HamstarHelpers.Services.Timers;
 using Microsoft.Xna.Framework;
 using OnARail.Buffs;
 using OnARail.Entities.Components;
@@ -18,7 +20,11 @@ namespace OnARail.Entities {
 
 		////////////////
 
-		public static int SpawnTrain( Player player ) {
+		public static int SpawnMyTrain( Player player ) {
+			if( Main.netMode == 1 ) {
+				throw new HamstarException( "No client." );
+			}
+
 			bool success;
 			string uid = PlayerIdentityHelpers.GetUniqueId( player, out success );
 			if( !success ) {
@@ -28,8 +34,6 @@ namespace OnARail.Entities {
 
 			var ent = CustomEntityTemplates.CreateFromTemplateByID( TrainEntityHandler.TrainEntityID );
 			ent.Core.DisplayName = player.name + "'s Train";
-			
-			var draw_comp = ent.GetComponentByType<TrainDrawInGameEntityComponent>();
 
 			Vector2 pos = player.Center;
 			pos.Y -= 16;
@@ -43,7 +47,7 @@ namespace OnARail.Entities {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 			train_comp.OwnerUID = uid;
 
-			if( Main.netMode != 0 ) {
+			if( Main.netMode == 2 ) {
 				ent.SyncTo();
 			}
 
@@ -79,86 +83,52 @@ namespace OnARail.Entities {
 
 		////////////////
 
-		public static void SetTrainEntityFollowing_Synced( Player player ) {
-			if( !SaveableEntityComponent.IsLoaded ) {
-				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityFollowing - Entities not loaded." );
-			}
-
-			var myplayer = player.GetModPlayer<OnARailPlayer>();
-			if( myplayer.MyTrainID == -1 ) {
-				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityFollowing - Player " + player.name + " (" + player.whoAmI + ") has no train." );
-			}
-
-			CustomEntity ent = CustomEntityManager.Get( myplayer.MyTrainID );
-			if( ent == null ) {
-				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityFollowing - Player " + player.name + " (" + player.whoAmI + ") has invalid train." );
-			}
-
-			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
-			if( train_comp.SetTrainEntityFollowing_NoSync( ent, player ) ) {
-				if( Main.netMode != 0 ) {
-					ent.SyncTo();
-				}
-			}
-		}
-
-
-		public static void SetTrainEntityStanding_Synced( Player player ) {
-			if( !SaveableEntityComponent.IsLoaded ) {
-				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityStanding - Entities not loaded." );
-			}
-
-			var myplayer = player.GetModPlayer<OnARailPlayer>();
-			if( myplayer.MyTrainID == -1 ) {
-				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityStanding - Player " + player.name + " (" + player.whoAmI + ") has no train." );
-			}
-
-			CustomEntity ent = CustomEntityManager.Get( myplayer.MyTrainID );
-			if( ent == null ) {
-				throw new HamstarException( "OnARail.TrainEntityHandler.SetTrainEntityStanding - Player " + player.name + " (" + player.whoAmI + ") has invalid train." );
-			}
-
-			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-			if( train_comp.SetTrainEntityStanding_NoSync( ent, player ) ) {
-				if( Main.netMode != 0 ) {
-					ent.SyncTo();
-				}
-			}
-		}
-
-
-		////////////////
-
 		public static void WarpPlayerToTrain( Player player ) {
 			if( !SaveableEntityComponent.IsLoaded ) {
 				throw new HamstarException( "OnARail.TrainEntityHandler.WarpPlayerToTrain - Entities not loaded." );
 			}
 
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
-			if( myplayer.MyTrainID == -1 ) {
+			if( myplayer.MyTrainWho == -1 ) {
 				throw new HamstarException( "OnARail.TrainEntityHandler.WarpPlayerToTrain - Player " + player.name + " (" + player.whoAmI + ") has no train." );
 			}
 
-			CustomEntity ent = CustomEntityManager.Get( myplayer.MyTrainID );
-
-			//if( player.whoAmI == Main.myPlayer ) {
-			//	Main.BlackFadeIn = 255;
-			//}
-
-			PlayerHelpers.Teleport( player, ent.Core.Center + new Vector2(0, -16) );
+			CustomEntity ent = CustomEntityManager.Get( myplayer.MyTrainWho );
+			if( ent == null ) {
+				throw new HamstarException( "OnARail.TrainEntityHandler.WarpPlayerToTrain - Player " + player.name + " (" + player.whoAmI + ") has no train entity." );
+			}
 			
-			// Also mount train
-			int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
-			player.AddBuff( train_buff_id, 3 );
+Main.NewText( "warps to "+ent.ToString()+" = "+ent.Core.Center );
+			PlayerHelpers.Teleport( player, ent.Core.Center - new Vector2( player.width / 2, ( player.height / 2 ) + 16 ) );
+
+			if( Main.netMode == 0 ) {
+				// Also mount train
+				int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
+				player.AddBuff( train_buff_id, 3 );
+
+			} else {
+				int train_who = myplayer.MyTrainWho;
+				int plr_who = player.whoAmI;
+
+				Timers.SetTimer( "OnARailTrainWarp", 15, () => {
+					CustomEntity myent = CustomEntityManager.Get( train_who );
+
+					Main.player[ plr_who ].position = myent.Core.Center - new Vector2( player.width / 2, ( player.height / 2 ) + 16 );
+
+					// Also mount train
+					int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
+					player.AddBuff( train_buff_id, 3 );
+					
+					return false;
+				} );
+			}
 		}
+
 
 
 		////////////////
 
 		internal TrainEntityHandler() {
-			//ent.width = draw_comp.Texture.Width;
-			//ent.height = draw_comp.Texture.Height / draw_comp.FrameCount) - 16;
 			Promises.AddPostModLoadPromise( () => {
 				var comps = new List<CustomEntityComponent> {
 					new TrainBehaviorEntityComponent(),
@@ -168,10 +138,9 @@ namespace OnARail.Entities {
 					new TrainRespectsTerrainEntityComponent(),
 					new TrainRespectsGravityEntityComponent(),
 					new TrainRailBoundEntityComponent(),
-					new PeriodicSyncEntityComponent(),
+					new TrainPeriodicSyncEntityComponent(),
 					new SaveableEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
 				};
-
 				TrainEntityHandler.TrainEntityID = CustomEntityTemplates.Add( "Unnamed Train", 64, 48, comps );
 			} );
 		}

@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
+using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.HudHelpers;
 using Microsoft.Xna.Framework;
@@ -14,6 +15,8 @@ namespace OnARail.Entities.Components {
 
 
 		////////////////
+
+		private TrainDrawInGameEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
 
 		public TrainDrawInGameEntityComponent() : base( "OnARail", "Mounts/TrainMount_Back", 4 ) {
 			if( Main.netMode != 2 ) {
@@ -38,7 +41,7 @@ namespace OnARail.Entities.Components {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 			var mouse_comp = ent.GetComponentByType<TrainMouseInteractionEntityComponent>();
 			
-			if( mouse_comp.IsMouseHovering && train_comp.IsMountedBy == -1 && train_comp.IsLocallyOwned(ent) ) {
+			if( mouse_comp.IsMouseHovering && train_comp.IsMountedBy == -1 && train_comp.OwnsMe( Main.LocalPlayer ) ) {
 				var text_pos = new Vector2(
 					Main.mouseX + 16,
 					Main.mouseY + 16

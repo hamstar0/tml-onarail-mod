@@ -1,14 +1,23 @@
 ﻿using HamstarHelpers.Components.CustomEntity;
+using HamstarHelpers.Components.Network;
+using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
+using OnARail.Mounts;
 using Terraria;
 
 
 namespace OnARail.Entities.Components {
 	class TrainBehaviorEntityComponent : CustomEntityComponent {
 		[JsonIgnore]
-		public int IsMountedBy = -1;
+		[PacketProtocolIgnore]
+		internal int IsMountedBy = -1;
+
+		[JsonIgnore]
+		[PacketProtocolIgnore]
+		private int OwnerWho = -1;
 
 		public string OwnerUID = "";
 
@@ -16,42 +25,60 @@ namespace OnARail.Entities.Components {
 
 		////////////////
 
+		private TrainBehaviorEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
+
 		public TrainBehaviorEntityComponent() {
 			this.ConfirmLoad();
 		}
 
-		public override CustomEntityComponent Clone() {
-			return (TrainBehaviorEntityComponent)this.MemberwiseClone();
+
+		////////////////
+
+		public override void UpdateSingle( CustomEntity myent ) {
+			this.UpdateMe( myent, Main.LocalPlayer );
+		}
+
+		public override void UpdateClient( CustomEntity myent ) {
+			if( this.OwnerWho != -1 ) {
+				Player plr = Main.player[this.OwnerWho];
+
+				if( plr != null && plr.active ) {
+					this.UpdateMe( myent, plr );
+				}
+			}
+		}
+
+		public override void UpdateServer( CustomEntity myent ) {
+			if( this.OwnerWho != -1 ) {
+				Player plr = Main.player[this.OwnerWho];
+
+				if( plr != null && plr.active ) {
+					this.UpdateMe( myent, plr );
+				}
+			}
 		}
 
 		////////////////
 
-		private void UpdateMe( CustomEntity ent ) {
-			if( this.IsMountedBy != -1 ) {
-				Player player = Main.player[ this.IsMountedBy ];
-
-				this.UpdateMounted( ent, player );
-			}
-		}
-
-		public override void UpdateSingle( CustomEntity ent ) {
-			this.UpdateMe( ent );
-		}
-		public override void UpdateClient( CustomEntity ent ) {
-			this.UpdateMe( ent );
-		}
-		public override void UpdateServer( CustomEntity ent ) {
-			this.UpdateMe( ent );
-		}
-
-		private void UpdateMounted( CustomEntity ent, Player player ) {
-			if( player == null || !player.active || player.dead ) {
-				if( this.IsMountedBy == player.whoAmI ) {
-					this.SetTrainEntityStanding_NoSync( ent, player );
+		private void UpdateMe( CustomEntity myent, Player player ) {
+			if( player.mount.Active && player.mount.Type == OnARailMod.Instance.MountType<TrainMount>() ) {
+				if( this.IsMountedBy == -1 ) {
+					this.SetTrainEntityFollowing_NoSync( myent, player );
 				}
-				return;
 			} else {
-				ent.Core.Center = player.Center;
+				if( this.IsMountedBy != -1 ) {
+					this.SetTrainEntityStanding_NoSync( myent, player );
+				}
+			}
+
+			if( this.IsMountedBy != -1 ) {
+				if( this.IsMountedBy == player.whoAmI ) {
+					if( !player.active || player.dead ) {
+						this.SetTrainEntityStanding_NoSync( myent, player );  // failsafe
+					} else {
+						myent.Core.Center = player.MountedCenter + new Vector2(0, 22);	// Follows dumbly while inactive
+					}
+				}
 			}
 		}
 
@@ -59,10 +86,6 @@ namespace OnARail.Entities.Components {
 		////////////////
 
 		public bool SetTrainEntityFollowing_NoSync( CustomEntity ent, Player player ) {
-			if( this.IsMountedBy != -1 ) {
-				return false;
-			}
-
 			var mymod = OnARailMod.Instance;
 
 			this.IsMountedBy = player.whoAmI;
@@ -70,25 +93,21 @@ namespace OnARail.Entities.Components {
 			//player.Center = ent.Center;
 			player.MountedCenter = ent.Core.Center;
 			player.position.Y -= 22f;
-
+			
 			return true;
 		}
 
 
 		public bool SetTrainEntityStanding_NoSync( CustomEntity ent, Player player ) {
-			if( this.IsMountedBy == -1 ) {
-				return false;
-			}
-			
 			var mymod = OnARailMod.Instance;
 
 			this.IsMountedBy = -1;
 
+			player.position.Y -= 12;
+
 			ent.Core.Center = player.Center;
 			ent.Core.position.Y -= 16;
 			ent.Core.direction = player.direction;
-
-			player.position.Y -= 12;
 
 			return true;
 		}
@@ -96,19 +115,35 @@ namespace OnARail.Entities.Components {
 
 		////////////////
 
-		public bool IsLocallyOwned( CustomEntity ent ) {
+		public bool OwnsMe( Player player ) {
+			if( this.OwnerWho != -1 ) {
+				Player whoplr = Main.player[ this.OwnerWho ];
+				
+				if( whoplr == null || !whoplr.active ) {
+					this.OwnerWho = -1;
+				} else {
+					return player.whoAmI == this.OwnerWho;
+				}
+			}
+
 			bool success;
 
 			if( string.IsNullOrEmpty( this.OwnerUID ) ) {
 				return true;
 			}
 
-			string uid = PlayerIdentityHelpers.GetUniqueId( Main.LocalPlayer, out success );
+			string uid = PlayerIdentityHelpers.GetUniqueId( player, out success );
 			if( !success ) {
 				return false;
 			}
 
-			return this.OwnerUID == uid;
+			if( this.OwnerUID == uid ) {
+				this.OwnerWho = player.whoAmI;
+
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

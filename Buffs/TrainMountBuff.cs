@@ -13,7 +13,7 @@ namespace OnARail.Buffs {
 
 		public override void SetDefaults() {
 			this.DisplayName.SetDefault( "Train" );
-			this.Description.SetDefault( "Choo Choo!" );
+			this.Description.SetDefault( "Your home away from home." );
 
 			Main.buffNoTimeDisplay[ this.Type ] = true;
 			Main.buffNoSave[ this.Type ] = true;
@@ -21,8 +21,8 @@ namespace OnARail.Buffs {
 			if( !this.HasPromise ) {
 				this.HasPromise = true;
 
-				Promises.AddValidatedPromise( PlayerPromiseValidator.Instance, () => {
-					this.RunUpdateForPlayer( PlayerPromiseValidator.Instance.MyPlayer );
+				Promises.AddValidatedPromise( PlayerPromiseValidator.RunAll, () => {
+					this.RunUpdateForPlayer( PlayerPromiseValidator.RunAll.MyPlayer );
 					return true;
 				} );
 			}
@@ -33,9 +33,6 @@ namespace OnARail.Buffs {
 
 		internal void RunUpdateForPlayer( Player player ) {
 			bool has_buff = player.FindBuffIndex( this.Type ) != -1;
-
-			var myplayer = player.GetModPlayer<OnARailPlayer>();
-			int who = player.whoAmI;
 			int mount_type = this.mod.MountType<TrainMount>();
 			
 			if( has_buff ) {
@@ -47,9 +44,9 @@ namespace OnARail.Buffs {
 					}
 				}
 			} else {
-				/*if( player.mount.Type == mount_type ) {
+				if( player.mount.Active && player.mount.Type == mount_type ) {
 					player.mount.Dismount( player );
-				}*/
+				}
 			}
 		}
 	}

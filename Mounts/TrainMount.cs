@@ -2,7 +2,6 @@
 using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
-using OnARail.Entities;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -71,8 +70,8 @@ namespace OnARail.Mounts {
 			if( !this.HasPromise ) {
 				this.HasPromise = true;
 				
-				Promises.AddValidatedPromise( PlayerPromiseValidator.Instance, () => {
-					this.RunUpdateForPlayer( PlayerPromiseValidator.Instance.MyPlayer );
+				Promises.AddValidatedPromise( PlayerPromiseValidator.RunAll, () => {
+					this.RunUpdateForPlayer( PlayerPromiseValidator.RunAll.MyPlayer );
 					return true;
 				} );
 			}
@@ -85,11 +84,9 @@ namespace OnARail.Mounts {
 			if( !SaveableEntityComponent.IsLoaded ) { return; }
 
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
-			if( !myplayer.IsLoaded ) { return; }
+			if( myplayer.MyTrainWho == -1 ) { return; }
 
 			if( player.mount.Active && player.mount.Type == this.Type ) {
-				TrainEntityHandler.SetTrainEntityFollowing_Synced( player );
-				
 				if( player.onTrack ) {
 					if( PlayerMovementHelpers.IsOnFloor(player) ) {
 						this.mountData.yOffset = 2;
@@ -97,8 +94,6 @@ namespace OnARail.Mounts {
 				} else {
 					this.mountData.yOffset = 12;
 				}
-			} else {
-				TrainEntityHandler.SetTrainEntityStanding_Synced( player );
 			}
 		}
 	}

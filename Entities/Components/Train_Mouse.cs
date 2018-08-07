@@ -1,6 +1,7 @@
 ﻿using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Components.Network;
+using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
 using Newtonsoft.Json;
 using OnARail.Buffs;
@@ -24,6 +25,8 @@ namespace OnARail.Entities.Components {
 
 		////////////////
 
+		private TrainMouseInteractionEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
+
 		public TrainMouseInteractionEntityComponent() {
 			this.ConfirmLoad();
 		}
@@ -40,7 +43,7 @@ namespace OnARail.Entities.Components {
 					if( !player.dead && !(player.showItemIcon && player.showItemIcon2 == ItemID.Minecart) ) {
 						var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
-						if( train_comp.IsLocallyOwned( ent ) ) {
+						if( train_comp.OwnsMe( player ) ) {
 							int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
 
 							if( player.FindBuffIndex( train_buff_id ) == -1 ) {
