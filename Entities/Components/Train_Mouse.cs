@@ -40,14 +40,17 @@ namespace OnARail.Entities.Components {
 			
 			if( this.IsMouseHovering ) {
 				if( Main.mouseRight ) {
-					if( !player.dead && !(player.showItemIcon && player.showItemIcon2 == ItemID.Minecart) ) {
+					bool is_minecart_hovering = player.showItemIcon && player.showItemIcon2 == ItemID.Minecart;
+Main.NewText("is_minecart_hovering: "+is_minecart_hovering+" icon: "+player.showItemIcon2);
+
+					if( !player.dead && !is_minecart_hovering ) {
 						var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
 						if( train_comp.OwnsMe( player ) ) {
 							int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
 
 							if( player.FindBuffIndex( train_buff_id ) == -1 ) {
-								player.AddBuff( train_buff_id, 3 );
+								player.AddBuff( train_buff_id, 3 );	// Board train
 							}
 						}
 					}

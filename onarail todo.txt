@@ -34,23 +34,25 @@ v2
 	-	Add a tooltip indicating to feed fuel into the train
 -	Add defense while riding train
 -	Add train horn
+-	Set train icon to not scale with map zoom
 v1.1
 -	Add command to force train spawn
--	@PacketProtocol and CustomEntity
-	-	Set PacketProtocolData default private constructors to use special objects
-
--	Fix train dismount position
--	Prevent train mounting when mounted as minecart
 -	Implement item icon for train mouse hover instead of custom hover icon
 -	Fix train mouse hover to not occur when minecart hover in effect
--	Failsafe being mounted and having entity lingering
+-	Fix ghost train
+	-	Symptoms
+		-	Click mounting train restores intended behavior
+		-	Mirroring (on or off mount) warps to train entity
+		-	Player MP start mounted at train position, but train entity doesn't follow mount
 
+-	Fix riding multiple trains
+-	@PacketProtocol and CustomEntity
+	-	Set PacketProtocolData default private constructors to use special objects
 -	Fix dismounted train falling below tracks
 -	Fix MP spawning in-game incorrectly
 	-	Fix warp mounting failing
 		-	Warps always go to initial entity location
 		-	Initial MP warp does not attach to train (buff + mount don't 'stick')
-
 	-	Fix train rail-mount noise spam from entity in MP
 	-	Fix improper train sync from server (player isn't mounted?)
 	-	Disable periodic sync when train is mounted

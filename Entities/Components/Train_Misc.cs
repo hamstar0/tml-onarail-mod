@@ -115,10 +115,7 @@ namespace OnARail.Entities.Components {
 
 		public override void UpdateClient( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
-			if( train_comp.IsMountedBy == -1 ) {
-				base.UpdateClient( ent );
-			}
+			base.UpdateMe( ent );
 		}
 		public override void UpdateServer( CustomEntity ent ) { }
 	}

@@ -35,7 +35,9 @@ namespace OnARail.Entities.Components {
 		////////////////
 
 		public override void UpdateSingle( CustomEntity myent ) {
-			this.UpdateMe( myent, Main.LocalPlayer );
+			if( this.OwnerWho == Main.myPlayer ) {
+				this.UpdateMe( myent, Main.LocalPlayer );
+			}
 		}
 
 		public override void UpdateClient( CustomEntity myent ) {
@@ -89,11 +91,10 @@ namespace OnARail.Entities.Components {
 			var mymod = OnARailMod.Instance;
 
 			this.IsMountedBy = player.whoAmI;
-
-			//player.Center = ent.Center;
+			
 			player.MountedCenter = ent.Core.Center;
 			player.position.Y -= 22f;
-			
+
 			return true;
 		}
 
@@ -108,6 +109,10 @@ namespace OnARail.Entities.Components {
 			ent.Core.Center = player.Center;
 			ent.Core.position.Y -= 16;
 			ent.Core.direction = player.direction;
+
+			if( player.whoAmI == Main.myPlayer && Main.netMode == 1 ) {   // needed because player mounts aren't synced to server
+				ent.SyncTo();
+			}
 
 			return true;
 		}
