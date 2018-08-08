@@ -7,7 +7,6 @@ using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
-using HamstarHelpers.Services.Timers;
 using Microsoft.Xna.Framework;
 using OnARail.Buffs;
 using OnARail.Entities.Components;
@@ -47,6 +46,7 @@ namespace OnARail.Entities {
 
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 			train_comp.OwnerUID = uid;
+			train_comp.OwnerWho = player.whoAmI;
 
 			if( Main.netMode == 2 ) {
 				ent.SyncTo();

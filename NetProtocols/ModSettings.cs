@@ -24,10 +24,6 @@ namespace OnARail.NetProtocols {
 			var mymod = OnARailMod.Instance;
 
 			mymod.ConfigJson.SetData( this.Data );
-
-			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "OnARailMod.NetProtocols.ModSettingsProtocol.ReceiveWithClient - " + this.Data.ToString() );
-			}
 		}
 	}
 }

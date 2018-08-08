@@ -9,11 +9,6 @@ using Terraria.ModLoader;
 
 namespace OnARail.Mounts {
 	class TrainMount : ModMountData {
-		private bool HasPromise = false;
-
-
-		////////////////
-
 		public override void SetDefaults() {
 			int total_frames = 4;
 
@@ -67,11 +62,12 @@ namespace OnARail.Mounts {
 				this.mountData.textureHeight = this.mountData.backTexture.Height;
 			}
 
-			if( !this.HasPromise ) {
-				this.HasPromise = true;
-				
+			if( !OnARailMod.Instance.HasMountPromise ) {
+				OnARailMod.Instance.HasMountPromise = true;
+
 				Promises.AddValidatedPromise( PlayerPromiseValidator.RunAll, () => {
-					this.RunUpdateForPlayer( PlayerPromiseValidator.RunAll.MyPlayer );
+					var mymount = OnARailMod.Instance.GetMount<TrainMount>();
+					mymount.RunUpdateForPlayer( PlayerPromiseValidator.RunAll.MyPlayer );
 					return true;
 				} );
 			}

@@ -1,7 +1,9 @@
-﻿using HamstarHelpers.Components.Network;
+﻿using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Components.Network;
 using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Services.Promises;
+using OnARail.Entities;
 using Terraria;
 
 
@@ -20,7 +22,11 @@ namespace OnARail.NetProtocols {
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
 
 			Promises.AddPostWorldLoadOncePromise( () => {
-				myplayer.SpawnMyTrain();
+				if( TrainEntityHandler.FindMyTrain( player ) == -1 ) {
+					throw new HamstarException( "Cannot spawn duplicate train for player "+player.name );
+				}
+
+				TrainEntityHandler.SpawnMyTrain( player );
 			} );
 
 			return true;

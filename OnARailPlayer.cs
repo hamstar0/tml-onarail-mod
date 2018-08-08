@@ -92,26 +92,24 @@ namespace OnARail {
 			if( this.MyTrainWho == -1 ) {
 				this.MyTrainWho = TrainEntityHandler.FindMyTrain( this.player );
 			}
-
-			if( Main.netMode != 2 && !this.player.dead ) {
+			
+			if( !this.player.dead ) {
 				if( this.MyTrainWho != -1 && LoadHelpers.IsWorldSafelyBeingPlayed() ) {
-					if( Vector2.Distance( this.player.position, PlayerHelpers.GetSpawnPoint( this.player ) ) <= 8 ) {   // at spawn
-						if( Vector2.Distance( this.player.position, this.PrevPosition ) > 16 * 4 ) {    // 4+ blocks away from prev location
-							this.HandleRecall();
+					if( Main.netMode != 2 ) {
+						if( Vector2.Distance( this.player.position, PlayerHelpers.GetSpawnPoint( this.player ) ) <= 8 ) {   // is at spawn
+							if( Vector2.Distance( this.player.position, this.PrevPosition ) > 16 * 4 ) {    // is 4+ blocks away since prev tick
+								this.HandleRecall();
+							}
 						}
+
+						this.PrevPosition = this.player.position;
 					}
-
-					this.PrevPosition = this.player.position;
-
-					PlayerPromiseValidator.RunAll.MyPlayer = this.player;
-					Promises.TriggerValidatedPromise( PlayerPromiseValidator.RunAll, PlayerPromiseValidator.MyValidatorKey );
 				} else {
-					this.player.noItems = true;
-					this.player.noBuilding = true;
-					this.player.stoned = true;
-					this.player.immune = true;
-					this.player.immuneTime = 2;
+					PlayerHelpers.LockdownPlayerPerTick( this.player );
 				}
+
+				PlayerPromiseValidator.RunAll.MyPlayer = this.player;
+				Promises.TriggerValidatedPromise( PlayerPromiseValidator.RunAll, PlayerPromiseValidator.MyValidatorKey );
 			}
 		}
 
@@ -136,25 +134,13 @@ namespace OnARail {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
 			if( train_comp.IsMountedBy != -1 ) {
-				PlayerHelpers.Teleport( this.player, this.PrevPosition );
+				PlayerHelpers.Teleport( this.player, this.PrevPosition );	// return to train's last position
 			} else {
 				if( ( (OnARailMod)this.mod ).Config.DebugModeInfo ) {
 					Main.NewText( "Warping to train..." );
 				}
 
-				TrainEntityHandler.WarpPlayerToTrain( player );
-			}
-		}
-
-
-		////////////////
-
-		internal void SpawnMyTrain() {
-			this.MyTrainWho = TrainEntityHandler.SpawnMyTrain( this.player );
-
-			if( this.MyTrainWho == -1 ) {
-				LogHelpers.Log( "OnARail.OnARailPlayer.SpawnMyTrain - Could not spawn train for " + this.player.name );
-				return;
+				TrainEntityHandler.WarpPlayerToTrain( player );	// return to train
 			}
 		}
 	}

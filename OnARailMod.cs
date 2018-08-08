@@ -1,5 +1,4 @@
 ﻿using HamstarHelpers.Components.Config;
-using HamstarHelpers.Services.DataDumper;
 using OnARail.Entities;
 using System;
 using Terraria.ModLoader;
@@ -11,6 +10,9 @@ namespace OnARail {
 		public OnARailConfigData Config { get { return this.ConfigJson.Data; } }
 
 		private TrainEntityHandler TrainFactory;
+		
+		internal bool HasBuffPromise = false;
+		internal bool HasMountPromise = false;
 
 
 		////////////////

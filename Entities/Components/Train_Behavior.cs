@@ -16,8 +16,7 @@ namespace OnARail.Entities.Components {
 		internal int IsMountedBy = -1;
 
 		[JsonIgnore]
-		[PacketProtocolIgnore]
-		private int OwnerWho = -1;
+		public int OwnerWho = -1;
 
 		public string OwnerUID = "";
 
@@ -35,7 +34,7 @@ namespace OnARail.Entities.Components {
 		////////////////
 
 		public override void UpdateSingle( CustomEntity myent ) {
-			if( this.OwnerWho == Main.myPlayer ) {
+			if( this.OwnsMe(Main.LocalPlayer) ) {
 				this.UpdateMe( myent, Main.LocalPlayer );
 			}
 		}
