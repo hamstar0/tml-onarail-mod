@@ -1,7 +1,9 @@
 ﻿using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
+using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
+using Terraria;
 
 
 namespace OnARail.Entities.Components {
@@ -118,5 +120,35 @@ namespace OnARail.Entities.Components {
 			base.UpdateMe( ent );
 		}
 		public override void UpdateServer( CustomEntity ent ) { }
+	}
+
+
+
+	class TrainSaveableEntityComponent : SaveableEntityComponent {
+		private TrainSaveableEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : base(false) { }
+
+		public TrainSaveableEntityComponent( bool as_json ) : base(as_json) { }
+
+
+		////////////////
+
+		private void OnLoad( CustomEntity ent ) {
+			var behav_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
+			if( behav_comp == null ) {
+				throw new HamstarException( "Train entity "+ent.ToString()+" is missing TrainBehaviorEntityComponent." );
+			}
+
+			behav_comp.OwnsMe( Main.LocalPlayer );
+		}
+
+		protected override void OnLoadSingle( CustomEntity ent ) {
+			this.OnLoad( ent );
+		}
+		protected override void OnLoadClient( CustomEntity ent ) {
+			this.OnLoad( ent );
+		}
+		protected override void OnLoadServer( CustomEntity ent ) {
+			this.OnLoad( ent );
+		}
 	}
 }

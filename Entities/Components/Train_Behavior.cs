@@ -133,7 +133,7 @@ namespace OnARail.Entities.Components {
 			bool success;
 
 			if( string.IsNullOrEmpty( this.OwnerUID ) ) {
-				return true;
+				return false;
 			}
 
 			string uid = PlayerIdentityHelpers.GetUniqueId( player, out success );

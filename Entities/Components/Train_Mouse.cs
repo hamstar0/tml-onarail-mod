@@ -41,7 +41,7 @@ namespace OnARail.Entities.Components {
 			if( this.IsMouseHovering ) {
 				if( Main.mouseRight ) {
 					bool is_minecart_hovering = player.showItemIcon && player.showItemIcon2 == ItemID.Minecart;
-Main.NewText("is_minecart_hovering: "+is_minecart_hovering+" icon: "+player.showItemIcon2);
+//Main.NewText("is_minecart_hovering: "+is_minecart_hovering+" icon: "+player.showItemIcon2);
 
 					if( !player.dead && !is_minecart_hovering ) {
 						var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();

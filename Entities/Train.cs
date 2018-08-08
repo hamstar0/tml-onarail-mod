@@ -61,19 +61,12 @@ namespace OnARail.Entities {
 				throw new HamstarException( "OnARail.TrainEntityHandler.FindMyTrain - Entities not loaded." );
 			}
 
-			bool success;
-			string uid = PlayerIdentityHelpers.GetUniqueId( player, out success );
-			if( !success ) {
-				LogHelpers.Log( "OnARail.TrainEntityHandler.FindMyTrain - Player uid not found for " + player.name );
-				return -1;
-			}
-
 			ISet<CustomEntity> ents = CustomEntityManager.GetEntitiesByComponent<TrainBehaviorEntityComponent>();
 
 			foreach( var ent in ents ) {
 				var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
-				if( train_comp.OwnerUID == uid ) {
+				if( train_comp.OwnsMe(player) ) {
 					return ent.Core.whoAmI;
 				}
 			}
@@ -120,7 +113,7 @@ namespace OnARail.Entities {
 					new TrainRespectsGravityEntityComponent(),
 					new TrainRailBoundEntityComponent(),
 					new TrainPeriodicSyncEntityComponent(),
-					new SaveableEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
+					new TrainSaveableEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
 				};
 
 				TrainEntityHandler.TrainEntityID = CustomEntityTemplateManager.Add( "Unnamed Train", 64, 48, comps );
