@@ -78,6 +78,9 @@ namespace OnARail {
 		}
 
 		public override void OnEnterWorld( Player player ) {
+			if( player.whoAmI != Main.myPlayer ) { return; }
+			if( this.player.whoAmI != Main.myPlayer ) { return; }
+
 			if( Main.netMode == 0 ) {
 				this.OnConnectSingle();
 			} else if( Main.netMode == 1 ) {

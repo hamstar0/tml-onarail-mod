@@ -39,9 +39,9 @@ v2
 -	Fix train mouse hover to not occur when minecart hover in effect
 -	Add command to force train spawn
 -	Set train owner ids to not get sync'd to other clients!
+
 v1.1
 -	Release!
-
 -	Final test
 -	Fix ghost train
 	-	Symptoms

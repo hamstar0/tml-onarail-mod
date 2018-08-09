@@ -1,7 +1,12 @@
 Each player now uses a rail-bound train as their main base of operations.
 - Trains permanently replace beds for respawn and recall use.
 - Trains can only move on rails.
+
+Future features:
 - Trains need fuel to move.
+- Building and mining is only allowed nearby a train.
+- Fast travel options will be added.
+- Train upgrades will be added.
 
 Additional credits:
 * Darkpuppey - Train sprite base
