@@ -65,9 +65,9 @@ namespace OnARail.Mounts {
 			if( !OnARailMod.Instance.HasMountPromise ) {
 				OnARailMod.Instance.HasMountPromise = true;
 
-				Promises.AddValidatedPromise( PlayerPromiseValidator.RunAll, () => {
+				Promises.AddValidatedPromise<PlayerPromiseArguments>( OnARailPlayer.RunAllValidator, ( args ) => {
 					var mymount = OnARailMod.Instance.GetMount<TrainMount>();
-					mymount.RunUpdateForPlayer( PlayerPromiseValidator.RunAll.MyPlayer );
+					mymount.RunUpdateForPlayer( Main.player[ args.Who ] );
 					return true;
 				} );
 			}

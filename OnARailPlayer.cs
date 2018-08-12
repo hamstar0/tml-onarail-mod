@@ -14,30 +14,29 @@ using Terraria.ModLoader.IO;
 
 
 namespace OnARail {
-	internal class PlayerPromiseValidator : PromiseValidator {
-		internal readonly static object MyValidatorKey;
-		internal readonly static PlayerPromiseValidator RunAll;
-
-		////////////////
-
-		static PlayerPromiseValidator() {
-			PlayerPromiseValidator.MyValidatorKey = new object();
-			PlayerPromiseValidator.RunAll = new PlayerPromiseValidator();
-		}
-
-		////////////////
-
-		public Player MyPlayer;
-
-		////////////////
-
-		private PlayerPromiseValidator() : base( PlayerPromiseValidator.MyValidatorKey ) { }
+	class PlayerPromiseArguments : PromiseArguments {
+		public int Who;
 	}
 
 
 
 
 	partial class OnARailPlayer : ModPlayer {
+		internal readonly static object MyValidatorKey;
+		internal readonly static PromiseValidator RunAllValidator;
+
+
+		////////////////
+
+		static OnARailPlayer() {
+			OnARailPlayer.MyValidatorKey = new object();
+			OnARailPlayer.RunAllValidator = new PromiseValidator( OnARailPlayer.MyValidatorKey );
+		}
+
+
+
+		////////////////
+		
 		public int MyTrainWho { get; private set; }
 		
 		private bool IsInitializedwithTrain = false;
@@ -111,8 +110,9 @@ namespace OnARail {
 					PlayerHelpers.LockdownPlayerPerTick( this.player );
 				}
 
-				PlayerPromiseValidator.RunAll.MyPlayer = this.player;
-				Promises.TriggerValidatedPromise( PlayerPromiseValidator.RunAll, PlayerPromiseValidator.MyValidatorKey );
+				var args = new PlayerPromiseArguments { Who = this.player.whoAmI };
+
+				Promises.TriggerValidatedPromise( OnARailPlayer.RunAllValidator, OnARailPlayer.MyValidatorKey, args );
 			}
 		}
 

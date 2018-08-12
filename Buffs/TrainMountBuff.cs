@@ -16,9 +16,9 @@ namespace OnARail.Buffs {
 			if( !OnARailMod.Instance.HasBuffPromise ) {
 				OnARailMod.Instance.HasBuffPromise = true;
 				
-				Promises.AddValidatedPromise( PlayerPromiseValidator.RunAll, () => {
+				Promises.AddValidatedPromise<PlayerPromiseArguments>( OnARailPlayer.RunAllValidator, ( args ) => {
 					var mybuff = OnARailMod.Instance.GetBuff<TrainMountBuff>();
-					mybuff.RunUpdateForPlayer( PlayerPromiseValidator.RunAll.MyPlayer );
+					mybuff.RunUpdateForPlayer( Main.player[ args.Who ] );
 					return true;
 				} );
 			}
