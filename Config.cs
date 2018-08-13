@@ -12,6 +12,7 @@ namespace OnARail {
 		public string _ModVersionSinceUpdate = "";
 
 		public bool DebugModeInfo = false;
+		public bool DebugModeTrainRespawn = true;
 
 		public bool SaveTrainDataAsJson = true;
 		public bool MerchantSellsRails = true;

@@ -18,6 +18,7 @@ namespace OnARail.Entities.Components {
 		[JsonIgnore]
 		public int OwnerWho = -1;
 
+		[PacketProtocolReadIgnoreClient]
 		public string OwnerUID = "";
 
 

@@ -37,9 +37,9 @@ v2
 -	Set train icon to not scale with map zoom
 -	Implement item icon for train mouse hover instead of custom hover icon
 -	Fix train mouse hover to not occur when minecart hover in effect
--	Add command to force train spawn
--	Set train owner ids to not get sync'd to other clients!
 
+-	Add command to force train (re)spawn
+-	Set train owner ids to not get sync'd to other clients!
 v1.1
 -	Release!
 -	Final test
