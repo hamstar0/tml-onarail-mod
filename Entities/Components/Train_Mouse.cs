@@ -6,7 +6,6 @@ using HamstarHelpers.Helpers.DebugHelpers;
 using Newtonsoft.Json;
 using OnARail.Buffs;
 using Terraria;
-using Terraria.ID;
 
 
 namespace OnARail.Entities.Components {
@@ -40,9 +39,9 @@ namespace OnARail.Entities.Components {
 			
 			if( this.IsMouseHovering ) {
 				if( Main.mouseRight ) {
-					bool is_minecart_hovering = player.showItemIcon && player.showItemIcon2 == ItemID.Minecart;
+					var draw_comp = ent.GetComponentByType<TrainDrawInGameEntityComponent>();
 					
-					if( !player.dead && !is_minecart_hovering ) {
+					if( !player.dead && !draw_comp.IsMinecartIconHovering ) {
 						var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
 						if( train_comp.OwnsMe( player ) ) {

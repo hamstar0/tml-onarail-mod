@@ -13,7 +13,7 @@ namespace OnARail.NetProtocols {
 
 		////////////////
 
-		protected override void SetServerDefaults() { }
+		protected override void SetServerDefaults( int to_who ) { }
 		
 		////////////////
 

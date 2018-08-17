@@ -10,7 +10,7 @@ namespace OnARail.Entities.Components {
 	class TrainDrawOnMapEntityComponent : DrawsOnMapEntityComponent {
 		private TrainDrawOnMapEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
 
-		public TrainDrawOnMapEntityComponent() : base( "OnARail", "Entities/TrainIcon", 1, 0.25f ) { }
+		public TrainDrawOnMapEntityComponent() : base( "OnARail", "Entities/TrainIcon", 1, 0.25f, false ) { }
 
 
 		////////////////
