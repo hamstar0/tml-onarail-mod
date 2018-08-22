@@ -74,8 +74,13 @@ namespace OnARail.Mounts {
 		}
 
 
+		public override void UpdateEffects( Player player ) {
+			player.statDefense += ( (OnARailMod)this.mod ).Config.TrainAddedDefenseBase;
+		}
+
+
 		////////////////
-		
+
 		internal void RunUpdateForPlayer( Player player ) {
 			if( player.whoAmI != Main.myPlayer ) { return; }
 			if( !SaveableEntityComponent.IsLoaded ) { return; }
@@ -83,7 +88,11 @@ namespace OnARail.Mounts {
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
 			if( myplayer.MyTrainWho == -1 ) { return; }
 
-			if( player.mount.Active && player.mount.Type == this.Type ) {
+			bool is_mounted = player.mount.Active && player.mount.Type == this.Type;
+
+			this.UpdateInventoryState( is_mounted );
+
+			if( is_mounted ) {
 				if( player.onTrack ) {
 					if( PlayerMovementHelpers.IsOnFloor(player) ) {
 						this.mountData.yOffset = 2;
@@ -91,6 +100,25 @@ namespace OnARail.Mounts {
 				} else {
 					this.mountData.yOffset = 12;
 				}
+			}
+		}
+
+
+		private void UpdateInventoryState( bool is_mounted ) {
+			var ei_mod = ModLoader.GetMod( "ExtensibleInventory" );
+			if( ei_mod == null ) {
+				return;
+			}
+
+			var mymod = OnARailMod.Instance;
+			if( !mymod.Config.ExtensibleInventoryDefaultRestrictedToTrain ) {
+				return;
+			}
+			
+			if( is_mounted ) {
+				ei_mod.Call( "EnablePage", "Default" );
+			} else {
+				ei_mod.Call( "DisablePage", "Default" );
 			}
 		}
 	}

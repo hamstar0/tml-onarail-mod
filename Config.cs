@@ -17,6 +17,10 @@ namespace OnARail {
 		public bool SaveTrainDataAsJson = true;
 		public bool MerchantSellsRails = true;
 
+		public int TrainAddedDefenseBase = 20;
+
+		public bool ExtensibleInventoryDefaultRestrictedToTrain = true;
+
 
 
 		////////////////

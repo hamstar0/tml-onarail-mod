@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using HamstarHelpers.Components.Errors;
+using Terraria;
 
 
 namespace OnARail {
@@ -8,6 +9,10 @@ namespace OnARail {
 		}
 
 		public static void SaveModSettingsChanges() {
+			if( Main.netMode != 0 ) {
+				throw new HamstarException( "Mod settings may only be saved in single player." );
+			}
+
 			OnARailMod.Instance.ConfigJson.SaveFile();
 		}
 	}

@@ -95,7 +95,7 @@ namespace OnARail.Entities {
 			PlayerHelpers.Teleport( player, ent.Core.Center - new Vector2( player.width / 2, (player.height / 2 ) + 16) );
 			
 			int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
-			player.AddBuff( train_buff_id, 3 );
+			player.AddBuff( train_buff_id, 30 );
 		}
 
 

@@ -36,7 +36,8 @@ namespace OnARail {
 
 
 		////////////////
-		
+
+		public bool IsInInitLockdown { get; private set; }
 		public int MyTrainWho { get; private set; }
 		
 		private bool IsInitializedwithTrain = false;
@@ -106,7 +107,9 @@ namespace OnARail {
 
 						this.PrevPosition = this.player.position;
 					}
+					this.IsInInitLockdown = false;
 				} else {
+					this.IsInInitLockdown = true;
 					PlayerHelpers.LockdownPlayerPerTick( this.player );
 				}
 

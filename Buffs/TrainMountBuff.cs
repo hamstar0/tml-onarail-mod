@@ -41,7 +41,7 @@ namespace OnARail.Buffs {
 				}
 			} else {
 				if( player.mount.Active && player.mount.Type == mount_type ) {
-					player.mount.Dismount( player );
+					player.AddBuff( this.Type, 3 );
 				}
 			}
 		}

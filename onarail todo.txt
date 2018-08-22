@@ -1,4 +1,4 @@
-Future
+Future?
 -	(Late game) fast travel via clicking on rails on the map
 -	Prevent building rails without supports (16 blocks per support, 32 blocks per grounded support)
 -	Improve fuels to use items that incorporate base fuels as recipe ingredients
@@ -6,47 +6,52 @@ Future
 	-	Implement buff: Block placing restricted, mining restricted
 	-	Apply buff when near train
 	-	Define buff
-
-
-
-v2
--	Implement engine upgrades
--	Implement cars
--	Implement track laying accessory
-	-	@Plan
-		-	Rapidly relocates a train from one tunnel entrance to another
-		-	Can only be placed with a set range of one another
-		-	Needs Tunnel Passes to be used; bought from Train Man; expensive
 -	Implement train breakdowns
+-	Add train Presto Logs (3 colors)
+	-	Red log
+		-	Gives a huge speed boost for 5s
+		-	Recipe: Ectoplasm + Martian Conduit + 50 Bombs
+	-	Yellow log
+		-	Gives a medium speed boost for 15s
+		-	Recipe: Living Fire + 5x Hallowed Crystal + 25 Bombs
+	-	Green log
+		-	Gives a high speed boost for 3s
+		-	Recipe: Strange Plant + Jungle Spore + 10 Bombs
+
+
+
+v3
+-	Implement engine upgrades (allows increased temperature + defense)
+-	Implement cars
 -	Implement Train Man npc (sells train stuff)
+-	Train fuel
+	-	Add Charcoal (recipe: torches + clay @ furnace)
+	-	Implement acceleration + max speed scaling based on temperature
+	-	Implement invalid fuel item indications
+	-	Implement clicking with mouse item on train to add fuel items
+	-	Add a temperature indicator
+	-	Add a tooltip indicating to feed fuel into the train
+v2
+-	Add train horn
+-	Implement auto-track placement mode (add UI)
+	-	Implement track placement in current vertical (angled) heading (by arrow keys)
+	-	Implement track placement in current horizontal heading
+	-	Implement UI button to enable
 -	Train Tunnels
 	-	@Plan
 		-	Recipe: 5x Recall/Wormhole Potion + 1x Explosives + 50x Wooden Beams + 100x Tracks
 		-	Must be placed against a wall, floor, or ceiling
 		-	Generates a tunnel on another opposite-facing wall randomly in the tunnel's direction
 		-	Floor or ceiling placing orients angularly
--	Train fuel
-	-	@Fuels
-		-	Spooky Wood: +200, max 0
-		-	Pink Gel: +25, max 250
-		-	Lava+Bucket: +100, max 200
-		-	Coal (craftable from torches + clay): +10, max 200
-		-	Gel: +2, max 125
-		-	Wood: +5, max 100
-	-	Implement acceleration + max speed scaling based on temperature
-	-	Implement invalid fuel item indications
-	-	Implement clicking with mouse item on train to add fuel items
-	-	Add a temperature indicator
-	-	Add a tooltip indicating to feed fuel into the train
--	@Implement Encumbrance mod + Unlock unlimited train storage inventory when mod is enabled
-v1.2
--	@Test
-	-	Game zoom
-	-	Map zoom
--	Add train horn
--	Add train Presto Logs (3 colors)
--	Add defense while riding train
+-	Implement train inventory (when Extensible Inventory mod available)
+	-	Disable extensible inventory controls when not mounted on train
 
+-	@Implement Extensible Inventory mod
+-	@Implement Encumbrance mod
+v1.2
+-	Failsafe against mounting train on load
+-	Add auto-eject failsafe
+-	Add defense while riding train
 -	Set train icon to not scale with map zoom
 -	Implement item icon for train mouse hover instead of custom hover icon
 -	Fix train mouse hover to not occur when minecart hover in effect

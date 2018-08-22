@@ -42,13 +42,17 @@ namespace OnARail.Entities.Components {
 					var draw_comp = ent.GetComponentByType<TrainDrawInGameEntityComponent>();
 					
 					if( !player.dead && !draw_comp.IsMinecartIconHovering ) {
-						var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
+						var myplayer = player.GetModPlayer<OnARailPlayer>();
 
-						if( train_comp.OwnsMe( player ) ) {
-							int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
+						if( !myplayer.IsInInitLockdown ) {
+							var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
-							if( player.FindBuffIndex( train_buff_id ) == -1 ) {
-								player.AddBuff( train_buff_id, 3 );	// Board train
+							if( train_comp.OwnsMe( player ) ) {
+								int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
+
+								if( player.FindBuffIndex( train_buff_id ) == -1 ) {
+									player.AddBuff( train_buff_id, 30 );    // Board train
+								}
 							}
 						}
 					}
