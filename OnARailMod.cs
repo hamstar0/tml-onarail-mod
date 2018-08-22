@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.Components.Config;
+using HamstarHelpers.Services.Messages;
 using OnARail.Entities;
 using System;
 using Terraria.ModLoader;
@@ -49,6 +50,18 @@ namespace OnARail {
 				this.ConfigJson.SaveFile();
 			}
 		}
+
+		public override void PostAddRecipes() {
+			var mymod = OnARailMod.Instance;
+			if( mymod.Config.ExtensibleInventoryDefaultRestrictedToTrain ) {
+				var ei_mod = ModLoader.GetMod( "ExtensibleInventory" );
+
+				if( ei_mod != null ) {
+					InboxMessages.SetMessage( "OnARailExtensibleInventoryAlert", "By default config settings, Extensible Inventory is now only available via. your train.", false );
+				}
+			}
+		}
+
 
 		public override void Unload() {
 			OnARailMod.Instance = null;

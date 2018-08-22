@@ -105,20 +105,20 @@ namespace OnARail.Mounts {
 
 
 		private void UpdateInventoryState( bool is_mounted ) {
+			var mymod = OnARailMod.Instance;
+			if( !mymod.Config.ExtensibleInventoryDefaultRestrictedToTrain ) {
+				return;
+			}
+
 			var ei_mod = ModLoader.GetMod( "ExtensibleInventory" );
 			if( ei_mod == null ) {
 				return;
 			}
 
-			var mymod = OnARailMod.Instance;
-			if( !mymod.Config.ExtensibleInventoryDefaultRestrictedToTrain ) {
-				return;
-			}
-			
 			if( is_mounted ) {
-				ei_mod.Call( "EnablePage", "Default" );
+				ei_mod.Call( "EnableBook", "Default" );
 			} else {
-				ei_mod.Call( "DisablePage", "Default" );
+				ei_mod.Call( "DisableBook", "Default" );
 			}
 		}
 	}
