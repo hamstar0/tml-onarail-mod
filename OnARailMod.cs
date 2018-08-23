@@ -57,7 +57,7 @@ namespace OnARail {
 				var ei_mod = ModLoader.GetMod( "ExtensibleInventory" );
 
 				if( ei_mod != null ) {
-					InboxMessages.SetMessage( "OnARailExtensibleInventoryAlert", "By default config settings, Extensible Inventory is now only available via. your train.", false );
+					InboxMessages.SetMessage( "OnARailExtensibleInventoryAlert", "Extensible Inventory is now available from your train. See config settings for options.", false );
 				}
 			}
 		}

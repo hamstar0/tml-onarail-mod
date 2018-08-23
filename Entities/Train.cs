@@ -18,6 +18,7 @@ namespace OnARail.Entities {
 		public static int TrainEntityID { get; private set; }
 
 
+
 		////////////////
 
 		public static int SpawnMyTrain( Player player ) {

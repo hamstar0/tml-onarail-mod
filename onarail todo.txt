@@ -23,9 +23,21 @@ Future?
 v3
 -	Implement engine upgrades (allows increased temperature + defense)
 -	Implement cars
+	-	Car types
+		-	Cannon car: Fires block-destroying cannons in aimed direction
+		-	Mechanical car: Enables placing rails; more = faster rails
+		-	Cabin cars: Holds NPCs
+		-	Storage cars: Extends storage
+	-	Implement friction according to number of cars
+	-	Implement link breakage for grounded cars
+	-	Implement car linking
+	-	Implement generic car
+	-	Implement "trailer" CE component
 -	Implement Train Man npc (sells train stuff)
 -	Train fuel
-	-	Add Charcoal (recipe: torches + clay @ furnace)
+	-	Implement fuel items
+		-	@Plan
+			-	...
 	-	Implement acceleration + max speed scaling based on temperature
 	-	Implement invalid fuel item indications
 	-	Implement clicking with mouse item on train to add fuel items
@@ -38,14 +50,17 @@ v2
 	-	Implement track placement in current horizontal heading
 	-	Implement UI button to enable
 -	Train Tunnels
+	-	Implement placement
+	-	Define item
+
 	-	@Plan
 		-	Recipe: 5x Recall/Wormhole Potion + 1x Explosives + 50x Wooden Beams + 100x Tracks
 		-	Must be placed against a wall, floor, or ceiling
 		-	Generates a tunnel on another opposite-facing wall randomly in the tunnel's direction
 		-	Floor or ceiling placing orients angularly
 -	Implement train inventory (when Extensible Inventory mod available)
+	-	Add better indication of disabling buttons for a book (render X overlays)
 	-	Disable extensible inventory controls when not mounted on train
-
 -	@Implement Extensible Inventory mod
 -	@Implement Encumbrance mod
 v1.2
