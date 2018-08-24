@@ -19,6 +19,8 @@ namespace OnARail {
 
 		public int TrainAddedDefenseBase = 20;
 
+		public bool CraftableTrainTunnel = true;
+
 		public bool ExtensibleInventoryDefaultRestrictedToTrain = true;
 
 
