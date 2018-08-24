@@ -55,7 +55,9 @@ v2
 -	Train Tunnels
 	-	Implement exit placement attempts
 	-	Implement placement mode switching
+	-	Render direction
 
+	-	Implement direction changing
 	-	Define item
 	-	@Plan
 		-	Recipe: 5x Recall/Wormhole Potion + 1x Explosives + 50x Wooden Beams + 100x Tracks

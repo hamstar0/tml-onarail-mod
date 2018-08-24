@@ -1,5 +1,9 @@
-﻿using Terraria;
-using Terraria.ID;
+﻿using HamstarHelpers.Services.Timers;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
+using System;
+using Terraria;
 using Terraria.ModLoader;
 
 
@@ -52,28 +56,58 @@ namespace OnARail.Items {
 
 
 		////////////////
+		
+		public override bool CanRightClick() {
+			if( Timers.GetTimerTickDuration("TrainTunnelRotate") > 0 ) {
+				return false;
+			}
+			Timers.SetTimer( "TrainTunnelRotate", 15, () => false );
+
+			this.Direction = (this.Direction + 1) % 6;
+
+			return false;
+		}
 
 		public override void OnConsumeItem( Player player ) {
 			Main.NewText( "eat me" );
 		}
-	}
 
 
+		////////////////
 
-	class TrainTunnelRecipe : ModRecipe {
-		public TrainTunnelRecipe( TrainTunnelItem myitem ) : base( myitem.mod ) {
-			this.AddTile( TileID.TinkerersWorkbench );
+		public override void PostDrawInInventory( SpriteBatch sb, Vector2 pos, Rectangle frame, Color draw_color, Color item_color, Vector2 origin, float scale ) {
+			float rads;
+			float new_scale = 3.25f * scale;
+			Vector2 str_origin = Main.fontMouseText.MeasureString( ">" );
+			Vector2 new_pos = new Vector2(
+				( pos.X + ( scale * (float)frame.Width / 2f ) ),// - ( (new_scale * str_origin.X) / 2 ),
+				( pos.Y + ( scale * (float)frame.Height / 2f ) )// - ( (new_scale * str_origin.Y) / 2 )
+			);
 
-			this.AddRecipeGroup( "HamstarHelpers:WarpPotions", 5 );
-			this.AddIngredient( ItemID.Explosives, 1 );
-			this.AddIngredient( ItemID.WoodenBeam, 50 );
+			switch( this.Direction ) {
+			case 0:
+				rads = 0;
+				break;
+			case 1:
+				rads = (MathHelper.Pi / 180f) * 45;
+				break;
+			case 2:
+				rads = ( MathHelper.Pi / 180f ) * 135;
+				break;
+			case 3:
+				rads = MathHelper.Pi;
+				break;
+			case 4:
+				rads = ( MathHelper.Pi / 180f ) * 225;
+				break;
+			case 5:
+				rads = ( MathHelper.Pi / 180f ) * 315;
+				break;
+			default:
+				throw new Exception( "Invalid direction." );
+			}
 
-			this.SetResult( myitem );
-		}
-
-		public override bool RecipeAvailable() {
-			var mymod = (OnARailMod)this.mod;
-			return mymod.Config.CraftableTrainTunnel;
+			sb.DrawString( Main.fontMouseText, ">", new_pos, Color.Red, rads, str_origin / new_scale, new_scale, SpriteEffects.None, 1f );
 		}
 	}
 }

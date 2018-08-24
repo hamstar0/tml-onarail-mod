@@ -72,6 +72,7 @@
     <Compile Include="Entities\Components\Train_Misc.cs" />
     <Compile Include="Entities\Components\Train_DrawGame.cs" />
     <Compile Include="Entities\Components\Train_Mouse.cs" />
+    <Compile Include="Items\TrainTunnelRecipe.cs" />
     <Compile Include="Items\TrainTunnelItem.cs" />
     <Compile Include="Mounts\TrainMount.cs" />
     <Compile Include="NetProtocols\ModSettings.cs" />
