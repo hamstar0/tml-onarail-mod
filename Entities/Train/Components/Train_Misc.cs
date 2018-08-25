@@ -6,7 +6,7 @@ using HamstarHelpers.Helpers.DebugHelpers;
 using Terraria;
 
 
-namespace OnARail.Entities.Components {
+namespace OnARail.Entities.Train.Components {
 	class TrainRespectsTerrainEntityComponent : RespectsTerrainEntityComponent {
 		private TrainRespectsTerrainEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
 

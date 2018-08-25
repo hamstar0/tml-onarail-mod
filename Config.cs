@@ -21,6 +21,9 @@ namespace OnARail {
 
 		public bool CraftableTrainTunnel = true;
 
+		public int TrainTunnelMinRange = 150;
+		public int TrainTunnelMaxRange = 350;
+
 		public bool ExtensibleInventoryDefaultRestrictedToTrain = true;
 
 

@@ -9,7 +9,7 @@ using Terraria;
 using Terraria.ID;
 
 
-namespace OnARail.Entities.Components {
+namespace OnARail.Entities.Train.Components {
 	class TrainDrawInGameEntityComponent : DrawsInGameEntityComponent {
 		public bool IsMinecartIconHovering { get; private set; }
 

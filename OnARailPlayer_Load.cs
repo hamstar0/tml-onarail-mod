@@ -3,7 +3,7 @@ using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Services.Promises;
-using OnARail.Entities;
+using OnARail.Entities.Train;
 using OnARail.NetProtocols;
 using Terraria;
 using Terraria.ID;

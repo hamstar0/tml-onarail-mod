@@ -1,15 +1,21 @@
-﻿using Microsoft.Xna.Framework;
-using System.IO;
+﻿using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.TileHelpers;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
 
 
 namespace OnARail.Tiles {
-	class TrainTunnelTile : ModTile {
+	public class TrainTunnelTile : ModTile {
+		public const int Width = 4;
+		public const int Height = 3;
+
+		
+		////////////////
+
 		public override void SetDefaults() {
 			ModTranslation name = this.CreateMapEntryName();
 			name.SetDefault( "Train Tunnel" );
@@ -17,8 +23,13 @@ namespace OnARail.Tiles {
 			Main.tileFrameImportant[this.Type] = true;
 			Main.tileLavaDeath[this.Type] = false;
 
-			TileObjectData.newTile.Width = 4;
-			TileObjectData.newTile.Height = 3;
+			var placement_hook = new PlacementHook( 
+				this.mod.GetTileEntity<TrainTunnelTileData>().Hook_AfterPlacement,
+				-1, 0, true
+			);
+			TileObjectData.newTile.HookPostPlaceMyPlayer = placement_hook;
+			TileObjectData.newTile.Width = TrainTunnelTile.Width;
+			TileObjectData.newTile.Height = TrainTunnelTile.Height;
 			TileObjectData.newTile.Origin = new Point16( 2, 2 );
 			TileObjectData.newTile.AnchorWall = true;
 			TileObjectData.newTile.UsesCustomCanPlace = true;
@@ -35,16 +46,48 @@ namespace OnARail.Tiles {
 			this.disableSmartCursor = true;
 			this.AddMapEntry( new Color( 120, 85, 60 ), name );
 		}
+
+
+		public override void KillMultiTile( int i, int j, int frameX, int frameY ) {
+			this.mod.GetTileEntity<TrainTunnelTileData>().Kill( i, j );
+		}
 	}
 
 
 
 
-	class TrainTunnelTileData : ModTileEntity {
-		private int TunnelID = -1;
-		
+	public class TrainTunnelTileData : ModTileEntity {
+		private static int BaseTunnelID = 1;
+		private static int AwaitingTunnelID = -1;
+
 
 		////////////////
+
+		public static void CreateTunnelEndpoint( int tile_x, int tile_y ) {
+			TileHelpers.PlaceTile( tile_x, tile_y, OnARailMod.Instance.TileType<TrainTunnelTile>() );
+		}
+
+
+
+		////////////////
+
+		private int TunnelID = -1;
+
+
+		////////////////
+
+		protected TrainTunnelTileData() : base() {
+			int id = TrainTunnelTileData.AwaitingTunnelID;
+
+			if( id == -1 ) {
+				TrainTunnelTileData.AwaitingTunnelID = TrainTunnelTileData.BaseTunnelID++;
+			} else {
+				TrainTunnelTileData.AwaitingTunnelID = -1;
+			}
+
+			this.TunnelID = id;
+LogHelpers.Log( "TrainTunnelTileData id:" + this.TunnelID );
+		}
 
 		public override bool ValidTile( int i, int j ) {
 			Tile tile = Main.tile[i, j];
@@ -54,7 +97,7 @@ namespace OnARail.Tiles {
 
 		////////////////
 
-		public override void Load( TagCompound tags ) {
+		/*public override void Load( TagCompound tags ) {
 			if( tags.ContainsKey("tunnel_id") ) {
 				this.TunnelID = tags.GetInt( "tunnel_id" );
 			}
@@ -68,19 +111,27 @@ namespace OnARail.Tiles {
 		}
 		public override void NetSend( BinaryWriter writer, bool light_send ) {
 			writer.Write( (int)this.TunnelID );
+		}*/
+
+
+		////////////////
+		
+		public override int Hook_AfterPlacement( int i, int j, int tile_type, int placement_style, int direction ) {
+LogHelpers.Log( "Hook_AfterPlacement i:"+i+", j:"+j+", type:"+ tile_type + ", direction:"+direction );
+			if( Main.netMode == 1 ) {
+				NetMessage.SendTileRange( Main.myPlayer, i, j, TrainTunnelTile.Width, TrainTunnelTile.Height );
+				NetMessage.SendData( MessageID.TileEntityPlacement, -1, -1, null, i, j, this.Type, 0f, 0, 0, 0 );
+				return -1;
+			}
+			
+			return this.Place( i, j );
 		}
 
 
 		////////////////
 
-		public override int Hook_AfterPlacement( int i, int j, int type, int style, int direction ) {
-			//Main.NewText("i " + i + " j " + j + " t " + type + " s " + style + " d " + direction);
-			if( Main.netMode == 1 ) {
-				NetMessage.SendTileSquare( Main.myPlayer, i, j, 3 );
-				NetMessage.SendData( MessageID.TileEntityPlacement, -1, -1, null, i, j, this.Type, 0f, 0, 0, 0 );
-				return -1;
-			}
-			return this.Place( i, j );
+		public override void Update() {
+
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using HamstarHelpers.Components.Config;
 using HamstarHelpers.Services.Messages;
-using OnARail.Entities;
+using OnARail.Entities.Train;
 using System;
 using Terraria.ModLoader;
 
@@ -19,12 +19,6 @@ namespace OnARail {
 		////////////////
 
 		public OnARailMod() {
-			this.Properties = new ModProperties() {
-				Autoload = true,
-				AutoloadGores = true,
-				AutoloadSounds = true
-			};
-
 			this.ConfigJson = new JsonConfig<OnARailConfigData>( OnARailConfigData.ConfigFileName,
 					ConfigurationDataBase.RelativePath, new OnARailConfigData() );
 		}

@@ -3,7 +3,7 @@ using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.UserHelpers;
 using Microsoft.Xna.Framework;
-using OnARail.Entities;
+using OnARail.Entities.Train;
 using OnARail.NetProtocols;
 using Terraria;
 using Terraria.ModLoader;

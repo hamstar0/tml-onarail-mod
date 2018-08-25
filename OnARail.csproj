@@ -67,11 +67,12 @@
     <Compile Include="Buffs\TrainMountBuff.cs" />
     <Compile Include="Commands\RespawnTrainCommand.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Entities\Components\Train_Behavior.cs" />
-    <Compile Include="Entities\Components\Train_DrawMap.cs" />
-    <Compile Include="Entities\Components\Train_Misc.cs" />
-    <Compile Include="Entities\Components\Train_DrawGame.cs" />
-    <Compile Include="Entities\Components\Train_Mouse.cs" />
+    <Compile Include="Entities\Train\Components\Train_Behavior.cs" />
+    <Compile Include="Entities\Train\Components\Train_DrawMap.cs" />
+    <Compile Include="Entities\Train\Components\Train_Misc.cs" />
+    <Compile Include="Entities\Train\Components\Train_DrawGame.cs" />
+    <Compile Include="Entities\Train\Components\Train_Mouse.cs" />
+    <Compile Include="Items\TrainTunnelItem_Tunneler.cs" />
     <Compile Include="Items\TrainTunnelRecipe.cs" />
     <Compile Include="Items\TrainTunnelItem.cs" />
     <Compile Include="Mounts\TrainMount.cs" />
@@ -83,13 +84,13 @@
     <Compile Include="OnARailPlayer.cs" />
     <Compile Include="OnARailMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entities\Train.cs" />
+    <Compile Include="Entities\Train\Train.cs" />
     <Compile Include="Tiles\TrainTunnelTile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Buffs\TrainMountBuff.png" />
     <Content Include="build.txt" />
-    <Content Include="Entities\TrainIcon.png" />
+    <Content Include="Entities\Train\TrainIcon.png" />
     <Content Include="description.txt" />
     <Content Include="Items\TrainTunnelItem.png" />
     <Content Include="Mounts\TrainMount_Back.png" />

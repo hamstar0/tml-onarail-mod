@@ -3,7 +3,7 @@ using HamstarHelpers.Components.Network;
 using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Services.Promises;
-using OnARail.Entities;
+using OnARail.Entities.Train;
 using Terraria;
 
 

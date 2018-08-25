@@ -9,11 +9,11 @@ using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
 using OnARail.Buffs;
-using OnARail.Entities.Components;
+using OnARail.Entities.Train.Components;
 using Terraria;
 
 
-namespace OnARail.Entities {
+namespace OnARail.Entities.Train {
 	public class TrainEntityHandler {
 		public static int TrainEntityID { get; private set; }
 

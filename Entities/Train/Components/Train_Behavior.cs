@@ -9,7 +9,7 @@ using OnARail.Mounts;
 using Terraria;
 
 
-namespace OnARail.Entities.Components {
+namespace OnARail.Entities.Train.Components {
 	class TrainBehaviorEntityComponent : CustomEntityComponent {
 		[JsonIgnore]
 		[PacketProtocolIgnore]

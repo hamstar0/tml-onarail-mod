@@ -1,14 +1,15 @@
-﻿using HamstarHelpers.Services.Timers;
+﻿using HamstarHelpers.Services.CustomHotkeys;
+using HamstarHelpers.Services.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OnARail.Tiles;
 using ReLogic.Graphics;
-using System;
 using Terraria;
 using Terraria.ModLoader;
 
 
 namespace OnARail.Items {
-	class TrainTunnelItem : ModItem {
+	partial class TrainTunnelItem : ModItem {
 		private int Direction = 0;
 
 
@@ -25,10 +26,19 @@ namespace OnARail.Items {
 
 		////////////////
 		
+//private static float TESTSCALE=0f;
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Train Tunnel Kit" );
 			this.Tooltip.SetDefault( "Creates a tunnel useable by trains on a wall" + '\n' +
 				"Right-click to adjust direction of tunnel" );
+//CustomHotkeys.BindActionToKey1("blah", () => {
+//	TESTSCALE -= 0.25f;
+//	Main.NewText( "-TESTSCALE: " + TESTSCALE );
+//} );
+//CustomHotkeys.BindActionToKey2("blah", () => {
+//	TESTSCALE += 0.25f;
+//	Main.NewText( "+TESTSCALE: " + TESTSCALE );
+//} );
 		}
 
 		public override void SetDefaults() {
@@ -43,7 +53,7 @@ namespace OnARail.Items {
 			this.item.consumable = true;
 			this.item.value = Item.buyPrice( 0, 10, 0, 0 );
 			this.item.rare = 1;
-			this.item.createTile = mod.TileType( "TrainTunnelTile" );
+			this.item.createTile = mod.TileType<TrainTunnelTile>();
 			//this.item.placeStyle = 1;
 		}
 
@@ -68,46 +78,44 @@ namespace OnARail.Items {
 			return false;
 		}
 
-		public override void OnConsumeItem( Player player ) {
-			Main.NewText( "eat me" );
+		public override bool CanUseItem( Player player ) {
+			int min_range = OnARailMod.Instance.Config.TrainTunnelMinRange;
+			int range_span = OnARailMod.Instance.Config.TrainTunnelMaxRange - min_range;
+
+			float rad = MathHelper.Pi / 180;
+			float base_rads = TrainTunnelItem.GetRadiansOfDirection( this.Direction ) - ( rad * 5 );
+			Vector2? dest = null;
+
+			for( int i=0; i<100; i++ ) {
+				float rads = base_rads + ( rad * (Main.rand.NextFloat() * 10f) );
+				float dist = min_range + ( range_span * Main.rand.NextFloat() );
+
+				dest = TrainTunnelItem.ScanForExitCandidate( player.position, rads, dist );
+				if( dest != null ) { break; }
+			}
+
+			if( dest != null ) {
+				Vector2 mydest = (Vector2)dest;
+				TrainTunnelTileData.CreateTunnelEndpoint( (int)(mydest.X/16f), (int)(mydest.Y/16f) );
+			}
+
+			return dest != null;
 		}
 
 
 		////////////////
 
 		public override void PostDrawInInventory( SpriteBatch sb, Vector2 pos, Rectangle frame, Color draw_color, Color item_color, Vector2 origin, float scale ) {
-			float rads;
-			float new_scale = 3.25f * scale;
+			float new_scale = 2.75f;
 			Vector2 str_origin = Main.fontMouseText.MeasureString( ">" );
 			Vector2 new_pos = new Vector2(
 				( pos.X + ( scale * (float)frame.Width / 2f ) ),// - ( (new_scale * str_origin.X) / 2 ),
 				( pos.Y + ( scale * (float)frame.Height / 2f ) )// - ( (new_scale * str_origin.Y) / 2 )
 			);
 
-			switch( this.Direction ) {
-			case 0:
-				rads = 0;
-				break;
-			case 1:
-				rads = (MathHelper.Pi / 180f) * 45;
-				break;
-			case 2:
-				rads = ( MathHelper.Pi / 180f ) * 135;
-				break;
-			case 3:
-				rads = MathHelper.Pi;
-				break;
-			case 4:
-				rads = ( MathHelper.Pi / 180f ) * 225;
-				break;
-			case 5:
-				rads = ( MathHelper.Pi / 180f ) * 315;
-				break;
-			default:
-				throw new Exception( "Invalid direction." );
-			}
+			float rads = TrainTunnelItem.GetRadiansOfDirection( this.Direction );
 
-			sb.DrawString( Main.fontMouseText, ">", new_pos, Color.Red, rads, str_origin / new_scale, new_scale, SpriteEffects.None, 1f );
+			sb.DrawString( Main.fontMouseText, ">", new_pos, Color.Red, rads, str_origin / new_scale, new_scale * scale, SpriteEffects.None, 1f );
 		}
 	}
 }

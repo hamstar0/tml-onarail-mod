@@ -8,7 +8,7 @@ using OnARail.Buffs;
 using Terraria;
 
 
-namespace OnARail.Entities.Components {
+namespace OnARail.Entities.Train.Components {
 	class TrainMouseInteractionEntityComponent : IsClickableEntityComponent {
 		public const float BoardingDistance = 96;
 

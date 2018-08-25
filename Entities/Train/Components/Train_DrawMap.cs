@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
 
-namespace OnARail.Entities.Components {
+namespace OnARail.Entities.Train.Components {
 	class TrainDrawOnMapEntityComponent : DrawsOnMapEntityComponent {
 		private TrainDrawOnMapEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
 
