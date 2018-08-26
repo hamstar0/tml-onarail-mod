@@ -10,14 +10,14 @@ namespace OnARail.Entities.Train.Components {
 	class TrainDrawOnMapEntityComponent : DrawsOnMapEntityComponent {
 		private TrainDrawOnMapEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
 
-		public TrainDrawOnMapEntityComponent() : base( "OnARail", "Entities/TrainIcon", 1, 0.25f, false ) { }
+		public TrainDrawOnMapEntityComponent() : base( "OnARail", "Entities/Train/TrainIcon", 1, 0.25f, false ) { }
 
 
 		////////////////
 
 		public override bool PreDrawFullscreenMap( SpriteBatch sb, CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
+			
 			return train_comp.OwnsMe( Main.LocalPlayer );
 		}
 

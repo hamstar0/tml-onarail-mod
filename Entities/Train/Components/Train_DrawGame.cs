@@ -23,7 +23,7 @@ namespace OnARail.Entities.Train.Components {
 
 		public TrainDrawInGameEntityComponent() : base( "OnARail", "Mounts/TrainMount_Back", 4 ) {
 			if( Main.netMode != 2 ) {
-				this.TrainIcon = OnARailMod.Instance.GetTexture( "Entities/TrainIcon" );
+				this.TrainIcon = OnARailMod.Instance.GetTexture( "Entities/Train/TrainIcon" );
 			}
 		}
 

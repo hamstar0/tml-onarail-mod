@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.TileHelpers;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -22,11 +23,12 @@ namespace OnARail.Tiles {
 
 			Main.tileFrameImportant[this.Type] = true;
 			Main.tileLavaDeath[this.Type] = false;
-
+			
 			var placement_hook = new PlacementHook( 
-				this.mod.GetTileEntity<TrainTunnelTileData>().Hook_AfterPlacement,
+				this.mod.GetTileEntity<TrainTunnelTileEntity>().Hook_AfterPlacement,
 				-1, 0, true
 			);
+
 			TileObjectData.newTile.HookPostPlaceMyPlayer = placement_hook;
 			TileObjectData.newTile.Width = TrainTunnelTile.Width;
 			TileObjectData.newTile.Height = TrainTunnelTile.Height;
@@ -49,57 +51,105 @@ namespace OnARail.Tiles {
 
 
 		public override void KillMultiTile( int i, int j, int frameX, int frameY ) {
-			this.mod.GetTileEntity<TrainTunnelTileData>().Kill( i, j );
+			this.mod.GetTileEntity<TrainTunnelTileEntity>().Kill( i, j );
 		}
 	}
 
 
 
 
-	public class TrainTunnelTileData : ModTileEntity {
+	public partial class TrainTunnelTileEntity : ModTileEntity {
 		private static int BaseTunnelID = 1;
-		private static int AwaitingTunnelID = -1;
+
+		internal static Point16 ExitTunnelPosition = default( Point16 );
+		
 
 
 		////////////////
 
-		public static void CreateTunnelEndpoint( int tile_x, int tile_y ) {
-			TileHelpers.PlaceTile( tile_x, tile_y, OnARailMod.Instance.TileType<TrainTunnelTile>() );
+		private static bool CreateTunnelEndpoint( int tunnel_id, int tile_x, int tile_y ) {
+			var mymod = OnARailMod.Instance;
+
+			if( !TileHelpers.PlaceTile( tile_x, tile_y, mymod.TileType<TrainTunnelTile>() ) ) {
+				return false;
+			}
+
+			var base_ent = mymod.GetTileEntity<TrainTunnelTileEntity>();
+			if( base_ent == null ) {
+				throw new HamstarException( "Could not find base tile entity." );
+			}
+
+			int id = base_ent.Place( tile_x-2, tile_y-2 );
+			var ent = (TrainTunnelTileEntity)ModTileEntity.ByID[ id ];
+			if( ent == null ) {
+				throw new HamstarException( "Cannot create tunnel exit - No train tunnel entity associated with id " + id + " at x:" + tile_x + ", y:" + tile_y );
+			}
+			
+			ent.TunnelID = tunnel_id;
+
+			return true;
 		}
 
-
+		
 
 		////////////////
-
+		
 		private int TunnelID = -1;
 
 
+
 		////////////////
 
-		protected TrainTunnelTileData() : base() {
-			int id = TrainTunnelTileData.AwaitingTunnelID;
+		public TrainTunnelTileEntity() : base() { }
 
-			if( id == -1 ) {
-				TrainTunnelTileData.AwaitingTunnelID = TrainTunnelTileData.BaseTunnelID++;
-			} else {
-				TrainTunnelTileData.AwaitingTunnelID = -1;
+
+		public override int Hook_AfterPlacement( int tile_x, int tile_y, int tile_type, int placement_style, int direction ) {
+			if( Main.netMode == 1 ) {
+				NetMessage.SendTileRange( Main.myPlayer, tile_x, tile_y, TrainTunnelTile.Width, TrainTunnelTile.Height );
+				NetMessage.SendData( MessageID.TileEntityPlacement, -1, -1, null, tile_x, tile_y, this.Type, 0f, 0, 0, 0 );
+				return -1;
 			}
 
-			this.TunnelID = id;
-LogHelpers.Log( "TrainTunnelTileData id:" + this.TunnelID );
+			int id = this.Place( tile_x, tile_y );
+			var ent = (TrainTunnelTileEntity)ModTileEntity.ByID[ id ];
+			if( ent == null ) {
+				throw new HamstarException( "No train tunnel entity associated with id "+id+" at x:"+tile_x+", y:"+tile_y );
+			}
+
+			ent.InitializeMe( tile_x, tile_y );
+
+			return id;
 		}
+
+
+		////////////////
+
+		public void InitializeMe( int tile_x, int tile_y ) {
+			if( TrainTunnelTileEntity.ExitTunnelPosition == default(Point16) ) {
+				throw new HamstarException( "No exit tunnel position." );
+			}
+
+			this.TunnelID = TrainTunnelTileEntity.BaseTunnelID++;
+
+			TrainTunnelTileEntity.CreateTunnelEndpoint( this.TunnelID, ExitTunnelPosition.X, ExitTunnelPosition.Y );
+		}
+
+		////////////////
 
 		public override bool ValidTile( int i, int j ) {
 			Tile tile = Main.tile[i, j];
 			return tile.active() && tile.type == mod.TileType<TrainTunnelTile>();
 		}
 
-
 		////////////////
+
 
 		/*public override void Load( TagCompound tags ) {
 			if( tags.ContainsKey("tunnel_id") ) {
 				this.TunnelID = tags.GetInt( "tunnel_id" );
+			}
+			if( this.TunnelID > TrainTunnelTileEntity.BaseTunnelID ) {
+				TrainTunnelTileEntity.BaseTunnelID = this.TunnelID + 1;
 			}
 		}
 		public override TagCompound Save() {
@@ -115,23 +165,9 @@ LogHelpers.Log( "TrainTunnelTileData id:" + this.TunnelID );
 
 
 		////////////////
-		
-		public override int Hook_AfterPlacement( int i, int j, int tile_type, int placement_style, int direction ) {
-LogHelpers.Log( "Hook_AfterPlacement i:"+i+", j:"+j+", type:"+ tile_type + ", direction:"+direction );
-			if( Main.netMode == 1 ) {
-				NetMessage.SendTileRange( Main.myPlayer, i, j, TrainTunnelTile.Width, TrainTunnelTile.Height );
-				NetMessage.SendData( MessageID.TileEntityPlacement, -1, -1, null, i, j, this.Type, 0f, 0, 0, 0 );
-				return -1;
-			}
-			
-			return this.Place( i, j );
-		}
-
-
-		////////////////
 
 		public override void Update() {
-
+Dust.NewDust( new Vector2(this.Position.X*16, this.Position.Y*16), 0, 0, 1 );
 		}
 	}
 }

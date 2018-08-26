@@ -33,6 +33,7 @@ v3
 	-	Implement car linking
 	-	Implement generic car
 	-	Implement "trailer" CE component
+-	Winches (attaches top of chain to slow-lift trains)
 -	Implement Train Man npc (sells train stuff)
 -	Train fuel
 	-	Implement fuel items
@@ -43,15 +44,16 @@ v3
 	-	Implement clicking with mouse item on train to add fuel items
 	-	Add a temperature indicator
 	-	Add a tooltip indicating to feed fuel into the train
+-	Implement auto-track placement mode (add UI)
+	-	Implement track placement in current vertical (angled) heading (by arrow keys)
+	-	Implement track placement in current horizontal heading
+	-	Implement UI button to enable
+-	@Implement Populations mod
 
 
 
 v2
 -	Add train horn
--	Implement auto-track placement mode (add UI)
-	-	Implement track placement in current vertical (angled) heading (by arrow keys)
-	-	Implement track placement in current horizontal heading
-	-	Implement UI button to enable
 -	Train Tunnels
 	-	Implement exit placement attempts
 
