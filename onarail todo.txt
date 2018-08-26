@@ -55,7 +55,8 @@ v3
 v2
 -	Add train horn
 -	Train Tunnels
-	-	Implement exit placement attempts
+	-	Implement full directional exit placement
+	-	Implement traversal
 
 	-	Implement placement mode switching
 	-	Render direction

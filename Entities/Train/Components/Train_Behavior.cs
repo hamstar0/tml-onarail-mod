@@ -16,7 +16,7 @@ namespace OnARail.Entities.Train.Components {
 		internal int IsMountedBy = -1;
 
 		[JsonIgnore]
-		public int OwnerWho = -1;
+		public int OwnerPlayerWho = -1;
 
 		[PacketProtocolReadIgnoreClient]
 		public string OwnerUID = "";
@@ -41,8 +41,8 @@ namespace OnARail.Entities.Train.Components {
 		}
 
 		public override void UpdateClient( CustomEntity myent ) {
-			if( this.OwnerWho != -1 ) {
-				Player plr = Main.player[this.OwnerWho];
+			if( this.OwnerPlayerWho != -1 ) {
+				Player plr = Main.player[this.OwnerPlayerWho];
 
 				if( plr != null && plr.active ) {
 					this.UpdateMe( myent, plr );
@@ -51,8 +51,8 @@ namespace OnARail.Entities.Train.Components {
 		}
 
 		public override void UpdateServer( CustomEntity myent ) {
-			if( this.OwnerWho != -1 ) {
-				Player plr = Main.player[this.OwnerWho];
+			if( this.OwnerPlayerWho != -1 ) {
+				Player plr = Main.player[this.OwnerPlayerWho];
 
 				if( plr != null && plr.active ) {
 					this.UpdateMe( myent, plr );
@@ -121,13 +121,13 @@ namespace OnARail.Entities.Train.Components {
 		////////////////
 
 		public bool OwnsMe( Player player ) {
-			if( this.OwnerWho != -1 ) {
-				Player whoplr = Main.player[ this.OwnerWho ];
+			if( this.OwnerPlayerWho != -1 ) {
+				Player whoplr = Main.player[ this.OwnerPlayerWho ];
 				
 				if( whoplr == null || !whoplr.active ) {
-					this.OwnerWho = -1;
+					this.OwnerPlayerWho = -1;
 				} else {
-					return player.whoAmI == this.OwnerWho;
+					return player.whoAmI == this.OwnerPlayerWho;
 				}
 			}
 
@@ -143,7 +143,7 @@ namespace OnARail.Entities.Train.Components {
 			}
 
 			if( this.OwnerUID == uid ) {
-				this.OwnerWho = player.whoAmI;
+				this.OwnerPlayerWho = player.whoAmI;
 
 				return true;
 			}

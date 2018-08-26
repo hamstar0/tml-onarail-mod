@@ -110,7 +110,7 @@ namespace OnARail.Items {
 				throw new HamstarException( "No candidate exit tunnel location set." );
 			}
 
-			return false;
+			return true;
 		}
 
 

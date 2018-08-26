@@ -7,9 +7,11 @@ using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
+using HamstarHelpers.Services.Timers;
 using Microsoft.Xna.Framework;
 using OnARail.Buffs;
 using OnARail.Entities.Train.Components;
+using OnARail.Tiles;
 using Terraria;
 
 
@@ -42,12 +44,12 @@ namespace OnARail.Entities.Train {
 			pos.Y = MathHelper.Clamp( pos.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
 
 			ent.Core.Center = pos;
-			
+
 			int who = CustomEntityManager.AddEntity( ent );
 
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 			train_comp.OwnerUID = uid;
-			train_comp.OwnerWho = player.whoAmI;
+			train_comp.OwnerPlayerWho = player.whoAmI;
 
 			if( Main.netMode == 2 ) {
 				ent.SyncTo();
@@ -67,7 +69,7 @@ namespace OnARail.Entities.Train {
 			foreach( var ent in ents ) {
 				var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 
-				if( train_comp.OwnsMe(player) ) {
+				if( train_comp.OwnsMe( player ) ) {
 					return ent.Core.whoAmI;
 				}
 			}
@@ -88,15 +90,44 @@ namespace OnARail.Entities.Train {
 				throw new HamstarException( "OnARail.TrainEntityHandler.WarpPlayerToTrain - Player " + player.name + " (" + player.whoAmI + ") has no train." );
 			}
 
-			CustomEntity ent = CustomEntityManager.GetEntityByWho( myplayer.MyTrainWho );
-			if( ent == null ) {
+			CustomEntity train_ent = CustomEntityManager.GetEntityByWho( myplayer.MyTrainWho );
+			if( train_ent == null ) {
 				throw new HamstarException( "OnARail.TrainEntityHandler.WarpPlayerToTrain - Player " + player.name + " (" + player.whoAmI + ") has no train entity." );
 			}
-			
-			PlayerHelpers.Teleport( player, ent.Core.Center - new Vector2( player.width / 2, (player.height / 2 ) + 16) );
-			
+
+			PlayerHelpers.Teleport( player, train_ent.Core.Center - new Vector2( player.width / 2, ( player.height / 2 ) + 16 ) );
+
 			int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
 			player.AddBuff( train_buff_id, 30 );
+		}
+
+		////////////////
+
+		public static bool CheckTunnel( int train_who, TrainTunnelTileEntity from_tunnel, TrainTunnelTileEntity to_tunnel ) {
+			bool has_tunneled = false;
+			
+			CustomEntity train_ent = CustomEntityManager.GetEntityByWho( train_who );
+			var behav_comp = train_ent.GetComponentByType<TrainBehaviorEntityComponent>();
+			string timer_name = "TrainTunnelWarp" + train_ent.ID;
+
+			if( from_tunnel.GetRectangle().Intersects( train_ent.Core.Hitbox ) ) {
+				if( behav_comp.IsMountedBy == -1 ) {
+					// TODO
+				} else {
+					Vector2 to_tunnel_pos = to_tunnel.GetRectangle().Center.ToVector2() * 16f;
+
+					if( Timers.GetTimerTickDuration(timer_name) <= 0 ) {
+						Player plr = Main.player[ behav_comp.OwnerPlayerWho ];
+						PlayerHelpers.Teleport( plr, to_tunnel_pos );
+					}
+
+					has_tunneled = true;
+				}
+				
+				Timers.SetTimer( timer_name, 4, () => false );
+			}
+
+			return has_tunneled;
 		}
 
 

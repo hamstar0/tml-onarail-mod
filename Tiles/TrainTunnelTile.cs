@@ -2,6 +2,8 @@
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.TileHelpers;
 using Microsoft.Xna.Framework;
+using OnARail.Entities.Train;
+using OnARail.Mounts;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -59,19 +61,17 @@ namespace OnARail.Tiles {
 
 
 	public partial class TrainTunnelTileEntity : ModTileEntity {
-		private static int BaseTunnelID = 1;
-
 		internal static Point16 ExitTunnelPosition = default( Point16 );
 		
 
 
 		////////////////
 
-		private static bool CreateTunnelEndpoint( int tunnel_id, int tile_x, int tile_y ) {
+		private static TrainTunnelTileEntity CreateTunnelEndpoint( TrainTunnelTileEntity start_tunnel_ent, int tile_x, int tile_y ) {
 			var mymod = OnARailMod.Instance;
 
 			if( !TileHelpers.PlaceTile( tile_x, tile_y, mymod.TileType<TrainTunnelTile>() ) ) {
-				return false;
+				return null;
 			}
 
 			var base_ent = mymod.GetTileEntity<TrainTunnelTileEntity>();
@@ -85,22 +85,27 @@ namespace OnARail.Tiles {
 				throw new HamstarException( "Cannot create tunnel exit - No train tunnel entity associated with id " + id + " at x:" + tile_x + ", y:" + tile_y );
 			}
 			
-			ent.TunnelID = tunnel_id;
+			ent.ExitTileX = start_tunnel_ent.Position.X;
+			ent.ExitTileY = start_tunnel_ent.Position.Y;
 
-			return true;
+			return ent;
 		}
 
 		
 
 		////////////////
 		
-		private int TunnelID = -1;
+		public int ExitTileX { get; private set; }
+		public int ExitTileY { get; private set; }
 
 
 
 		////////////////
 
-		public TrainTunnelTileEntity() : base() { }
+		public TrainTunnelTileEntity() : base() {
+			this.ExitTileX = -1;
+			this.ExitTileY = -1;
+		}
 
 
 		public override int Hook_AfterPlacement( int tile_x, int tile_y, int tile_type, int placement_style, int direction ) {
@@ -129,9 +134,10 @@ namespace OnARail.Tiles {
 				throw new HamstarException( "No exit tunnel position." );
 			}
 
-			this.TunnelID = TrainTunnelTileEntity.BaseTunnelID++;
+			this.ExitTileX = ExitTunnelPosition.X;
+			this.ExitTileY = ExitTunnelPosition.Y;
 
-			TrainTunnelTileEntity.CreateTunnelEndpoint( this.TunnelID, ExitTunnelPosition.X, ExitTunnelPosition.Y );
+			var end_ent = TrainTunnelTileEntity.CreateTunnelEndpoint( this, ExitTunnelPosition.X, ExitTunnelPosition.Y );
 		}
 
 		////////////////
@@ -167,7 +173,31 @@ namespace OnARail.Tiles {
 		////////////////
 
 		public override void Update() {
-Dust.NewDust( new Vector2(this.Position.X*16, this.Position.Y*16), 0, 0, 1 );
+			int id = this.Find( this.ExitTileX, this.ExitTileY );
+			if( id == -1 ) {
+				WorldGen.KillTile( this.Position.X, this.Position.Y );
+				this.Kill( this.Position.X, this.Position.Y );
+
+				return;
+			}
+
+			var exit_ent = (TrainTunnelTileEntity)ModTileEntity.ByID[ id ];
+
+			for( int i = 0; i < Main.player.Length; i++ ) {
+				Player plr = Main.player[i];
+				if( plr == null || !plr.active ) { continue; }
+
+				var myplayer = plr.GetModPlayer<OnARailPlayer>();
+				
+				TrainEntityHandler.CheckTunnel( myplayer.MyTrainWho, this, exit_ent );
+			}
+		}
+
+
+		////////////////
+
+		public Rectangle GetRectangle() {
+			return new Rectangle( this.Position.X * 16, this.Position.Y * 16, TrainTunnelTile.Width * 16, TrainTunnelTile.Height * 16 );
 		}
 	}
 }
