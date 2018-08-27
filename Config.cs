@@ -13,7 +13,8 @@ namespace OnARail {
 
 		public bool DebugModeInfo = false;
 		public bool DebugModeReset = false;
-		public bool DebugModeTrainRespawn = true;
+		public bool DebugModeEnableTrainRespawnCommand = true;
+		public bool DebugModeTunnelTester = false;
 
 		public bool NewPlayerStarterKit = true;
 
@@ -24,8 +25,8 @@ namespace OnARail {
 
 		public bool CraftableTrainTunnel = true;
 
-		public int TrainTunnelMinRange = 150;
-		public int TrainTunnelMaxRange = 350;
+		public int TrainTunnelMinTileRange = 75;
+		public int TrainTunnelMaxTileRange = 200;
 
 		public bool ExtensibleInventoryDefaultRestrictedToTrain = true;
 

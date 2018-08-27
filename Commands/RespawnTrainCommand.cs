@@ -30,7 +30,7 @@ namespace OnARail.Commands {
 
 			var mymod = (OnARailMod)this.mod;
 
-			if( !mymod.Config.DebugModeTrainRespawn ) {
+			if( !mymod.Config.DebugModeEnableTrainRespawnCommand ) {
 				bool _;
 				if( !UserHelpers.HasBasicServerPrivilege( caller.Player, out _ ) ) {
 					caller.Reply( "Train respawning disabled by config.", Color.Red );

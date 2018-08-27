@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Services.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -29,9 +30,12 @@ namespace OnARail.Items {
 		
 //private static float TESTSCALE=0f;
 		public override void SetStaticDefaults() {
+			var mymod = (OnARailMod)this.mod;
+
 			this.DisplayName.SetDefault( "Train Tunnel Kit" );
 			this.Tooltip.SetDefault( "Creates a wall-tunnel useable by trains" + '\n' +
-				"Right-click item to adjust direction of tunnel" );
+				"Right-click item to adjust direction of tunnel" +
+				"Tunnels can reach between "+mymod.Config.TrainTunnelMinTileRange+" and "+mymod.Config.TrainTunnelMaxTileRange+" blocks" );
 //CustomHotkeys.BindActionToKey1("blah", () => {
 //	TESTSCALE -= 0.25f;
 //	Main.NewText( "-TESTSCALE: " + TESTSCALE );
@@ -82,8 +86,14 @@ namespace OnARail.Items {
 		////////////////
 
 		public override bool CanUseItem( Player player ) {
-			int min_range = OnARailMod.Instance.Config.TrainTunnelMinRange;
-			int range_span = OnARailMod.Instance.Config.TrainTunnelMaxRange - min_range;
+			if( Timers.GetTimerTickDuration( "TrainTunnelPlaceError" ) > 0 ) {
+				Timers.SetTimer( "TrainTunnelPlaceError", 15, () => false );
+				return false;
+			}
+			Timers.SetTimer( "TrainTunnelPlaceError", 15, () => false );
+
+			int min_range = OnARailMod.Instance.Config.TrainTunnelMinTileRange;
+			int range_span = OnARailMod.Instance.Config.TrainTunnelMaxTileRange - min_range;
 
 			float rad = MathHelper.Pi / 180;
 			float base_rads = TrainTunnelItem.GetRadiansOfDirection( this.Direction ) - ( rad * 5 );
@@ -100,6 +110,8 @@ namespace OnARail.Items {
 			if( _dest != null ) {
 				var dest = (Vector2)_dest;
 				TrainTunnelTileEntity.ExitTunnelPosition = new Point16( (int)(dest.X / 16f), (int)(dest.Y / 16f) );
+			} else {
+				Main.NewText( "Could not find suitable tunnel exit. Try again, or change tunnel direction.", Color.Red );
 			}
 			
 			return _dest != null;	// Tile hasn't been placed yet; Terraria could still decide it will fail
@@ -110,7 +122,9 @@ namespace OnARail.Items {
 				throw new HamstarException( "No candidate exit tunnel location set." );
 			}
 
-			return true;
+			var mymod = (OnARailMod)this.mod;
+			
+			return !mymod.Config.DebugModeTunnelTester;
 		}
 
 

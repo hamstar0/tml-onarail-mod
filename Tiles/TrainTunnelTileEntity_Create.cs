@@ -48,19 +48,27 @@ namespace OnARail.Tiles {
 				NetMessage.SendData( MessageID.TileEntityPlacement, -1, -1, null, tile_x, tile_y, this.Type, 0f, 0, 0, 0 );
 				return -1;
 			}
-			
+
+			var mymod = OnARailMod.Instance;
 			int id = this.Place( tile_x, tile_y );
 
-			var entry_tunnel_ent = (TrainTunnelTileEntity)ModTileEntity.ByID[ id ];
-			if( entry_tunnel_ent == null ) {
+			var enter_ent = (TrainTunnelTileEntity)ModTileEntity.ByID[ id ];
+			if( enter_ent == null ) {
 				throw new HamstarException( "No train tunnel entity associated with id "+id+" at x:"+tile_x+", y:"+tile_y );
 			}
 
-			if( TrainTunnelTileEntity.ExitTunnelPosition == default( Point16 ) ) {
-				throw new HamstarException( "No exit tunnel position available for tunnel "+id+" at x:"+tile_x+", y:"+tile_y );
+			if( TrainTunnelTileEntity.ExitTunnelPosition == default(Point16) ) {
+				throw new HamstarException( "No exit tunnel position available for tunnel "+id+" at "+enter_ent.Position );
 			}
 			
-			TrainTunnelTileEntity.CreateTunnelEndpoint( entry_tunnel_ent, tile_x, tile_y, ExitTunnelPosition.X, ExitTunnelPosition.Y );
+			var exit_ent = TrainTunnelTileEntity.CreateTunnelEndpoint( enter_ent, tile_x, tile_y, ExitTunnelPosition.X, ExitTunnelPosition.Y );
+			if( exit_ent == null ) {
+				throw new HamstarException( "Could not create exit tunnel (at "+exit_ent.Position+") for tunnel " + id + " at "+enter_ent.Position );
+			}
+
+			if( mymod.Config.DebugModeInfo ) {
+				LogHelpers.Log( "Creating train tunnel from "+enter_ent.Position+" to "+exit_ent.Position+"..." );
+			}
 
 			return id;
 		}

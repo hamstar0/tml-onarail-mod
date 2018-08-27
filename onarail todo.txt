@@ -54,9 +54,9 @@ v3
 
 
 v1.2
+-	Release
 -	Train Tunnels
 	-	Implement full directional exit placement
-
 	-	Implement traversal
 	-	Implement placement mode switching
 	-	Render direction

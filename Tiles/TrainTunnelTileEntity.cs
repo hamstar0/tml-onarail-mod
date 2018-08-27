@@ -72,7 +72,6 @@ namespace OnARail.Tiles {
 		////////////////
 
 		public override void Update() {
-Dust.NewDust(new Vector2(this.Position.X*16, this.Position.Y*16), 0, 0, 1);
 			int id = this.Find( this.ExitTileX, this.ExitTileY );
 			if( id == -1 ) {
 				if( this.IsInitialized ) {

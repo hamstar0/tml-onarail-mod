@@ -9,7 +9,7 @@ using Terraria.ObjectData;
 namespace OnARail.Tiles {
 	public class TrainTunnelTile : ModTile {
 		public const int Width = 4;
-		public const int Height = 3;
+		public const int Height = 4;
 
 		
 		////////////////
@@ -32,7 +32,7 @@ namespace OnARail.Tiles {
 			TileObjectData.newTile.Origin = new Point16( 2, 2 );
 			TileObjectData.newTile.AnchorWall = true;
 			TileObjectData.newTile.UsesCustomCanPlace = true;
-			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 32 };
+			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 32 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
 			TileObjectData.newTile.LavaDeath = false;
@@ -43,7 +43,7 @@ namespace OnARail.Tiles {
 
 			this.dustType = 7;
 			this.disableSmartCursor = true;
-			this.AddMapEntry( new Color( 120, 85, 60 ), name );
+			this.AddMapEntry( new Color( 96, 85, 60 ), name );
 		}
 
 
