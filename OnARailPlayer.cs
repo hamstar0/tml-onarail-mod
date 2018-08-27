@@ -94,10 +94,11 @@ namespace OnARail {
 		public override void PreUpdate() {
 			if( this.MyTrainWho == -1 ) {
 				this.MyTrainWho = TrainEntityHandler.FindMyTrain( this.player );
+				if( this.MyTrainWho == -1 ) { return; }
 			}
 			
 			if( !this.player.dead ) {
-				if( this.MyTrainWho != -1 && LoadHelpers.IsWorldSafelyBeingPlayed() ) {
+				if( LoadHelpers.IsWorldSafelyBeingPlayed() ) {
 					if( Main.netMode != 2 ) {
 						if( Vector2.Distance( this.player.position, PlayerHelpers.GetSpawnPoint( this.player ) ) <= 8 ) {   // is at spawn
 							if( Vector2.Distance( this.player.position, this.PrevPosition ) > 16 * 4 ) {    // is 4+ blocks away since prev tick

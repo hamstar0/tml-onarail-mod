@@ -55,6 +55,13 @@ v3
 
 v1.2
 -	Release
+-	Fixes
+	-	Tiny minimap train
+	-	Train automount fail on start in MP
+	-	Teleporation spam in MP
+	-	Fix train tunnel sync in MP
+
+	-	Packet Protocol client and server-only ignore attributes causing desync
 -	Train Tunnels
 	-	Implement full directional exit placement
 	-	Implement traversal

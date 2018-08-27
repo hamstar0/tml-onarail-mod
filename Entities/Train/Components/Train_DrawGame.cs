@@ -1,16 +1,20 @@
 ﻿using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
+using HamstarHelpers.Components.Network;
 using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.HudHelpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using Terraria;
 using Terraria.ID;
 
 
 namespace OnARail.Entities.Train.Components {
 	class TrainDrawInGameEntityComponent : DrawsInGameEntityComponent {
+		[PacketProtocolIgnore]
+		[JsonIgnore]
 		public bool IsMinecartIconHovering { get; private set; }
 
 		private readonly Texture2D TrainIcon;

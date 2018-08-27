@@ -35,14 +35,14 @@ namespace OnARail.Entities.Train.Components {
 		////////////////
 
 		public override void UpdateSingle( CustomEntity myent ) {
-			if( this.OwnsMe(Main.LocalPlayer) ) {
+			if( this.OwnsMe( Main.LocalPlayer ) ) {
 				this.UpdateMe( myent, Main.LocalPlayer );
 			}
 		}
 
 		public override void UpdateClient( CustomEntity myent ) {
-			if( this.OwnerPlayerWho != -1 ) {
-				Player plr = Main.player[this.OwnerPlayerWho];
+			if( this.OwnerPlayerWho != -1 && this.OwnerPlayerWho < Main.player.Length ) {
+				Player plr = Main.player[ this.OwnerPlayerWho ];
 
 				if( plr != null && plr.active ) {
 					this.UpdateMe( myent, plr );
@@ -51,7 +51,7 @@ namespace OnARail.Entities.Train.Components {
 		}
 
 		public override void UpdateServer( CustomEntity myent ) {
-			if( this.OwnerPlayerWho != -1 ) {
+			if( this.OwnerPlayerWho != -1 && this.OwnerPlayerWho < Main.player.Length ) {
 				Player plr = Main.player[this.OwnerPlayerWho];
 
 				if( plr != null && plr.active ) {
@@ -122,6 +122,10 @@ namespace OnARail.Entities.Train.Components {
 
 		public bool OwnsMe( Player player ) {
 			if( this.OwnerPlayerWho != -1 ) {
+				if( this.OwnerPlayerWho >= Main.player.Length ) {
+					return false;
+				}
+
 				Player whoplr = Main.player[ this.OwnerPlayerWho ];
 				
 				if( whoplr == null || !whoplr.active ) {
@@ -144,7 +148,7 @@ namespace OnARail.Entities.Train.Components {
 
 			if( this.OwnerUID == uid ) {
 				this.OwnerPlayerWho = player.whoAmI;
-
+				
 				return true;
 			}
 

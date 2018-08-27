@@ -43,9 +43,9 @@ namespace OnARail.Entities.Train {
 
 			int who = CustomEntityManager.AddEntity( ent );
 
-			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-			train_comp.OwnerUID = uid;
-			train_comp.OwnerPlayerWho = player.whoAmI;
+			var behav_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
+			behav_comp.OwnerUID = uid;
+			behav_comp.OwnerPlayerWho = player.whoAmI;
 
 			if( Main.netMode == 2 ) {
 				ent.SyncTo();
@@ -57,7 +57,8 @@ namespace OnARail.Entities.Train {
 
 		public static int FindMyTrain( Player player ) {
 			if( !SaveableEntityComponent.IsLoaded ) {
-				throw new HamstarException( "OnARail.TrainEntityHandler.FindMyTrain - Entities not loaded." );
+				LogHelpers.Log( "!OnARail.TrainEntityHandler.FindMyTrain - Entities not loaded." );
+				return -1;
 			}
 
 			ISet<CustomEntity> ents = CustomEntityManager.GetEntitiesByComponent<TrainBehaviorEntityComponent>();
