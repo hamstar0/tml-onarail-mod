@@ -7,9 +7,9 @@ namespace OnARail.Items {
 		public TrainTunnelRecipe( TrainTunnelItem myitem ) : base( myitem.mod ) {
 			this.AddTile( TileID.TinkerersWorkbench );
 
-			this.AddRecipeGroup( "HamstarHelpers:WarpPotions", 5 );
+			this.AddRecipeGroup( "HamstarHelpers:WarpPotions", 3 );
 			this.AddIngredient( ItemID.Explosives, 1 );
-			this.AddIngredient( ItemID.WoodenBeam, 50 );
+			this.AddIngredient( ItemID.WoodenBeam, 25 );
 
 			this.SetResult( myitem );
 		}

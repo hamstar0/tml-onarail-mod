@@ -49,15 +49,15 @@ v3
 	-	Implement track placement in current horizontal heading
 	-	Implement UI button to enable
 -	@Implement Populations mod
-
-
-
-v2
 -	Add train horn
+
+
+
+v1.2
 -	Train Tunnels
 	-	Implement full directional exit placement
-	-	Implement traversal
 
+	-	Implement traversal
 	-	Implement placement mode switching
 	-	Render direction
 	-	Implement direction changing
@@ -72,7 +72,6 @@ v2
 	-	Disable extensible inventory controls when not mounted on train
 -	@Implement Extensible Inventory mod
 -	@Implement Encumbrance mod
-v1.2
 -	Failsafe against mounting train on load
 -	Add auto-eject failsafe
 -	Add defense while riding train

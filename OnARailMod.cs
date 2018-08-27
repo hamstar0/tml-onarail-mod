@@ -1,7 +1,10 @@
 ﻿using HamstarHelpers.Components.Config;
 using HamstarHelpers.Services.Messages;
+using HamstarHelpers.Services.Promises;
 using OnARail.Entities.Train;
+using OnARail.Tiles;
 using System;
+using System.Linq;
 using Terraria.ModLoader;
 
 
@@ -53,6 +56,17 @@ namespace OnARail {
 				if( ei_mod != null ) {
 					InboxMessages.SetMessage( "OnARailExtensibleInventoryAlert", "Extensible Inventory is now available from your train. See config settings for options.", false );
 				}
+			}
+
+			if( mymod.Config.DebugModeReset ) {
+				Promises.AddSafeWorldLoadEachPromise( () => {
+					foreach( ModTileEntity ent in ModTileEntity.ByID.Values.ToArray() ) {
+						if( ent is TrainTunnelTileEntity ) {
+							ModTileEntity.ByID.Remove( ent.ID );
+							ModTileEntity.ByPosition.Remove( ent.Position );
+						}
+					}
+				} );
 			}
 		}
 
