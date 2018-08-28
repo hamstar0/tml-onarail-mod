@@ -54,7 +54,7 @@ namespace OnARail.Entities.Train.Components {
 			if( this.IsMinecartIconHovering ) { return; }
 			if( !mouse_comp.IsMouseHovering ) { return; }
 			if( train_comp.IsMountedBy != -1 ) { return; }
-			if( !train_comp.OwnsMe( Main.LocalPlayer ) ) { return; }
+			if( ent.OwnerPlayerWho != Main.myPlayer ) { return; }
 
 			var text_pos = new Vector2(
 				Main.mouseX + 16,

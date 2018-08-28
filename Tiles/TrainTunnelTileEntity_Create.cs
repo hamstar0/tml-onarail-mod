@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace OnARail.Tiles {
 	public partial class TrainTunnelTileEntity : ModTileEntity {
-		private static TrainTunnelTileEntity CreateTunnelEndpoint( TrainTunnelTileEntity start_tunnel_ent, int beg_tile_x, int beg_tile_y, int end_tile_x, int end_tile_y ) {
+		private static TrainTunnelTileEntity CreateTunnelEndpoint( TrainTunnelTileEntity start_tunnel_ent, int end_tile_x, int end_tile_y ) {
 			var mymod = OnARailMod.Instance;
 			
 			if( !TileHelpers.PlaceTile( end_tile_x+2, end_tile_y+2, mymod.TileType<TrainTunnelTile>() ) ) {
@@ -29,8 +29,8 @@ namespace OnARail.Tiles {
 
 			start_tunnel_ent.ExitTileX = end_tile_x;
 			start_tunnel_ent.ExitTileY = end_tile_y;
-			exit_tunnel_ent.ExitTileX = beg_tile_x;
-			exit_tunnel_ent.ExitTileY = beg_tile_y;
+			exit_tunnel_ent.ExitTileX = start_tunnel_ent.Position.X;
+			exit_tunnel_ent.ExitTileY = start_tunnel_ent.Position.Y;
 
 			start_tunnel_ent.IsInitialized = true;
 			exit_tunnel_ent.IsInitialized = true;
@@ -38,7 +38,7 @@ namespace OnARail.Tiles {
 			return exit_tunnel_ent;
 		}
 
-		
+
 
 		////////////////
 
@@ -49,28 +49,42 @@ namespace OnARail.Tiles {
 				return -1;
 			}
 
-			var mymod = OnARailMod.Instance;
-			int id = this.Place( tile_x, tile_y );
+			int id = this.Place( tile_x, tile_y ); ;
 
-			var enter_ent = (TrainTunnelTileEntity)ModTileEntity.ByID[ id ];
-			if( enter_ent == null ) {
-				throw new HamstarException( "No train tunnel entity associated with id "+id+" at x:"+tile_x+", y:"+tile_y );
-			}
+			if( Main.netMode == 0 && !Main.dedServ ) {
+				var enter_ent = (TrainTunnelTileEntity)ModTileEntity.ByID[id];
+				if( enter_ent == null ) {
+					throw new HamstarException( "No train tunnel entity associated with id " + id + " at x:" + tile_x + ", y:" + tile_y );
+				}
 
-			if( TrainTunnelTileEntity.ExitTunnelPosition == default(Point16) ) {
-				throw new HamstarException( "No exit tunnel position available for tunnel "+id+" at "+enter_ent.Position );
-			}
-			
-			var exit_ent = TrainTunnelTileEntity.CreateTunnelEndpoint( enter_ent, tile_x, tile_y, ExitTunnelPosition.X, ExitTunnelPosition.Y );
-			if( exit_ent == null ) {
-				throw new HamstarException( "Could not create exit tunnel (at "+exit_ent.Position+") for tunnel " + id + " at "+enter_ent.Position );
-			}
-
-			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "Creating train tunnel from "+enter_ent.Position+" to "+exit_ent.Position+"..." );
+				enter_ent.OnPlace();
 			}
 
 			return id;
+		}
+		
+		public override void OnNetPlace() {
+			this.OnPlace();
+		}
+
+
+		////////////////
+
+		private void OnPlace() {
+			var mymod = OnARailMod.Instance;
+
+			if( TrainTunnelTileEntity.ExitTunnelPosition == default(Point16) ) {
+				throw new HamstarException( "No exit tunnel position available for tunnel "+this.ID+" at "+this.Position );
+			}
+			
+			var exit_ent = TrainTunnelTileEntity.CreateTunnelEndpoint( this, ExitTunnelPosition.X, ExitTunnelPosition.Y );
+			if( exit_ent == null ) {
+				throw new HamstarException( "Could not create exit tunnel (at "+exit_ent.Position+") for tunnel " + this.ID + " at "+ this.Position );
+			}
+
+			if( mymod.Config.DebugModeInfo ) {
+				LogHelpers.Log( "OnARail.Tiles.TrainTunnelTileEntity.OnNetPlace - Creating train tunnel from "+ this.Position+" to "+exit_ent.Position+"..." );
+			}
 		}
 	}
 }

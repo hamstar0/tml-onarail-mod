@@ -45,9 +45,7 @@ namespace OnARail.Entities.Train.Components {
 						var myplayer = player.GetModPlayer<OnARailPlayer>();
 
 						if( !myplayer.IsInInitLockdown ) {
-							var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
-							if( train_comp.OwnsMe( player ) ) {
+							if( ent.OwnerPlayerWho == player.whoAmI ) {
 								int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
 
 								if( player.FindBuffIndex( train_buff_id ) == -1 ) {

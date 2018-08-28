@@ -40,6 +40,7 @@ namespace OnARail.Entities.Train.Components {
 	}
 
 
+
 	class TrainRespectsGravityEntityComponent : RespectsGravityEntityComponent {
 		private TrainRespectsGravityEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
 
@@ -71,6 +72,7 @@ namespace OnARail.Entities.Train.Components {
 			}
 		}
 	}
+
 
 
 	class TrainRailBoundEntityComponent : RailBoundEntityComponent {
@@ -106,6 +108,7 @@ namespace OnARail.Entities.Train.Components {
 	}
 
 
+
 	class TrainPeriodicSyncEntityComponent : PeriodicSyncEntityComponent {
 		private TrainPeriodicSyncEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
 
@@ -124,6 +127,7 @@ namespace OnARail.Entities.Train.Components {
 
 
 
+
 	class TrainSaveableEntityComponent : SaveableEntityComponent {
 		private TrainSaveableEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : base(false) { }
 
@@ -137,8 +141,6 @@ namespace OnARail.Entities.Train.Components {
 			if( behav_comp == null ) {
 				throw new HamstarException( "Train entity "+ent.ToString()+" is missing TrainBehaviorEntityComponent." );
 			}
-
-			behav_comp.OwnsMe( Main.LocalPlayer );
 		}
 
 		protected override void OnLoadSingle( CustomEntity ent ) {

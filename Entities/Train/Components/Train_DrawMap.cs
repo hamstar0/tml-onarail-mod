@@ -16,21 +16,15 @@ namespace OnARail.Entities.Train.Components {
 		////////////////
 
 		public override bool PreDrawFullscreenMap( SpriteBatch sb, CustomEntity ent ) {
-			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-			
-			return train_comp.OwnsMe( Main.LocalPlayer );
+			return ent.OwnerPlayerWho == Main.myPlayer;
 		}
 
 		public override bool PreDrawMiniMap( SpriteBatch sb, CustomEntity ent ) {
-			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
-			return train_comp.OwnsMe( Main.LocalPlayer );
+			return ent.OwnerPlayerWho == Main.myPlayer;
 		}
 
 		public override bool PreDrawOverlayMap( SpriteBatch sb, CustomEntity ent ) {
-			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
-			return train_comp.OwnsMe( Main.LocalPlayer );
+			return ent.OwnerPlayerWho == Main.myPlayer;
 		}
 	}
 }

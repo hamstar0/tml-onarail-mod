@@ -2,7 +2,6 @@
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.PlayerHelpers;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using OnARail.Mounts;
@@ -14,12 +13,6 @@ namespace OnARail.Entities.Train.Components {
 		[JsonIgnore]
 		[PacketProtocolIgnore]
 		internal int IsMountedBy = -1;
-
-		[JsonIgnore]
-		public int OwnerPlayerWho = -1;
-
-		[PacketProtocolReadIgnoreClient]
-		public string OwnerUID = "";
 
 
 
@@ -35,14 +28,14 @@ namespace OnARail.Entities.Train.Components {
 		////////////////
 
 		public override void UpdateSingle( CustomEntity myent ) {
-			if( this.OwnsMe( Main.LocalPlayer ) ) {
+			if( myent.OwnerPlayerWho == Main.myPlayer ) {
 				this.UpdateMe( myent, Main.LocalPlayer );
 			}
 		}
 
 		public override void UpdateClient( CustomEntity myent ) {
-			if( this.OwnerPlayerWho != -1 && this.OwnerPlayerWho < Main.player.Length ) {
-				Player plr = Main.player[ this.OwnerPlayerWho ];
+			if( myent.OwnerPlayerWho != -1 && myent.OwnerPlayerWho < Main.player.Length ) {
+				Player plr = Main.player[ myent.OwnerPlayerWho ];
 
 				if( plr != null && plr.active ) {
 					this.UpdateMe( myent, plr );
@@ -51,8 +44,8 @@ namespace OnARail.Entities.Train.Components {
 		}
 
 		public override void UpdateServer( CustomEntity myent ) {
-			if( this.OwnerPlayerWho != -1 && this.OwnerPlayerWho < Main.player.Length ) {
-				Player plr = Main.player[this.OwnerPlayerWho];
+			if( myent.OwnerPlayerWho != -1 && myent.OwnerPlayerWho < Main.player.Length ) {
+				Player plr = Main.player[ myent.OwnerPlayerWho ];
 
 				if( plr != null && plr.active ) {
 					this.UpdateMe( myent, plr );
@@ -62,23 +55,23 @@ namespace OnARail.Entities.Train.Components {
 
 		////////////////
 
-		private void UpdateMe( CustomEntity myent, Player player ) {
-			if( player.mount.Active && player.mount.Type == OnARailMod.Instance.MountType<TrainMount>() ) {
+		private void UpdateMe( CustomEntity myent, Player owner ) {
+			if( owner.mount.Active && owner.mount.Type == OnARailMod.Instance.MountType<TrainMount>() ) {
 				if( this.IsMountedBy == -1 ) {
-					this.SetTrainEntityFollowing_NoSync( myent, player );
+					this.SetTrainEntityFollowing_NoSync( myent, owner );
 				}
 			} else {
 				if( this.IsMountedBy != -1 ) {
-					this.SetTrainEntityStanding_NoSync( myent, player );
+					this.SetTrainEntityStanding_NoSync( myent, owner );
 				}
 			}
 
 			if( this.IsMountedBy != -1 ) {
-				if( this.IsMountedBy == player.whoAmI ) {
-					if( !player.active || player.dead ) {
-						this.SetTrainEntityStanding_NoSync( myent, player );  // failsafe
+				if( this.IsMountedBy == owner.whoAmI ) {
+					if( !owner.active || owner.dead ) {
+						this.SetTrainEntityStanding_NoSync( myent, owner );  // failsafe
 					} else {
-						myent.Core.Center = player.MountedCenter + new Vector2(0, 22);	// Follows dumbly while inactive
+						myent.Core.Center = owner.MountedCenter + new Vector2(0, 22);	// Follows dumbly while inactive
 					}
 				}
 			}
@@ -87,72 +80,34 @@ namespace OnARail.Entities.Train.Components {
 
 		////////////////
 
-		public bool SetTrainEntityFollowing_NoSync( CustomEntity ent, Player player ) {
+		public bool SetTrainEntityFollowing_NoSync( CustomEntity ent, Player owner ) {
 			var mymod = OnARailMod.Instance;
 
-			this.IsMountedBy = player.whoAmI;
+			this.IsMountedBy = owner.whoAmI;
 			
-			player.MountedCenter = ent.Core.Center;
-			player.position.Y -= 22f;
+			owner.MountedCenter = ent.Core.Center;
+			owner.position.Y -= 22f;
 
 			return true;
 		}
 
 
-		public bool SetTrainEntityStanding_NoSync( CustomEntity ent, Player player ) {
+		public bool SetTrainEntityStanding_NoSync( CustomEntity ent, Player owner ) {
 			var mymod = OnARailMod.Instance;
 
 			this.IsMountedBy = -1;
 
-			player.position.Y -= 12;
+			owner.position.Y -= 12;
 
-			ent.Core.Center = player.Center;
+			ent.Core.Center = owner.Center;
 			ent.Core.position.Y -= 16;
-			ent.Core.direction = player.direction;
+			ent.Core.direction = owner.direction;
 
-			if( player.whoAmI == Main.myPlayer && Main.netMode == 1 ) {   // needed because player mounts aren't synced to server
+			if( owner.whoAmI == Main.myPlayer && Main.netMode == 1 ) {   // needed because player mounts aren't synced to server...?
 				ent.SyncTo();
 			}
 
 			return true;
-		}
-
-
-		////////////////
-
-		public bool OwnsMe( Player player ) {
-			if( this.OwnerPlayerWho != -1 ) {
-				if( this.OwnerPlayerWho >= Main.player.Length ) {
-					return false;
-				}
-
-				Player whoplr = Main.player[ this.OwnerPlayerWho ];
-				
-				if( whoplr == null || !whoplr.active ) {
-					this.OwnerPlayerWho = -1;
-				} else {
-					return player.whoAmI == this.OwnerPlayerWho;
-				}
-			}
-
-			bool success;
-
-			if( string.IsNullOrEmpty( this.OwnerUID ) ) {
-				return false;
-			}
-
-			string uid = PlayerIdentityHelpers.GetUniqueId( player, out success );
-			if( !success ) {
-				return false;
-			}
-
-			if( this.OwnerUID == uid ) {
-				this.OwnerPlayerWho = player.whoAmI;
-				
-				return true;
-			}
-
-			return false;
 		}
 	}
 }

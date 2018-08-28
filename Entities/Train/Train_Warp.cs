@@ -46,17 +46,17 @@ namespace OnARail.Entities.Train {
 			
 			CustomEntity train_ent = CustomEntityManager.GetEntityByWho( train_who );
 			var behav_comp = train_ent.GetComponentByType<TrainBehaviorEntityComponent>();
-			string timer_name = "TrainTunnelWarp" + train_ent.ID;
+			string timer_name = "TrainTunnelWarp" + train_ent.TypeID;
 
 			if( from_tunnel.GetWorldRectangle().Intersects( train_ent.Core.Hitbox ) ) {
-				if( behav_comp.IsMountedBy == -1 ) {
+				if( behav_comp.IsMountedBy == -1 || train_ent.OwnerPlayerWho == -1 ) {
 					// TODO
 				} else {
 					Vector2 to_tunnel_pos = to_tunnel.GetWorldRectangle().Center.ToVector2();
 					to_tunnel_pos.Y -= 32;
 
 					if( Timers.GetTimerTickDuration(timer_name) <= 0 ) {
-						Player plr = Main.player[ behav_comp.OwnerPlayerWho ];
+						Player plr = Main.player[ train_ent.OwnerPlayerWho ];
 						Vector2 vel = plr.velocity;
 
 						PlayerHelpers.Teleport( plr, to_tunnel_pos );

@@ -56,10 +56,13 @@ v3
 v1.2
 -	Release
 -	Fixes
+	-	@Encumbrance MP doesnt sync pickup delay to dropped items and overlay incorrect with NPCs
 	-	Tiny minimap train
 	-	Train automount fail on start in MP
 	-	Teleporation spam in MP
+	-	Fix train tunnels teleporting without train mounts and with loud sound
 	-	Fix train tunnel sync in MP
+	-	Fix train claiming server-side in MP
 
 	-	Packet Protocol client and server-only ignore attributes causing desync
 -	Train Tunnels

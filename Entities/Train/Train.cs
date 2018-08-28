@@ -19,22 +19,15 @@ namespace OnARail.Entities.Train {
 
 		////////////////
 
-		public static int SpawnMyTrain( Player player ) {
+		public static int SpawnMyTrain( Player owner ) {
 			if( Main.netMode == 1 ) {
-				throw new HamstarException( "No client." );
+				throw new HamstarException( "!OnARail.TrainEntityHandler.SpawnTrain - No client." );
 			}
 
-			bool success;
-			string uid = PlayerIdentityHelpers.GetUniqueId( player, out success );
-			if( !success ) {
-				LogHelpers.Log( "OnARail.TrainEntityHandler.SpawnTrain - Player uid not found for " + player.name );
-				return -1;
-			}
+			var ent = CustomEntityTemplateManager.CreateEntityByID( TrainEntityHandler.TrainEntityID, owner );
+			ent.Core.DisplayName = owner.name + "'s Train";
 
-			var ent = CustomEntityTemplateManager.CreateEntityByID( TrainEntityHandler.TrainEntityID );
-			ent.Core.DisplayName = player.name + "'s Train";
-
-			Vector2 pos = player.Center;
+			Vector2 pos = owner.Center;
 			pos.Y -= 16;
 			pos.X = MathHelper.Clamp( pos.X, 160, ( Main.maxTilesX - 10 ) * 16 );
 			pos.Y = MathHelper.Clamp( pos.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
@@ -42,13 +35,13 @@ namespace OnARail.Entities.Train {
 			ent.Core.Center = pos;
 
 			int who = CustomEntityManager.AddEntity( ent );
-
-			var behav_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-			behav_comp.OwnerUID = uid;
-			behav_comp.OwnerPlayerWho = player.whoAmI;
-
+			
 			if( Main.netMode == 2 ) {
 				ent.SyncTo();
+			}
+
+			if( OnARailMod.Instance.Config.DebugModeInfo ) {
+				LogHelpers.Log( "Train entity ("+ent.ToString()+") spawned for "+owner.name );
 			}
 
 			return who;
@@ -64,9 +57,7 @@ namespace OnARail.Entities.Train {
 			ISet<CustomEntity> ents = CustomEntityManager.GetEntitiesByComponent<TrainBehaviorEntityComponent>();
 
 			foreach( var ent in ents ) {
-				var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
-				if( train_comp.OwnsMe( player ) ) {
+				if( ent.OwnerPlayerWho == player.whoAmI ) {
 					return ent.Core.whoAmI;
 				}
 			}
