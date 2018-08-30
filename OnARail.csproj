@@ -78,9 +78,11 @@
     <Compile Include="Items\TrainTunnelItem_Def.cs" />
     <Compile Include="Mounts\TrainMount.cs" />
     <Compile Include="NetProtocols\ModSettings.cs" />
+    <Compile Include="NetProtocols\TunnelEntitySpawn.cs" />
     <Compile Include="NetProtocols\TrainSpawn.cs" />
     <Compile Include="OnARailMod_Meta.cs" />
     <Compile Include="OnARailNPC.cs" />
+    <Compile Include="OnARailPlayer_Update.cs" />
     <Compile Include="OnARailPlayer_Load.cs" />
     <Compile Include="OnARailPlayer.cs" />
     <Compile Include="OnARailMod.cs" />

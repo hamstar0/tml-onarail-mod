@@ -17,6 +17,7 @@ namespace OnARail {
 		
 		internal bool HasBuffPromise = false;
 		internal bool HasMountPromise = false;
+		
 
 
 		////////////////

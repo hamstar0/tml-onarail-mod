@@ -109,7 +109,7 @@ namespace OnARail.Items {
 
 			if( _dest != null ) {
 				var dest = (Vector2)_dest;
-				TrainTunnelTileEntity.ExitTunnelPosition = new Point16( (int)(dest.X / 16f), (int)(dest.Y / 16f) );
+				TrainTunnelTileEntity.AwaitingExitTunnelPosition = new Point16( (int)(dest.X / 16f), (int)(dest.Y / 16f) );
 			} else {
 				Main.NewText( "Could not find suitable tunnel exit. Try again, or change tunnel direction.", Color.Red );
 			}
@@ -118,7 +118,7 @@ namespace OnARail.Items {
 		}
 
 		public override bool ConsumeItem( Player player ) { // ConsumeItem runs only if a valid start tunnel location found (not just our exit)
-			if( TrainTunnelTileEntity.ExitTunnelPosition == default(Point16) ) {
+			if( TrainTunnelTileEntity.AwaitingExitTunnelPosition == default(Point16) ) {
 				throw new HamstarException( "No candidate exit tunnel location set." );
 			}
 

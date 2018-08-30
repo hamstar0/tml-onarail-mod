@@ -21,7 +21,7 @@ namespace OnARail.Entities.Train {
 
 		public static int SpawnMyTrain( Player owner ) {
 			if( Main.netMode == 1 ) {
-				throw new HamstarException( "!OnARail.TrainEntityHandler.SpawnTrain - No client." );
+				throw new HamstarException( "!OnARail.TrainEntityHandler.SpawnTrain - Cannot spawn on client." );
 			}
 
 			var ent = CustomEntityTemplateManager.CreateEntityByID( TrainEntityHandler.TrainEntityID, owner );
@@ -50,7 +50,7 @@ namespace OnARail.Entities.Train {
 
 		public static int FindMyTrain( Player player ) {
 			if( !SaveableEntityComponent.IsLoaded ) {
-				LogHelpers.Log( "!OnARail.TrainEntityHandler.FindMyTrain - Entities not loaded." );
+				LogHelpers.LogOnce( "OnARail.TrainEntityHandler.FindMyTrain - Entities not loaded." );
 				return -1;
 			}
 

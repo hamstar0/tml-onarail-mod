@@ -2,9 +2,12 @@
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.PlayerHelpers;
+using HamstarHelpers.Services.Timers;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using OnARail.Mounts;
+using OnARail.Tiles;
 using Terraria;
 
 
@@ -108,6 +111,36 @@ namespace OnARail.Entities.Train.Components {
 			}
 
 			return true;
+		}
+
+
+		////////////////
+
+		public void CheckTunnel( CustomEntity train_ent, TrainTunnelTileEntity from_tunnel, TrainTunnelTileEntity to_tunnel ) {
+			string timer_name = "TrainTunnelCheck" + train_ent.Core.whoAmI;
+			bool is_on_tunnel = from_tunnel.GetWorldRectangle().Intersects( train_ent.Core.Hitbox );
+
+			if( is_on_tunnel ) {
+				if( Timers.GetTimerTickDuration( timer_name ) == 0 ) {
+					this.TraverseToTunnel( train_ent, to_tunnel );
+				}
+				Timers.SetTimer( timer_name, 15, () => false );
+			}
+		}
+
+		private void TraverseToTunnel( CustomEntity train_ent, TrainTunnelTileEntity to_tunnel ) {
+			if( this.IsMountedBy == -1 || train_ent.OwnerPlayerWho == -1 ) {
+				// TODO train-only traversal
+			} else {
+				Vector2 to_tunnel_pos = to_tunnel.GetWorldRectangle().Center.ToVector2();
+				to_tunnel_pos.Y -= 32;
+
+				Player plr = Main.player[train_ent.OwnerPlayerWho];
+				Vector2 vel = plr.velocity;
+
+				PlayerHelpers.Teleport( plr, to_tunnel_pos );
+				plr.velocity = vel;
+			}
 		}
 	}
 }

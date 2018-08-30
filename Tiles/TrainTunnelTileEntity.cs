@@ -1,6 +1,8 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Components.CustomEntity;
+using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Helpers.DebugHelpers;
 using Microsoft.Xna.Framework;
-using OnARail.Entities.Train;
+using OnARail.Entities.Train.Components;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
@@ -10,12 +12,12 @@ using Terraria.ModLoader.IO;
 
 namespace OnARail.Tiles {
 	public partial class TrainTunnelTileEntity : ModTileEntity {
-		internal static Point16 ExitTunnelPosition = default( Point16 );
-		
+		internal static Point16 AwaitingExitTunnelPosition = default( Point16 );
+
 
 
 		////////////////
-		
+
 		public int ExitTileX { get; private set; }
 		public int ExitTileY { get; private set; }
 
@@ -72,25 +74,33 @@ namespace OnARail.Tiles {
 		////////////////
 
 		public override void Update() {
-			int id = this.Find( this.ExitTileX, this.ExitTileY );
-			if( id == -1 ) {
+			if( Main.netMode == 1 ) { throw new HamstarException( "Never run on client." ); }
+
+			int exit_id = this.Find( this.ExitTileX, this.ExitTileY );
+
+			// Clear unmatched tunnel entities
+			if( exit_id == -1 ) {
 				if( this.IsInitialized ) {
 					WorldGen.KillTile( this.Position.X, this.Position.Y );
 					this.Kill( this.Position.X, this.Position.Y );
 				}
-
 				return;
 			}
 
-			var exit_ent = (TrainTunnelTileEntity)ModTileEntity.ByID[ id ];
-
+			var exit_ent = (TrainTunnelTileEntity)ModTileEntity.ByID[ exit_id ];
+			
 			for( int i = 0; i < Main.player.Length; i++ ) {
 				Player plr = Main.player[i];
 				if( plr == null || !plr.active ) { continue; }
 
 				var myplayer = plr.GetModPlayer<OnARailPlayer>();
-				
-				TrainEntityHandler.CheckTunnel( myplayer.MyTrainWho, this, exit_ent );
+				if( myplayer.MyTrainWho == -1 ) { continue; }
+
+				CustomEntity train_ent = CustomEntityManager.GetEntityByWho( myplayer.MyTrainWho );
+				if( train_ent == null ) { continue; }
+
+				var behav_comp = train_ent.GetComponentByType<TrainBehaviorEntityComponent>();
+				behav_comp.CheckTunnel( train_ent, this, exit_ent );
 			}
 		}
 

@@ -23,14 +23,14 @@ namespace OnARail {
 
 	partial class OnARailPlayer : ModPlayer {
 		internal readonly static object MyValidatorKey;
-		internal readonly static PromiseValidator RunAllValidator;
+		internal readonly static PromiseValidator PlayerFuncsValidator;
 
 
 		////////////////
 
 		static OnARailPlayer() {
 			OnARailPlayer.MyValidatorKey = new object();
-			OnARailPlayer.RunAllValidator = new PromiseValidator( OnARailPlayer.MyValidatorKey );
+			OnARailPlayer.PlayerFuncsValidator = new PromiseValidator( OnARailPlayer.MyValidatorKey );
 		}
 
 
@@ -50,6 +50,7 @@ namespace OnARail {
 		public override bool CloneNewInstances { get { return false; } }
 
 		public override void Initialize() {
+			this.IsInInitLockdown = true;
 			this.MyTrainWho = -1;
 		}
 
@@ -85,38 +86,6 @@ namespace OnARail {
 				this.OnConnectSingle();
 			} else if( Main.netMode == 1 ) {
 				this.OnConnectClient();
-			}
-		}
-
-
-		////////////////
-
-		public override void PreUpdate() {
-			if( this.MyTrainWho == -1 ) {
-				this.MyTrainWho = TrainEntityHandler.FindMyTrain( this.player );
-				if( this.MyTrainWho == -1 ) { return; }
-			}
-			
-			if( !this.player.dead ) {
-				if( LoadHelpers.IsWorldSafelyBeingPlayed() ) {
-					if( Main.netMode != 2 ) {
-						if( Vector2.Distance( this.player.position, PlayerHelpers.GetSpawnPoint( this.player ) ) <= 8 ) {   // is at spawn
-							if( Vector2.Distance( this.player.position, this.PrevPosition ) > 16 * 4 ) {    // is 4+ blocks away since prev tick
-								this.HandleRecall();
-							}
-						}
-
-						this.PrevPosition = this.player.position;
-					}
-					this.IsInInitLockdown = false;
-				} else {
-					this.IsInInitLockdown = true;
-					PlayerHelpers.LockdownPlayerPerTick( this.player );
-				}
-
-				var args = new PlayerPromiseArguments { Who = this.player.whoAmI };
-
-				Promises.TriggerValidatedPromise( OnARailPlayer.RunAllValidator, OnARailPlayer.MyValidatorKey, args );
 			}
 		}
 

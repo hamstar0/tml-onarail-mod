@@ -43,7 +43,7 @@ namespace OnARail.Items {
 				for( int j=y; j<y+TrainTunnelTile.Height; j++ ) {
 					Tile tile = Main.tile[ i, j ];
 
-					if( tile.wall == 0 || TileHelpers.IsSolid(tile) ) {
+					if( tile.wall == 0 || TileHelpers.IsSolid(tile) || tile.type != 0 ) {
 						return null;
 					}
 				}
