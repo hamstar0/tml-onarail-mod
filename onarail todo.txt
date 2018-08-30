@@ -62,7 +62,7 @@ v2
 		-	Items drop when mounted on a train
 	-	Tiny minimap train
 	-	Debug disappearing train
-	-	Fix train tunnels teleporting without train mounts and with loud sound
+	-	Fix train tunnels teleporting with loud sound
 
 	-	Teleporation spam in MP
 	-	Train automount fail on start in MP
