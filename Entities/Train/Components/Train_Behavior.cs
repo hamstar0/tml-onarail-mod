@@ -137,7 +137,7 @@ namespace OnARail.Entities.Train.Components {
 
 				Player plr = Main.player[train_ent.OwnerPlayerWho];
 				Vector2 vel = plr.velocity;
-
+				
 				PlayerHelpers.Teleport( plr, to_tunnel_pos );
 				plr.velocity = vel;
 			}

@@ -50,20 +50,20 @@ v3
 	-	Implement UI button to enable
 -	@Implement Populations mod
 -	Add train horn
+-	Debug disappearing train?
+-	@Encumbrance
+	-	MP doesnt sync pickup delay to dropped items
+	-	Overlay incorrect with NPCs
+	-	Items drop when mounted on a train
 
 
 
 v2
 -	Release
 -	Fixes
-	-	@Encumbrance
-		-	MP doesnt sync pickup delay to dropped items
-		-	Overlay incorrect with NPCs
-		-	Items drop when mounted on a train
 	-	Tiny minimap train
-	-	Debug disappearing train
-	-	Fix train tunnels teleporting with loud sound
 
+	-	Fix train tunnels teleporting with loud sound
 	-	Teleporation spam in MP
 	-	Train automount fail on start in MP
 	-	Fix train mount detection on client (entity lingers)
