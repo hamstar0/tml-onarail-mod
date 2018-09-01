@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using OnARail.Mounts;
 using OnARail.Tiles;
 using Terraria;
-
+using Terraria.ModLoader;
 
 namespace OnARail.Entities.Train.Components {
 	class TrainBehaviorEntityComponent : CustomEntityComponent {
@@ -85,11 +85,16 @@ namespace OnARail.Entities.Train.Components {
 
 		public bool SetTrainEntityFollowing_NoSync( CustomEntity ent, Player owner ) {
 			var mymod = OnARailMod.Instance;
+			var encumb_mod = ModLoader.GetMod("Encumbrance");
 
 			this.IsMountedBy = owner.whoAmI;
 			
 			owner.MountedCenter = ent.Core.Center;
 			owner.position.Y -= 22f;
+
+			if( encumb_mod != null ) {
+				encumb_mod.Call( "DisableEncumbrance" );
+			}
 
 			return true;
 		}
@@ -97,6 +102,7 @@ namespace OnARail.Entities.Train.Components {
 
 		public bool SetTrainEntityStanding_NoSync( CustomEntity ent, Player owner ) {
 			var mymod = OnARailMod.Instance;
+			var encumb_mod = ModLoader.GetMod( "Encumbrance" );
 
 			this.IsMountedBy = -1;
 
@@ -105,6 +111,10 @@ namespace OnARail.Entities.Train.Components {
 			ent.Core.Center = owner.Center;
 			ent.Core.position.Y -= 16;
 			ent.Core.direction = owner.direction;
+
+			if( encumb_mod != null ) {
+				encumb_mod.Call( "EnableEncumbrance" );
+			}
 
 			if( owner.whoAmI == Main.myPlayer && Main.netMode == 1 ) {   // needed because player mounts aren't synced to server...?
 				ent.SyncTo();

@@ -95,8 +95,8 @@ namespace OnARail.Items {
 			int min_range = OnARailMod.Instance.Config.TrainTunnelMinTileRange;
 			int range_span = OnARailMod.Instance.Config.TrainTunnelMaxTileRange - min_range;
 
-			float rad = MathHelper.Pi / 180;
-			float base_rads = TrainTunnelItem.GetRadiansOfDirection( this.Direction ) - ( rad * 5 );
+			float rad = MathHelper.Pi / 180f;
+			float base_rads = TrainTunnelItem.GetRadiansOfDirection( this.Direction ) - ( rad * 5f );
 			Vector2? _dest = null;
 
 			for( int i=0; i<100; i++ ) {
@@ -138,7 +138,7 @@ namespace OnARail.Items {
 				( pos.Y + ( scale * (float)frame.Height / 2f ) )// - ( (new_scale * str_origin.Y) / 2 )
 			);
 
-			float rads = TrainTunnelItem.GetRadiansOfDirection( this.Direction );
+			float rads = -TrainTunnelItem.GetRadiansOfDirection( this.Direction );
 
 			sb.DrawString( Main.fontMouseText, ">", new_pos, Color.Red, rads, str_origin / new_scale, new_scale * scale, SpriteEffects.None, 1f );
 		}

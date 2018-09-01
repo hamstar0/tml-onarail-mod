@@ -3,7 +3,6 @@ using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Helpers.DebugHelpers;
 using Microsoft.Xna.Framework;
 using OnARail.Entities.Train.Components;
-using System;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;

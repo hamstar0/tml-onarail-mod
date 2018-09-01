@@ -16,13 +16,13 @@ namespace OnARail.Items {
 			case 1:
 				return ( MathHelper.Pi / 180f ) * 45;
 			case 2:
-				return ( MathHelper.Pi / 180f ) * 135;
+				return ( MathHelper.Pi / 180f ) * (45 * 3);
 			case 3:
 				return MathHelper.Pi;
 			case 4:
-				return ( MathHelper.Pi / 180f ) * 225;
+				return ( MathHelper.Pi / 180f ) * (45 * 5);
 			case 5:
-				return ( MathHelper.Pi / 180f ) * 315;
+				return ( MathHelper.Pi / 180f ) * (45 * 7);
 			default:
 				throw new Exception( "Invalid direction." );
 			}

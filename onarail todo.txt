@@ -48,21 +48,20 @@ v3
 	-	Implement track placement in current vertical (angled) heading (by arrow keys)
 	-	Implement track placement in current horizontal heading
 	-	Implement UI button to enable
--	@Implement Populations mod
+v2
+-	@Test playthrough
 -	Add train horn
--	Debug disappearing train?
+-	Set tracks to place under train tunnels
+
+-	Fix tunnel placer directions
 -	@Encumbrance
-	-	MP doesnt sync pickup delay to dropped items
 	-	Overlay incorrect with NPCs
 	-	Items drop when mounted on a train
-
-
-
-v2
+	-	MP doesnt sync pickup delay to dropped items
+v1.2
 -	Release
 -	Fixes
 	-	Tiny minimap train
-
 	-	Fix train tunnels teleporting with loud sound
 	-	Teleporation spam in MP
 	-	Train automount fail on start in MP

@@ -25,10 +25,17 @@ namespace OnARail {
 
 		public bool CraftableTrainTunnel = true;
 
-		public int TrainTunnelMinTileRange = 75;
-		public int TrainTunnelMaxTileRange = 200;
+		public int TrainTunnelMinTileRange = 50;
+		public int TrainTunnelMaxTileRange = 125;
 
 		public bool ExtensibleInventoryDefaultRestrictedToTrain = true;
+
+
+
+		////////////////
+
+		private static int _1_2_0_TrainTunnelMinTileRange = 75;
+		private static int _1_2_0_TrainTunnelMaxTileRange = 200;
 
 
 
@@ -43,7 +50,16 @@ namespace OnARail {
 			if( vers_since >= mymod.Version ) {
 				return false;
 			}
-			
+
+			if( vers_since < new Version(1,2,1) ) {
+				if( this.TrainTunnelMinTileRange == OnARailConfigData._1_2_0_TrainTunnelMinTileRange ) {
+					this.TrainTunnelMinTileRange = new_config.TrainTunnelMinTileRange;
+				}
+				if( this.TrainTunnelMaxTileRange == OnARailConfigData._1_2_0_TrainTunnelMaxTileRange ) {
+					this.TrainTunnelMaxTileRange = new_config.TrainTunnelMaxTileRange;
+				}
+			}
+
 			this._ModVersionSinceUpdate = mymod.Version.ToString();
 
 			return true;
