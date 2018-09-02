@@ -44,15 +44,17 @@ v3
 	-	Implement clicking with mouse item on train to add fuel items
 	-	Add a temperature indicator
 	-	Add a tooltip indicating to feed fuel into the train
+v2
+-	@Test playthrough
 -	Implement auto-track placement mode (add UI)
 	-	Implement track placement in current vertical (angled) heading (by arrow keys)
 	-	Implement track placement in current horizontal heading
 	-	Implement UI button to enable
-v2
--	@Test playthrough
 -	Add train horn
 -	Set tracks to place under train tunnels
+-	@Mod Helpers: Set IP checking on mod load
 
+v1.2.1
 -	Fix tunnel placer directions
 -	@Encumbrance
 	-	Overlay incorrect with NPCs
