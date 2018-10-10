@@ -10,6 +10,12 @@ using Terraria.ModLoader;
 
 namespace OnARail {
     public partial class OnARailMod : Mod {
+		public static OnARailMod Instance { get; private set; }
+
+
+
+		////////////////
+
 		public JsonConfig<OnARailConfigData> ConfigJson { get; private set; }
 		public OnARailConfigData Config { get { return this.ConfigJson.Data; } }
 

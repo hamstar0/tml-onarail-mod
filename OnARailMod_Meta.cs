@@ -7,16 +7,12 @@ using Terraria.ModLoader;
 
 namespace OnARail {
     public partial class OnARailMod : Mod {
-		public static OnARailMod Instance { get; private set; }
+		public static string GithubUserName => "hamstar0";
+		public static string GithubProjectName => "tml-onarail-mod";
 
 
-		public static string GithubUserName { get { return "hamstar0"; } }
-		public static string GithubProjectName { get { return "tml-onarail-mod"; } }
-
-
-		public static string ConfigFileRelativePath {
-			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + OnARailConfigData.ConfigFileName; }
-		}
+		public static string ConfigFileRelativePath =>
+			ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + OnARailConfigData.ConfigFileName;
 
 		public static void ReloadConfigFromFile() {
 			if( Main.netMode != 0 ) {

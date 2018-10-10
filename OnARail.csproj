@@ -100,6 +100,7 @@
     <Content Include="Items\TrainTunnelItem.png" />
     <Content Include="Mounts\TrainMount_Back.png" />
     <Content Include="Mounts\TrainMount_Front.png" />
+    <Content Include="recommendations.txt" />
     <Content Include="Tiles\TrainTunnelTile.png" />
   </ItemGroup>
   <ItemGroup>

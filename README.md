@@ -12,6 +12,6 @@ Future features:
 - Train upgrades will be added.
 
 Additional credits:
-* Darkpuppey - Train sprite base
+- Darkpuppey - Train sprite base
 
-https://forums.terraria.org/index.php?threads/licenses-unlock-items-as-you-progress.69438/
+https://forums.terraria.org/index.php?threads/on-a-rail.71272/

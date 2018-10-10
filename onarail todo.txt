@@ -51,7 +51,11 @@ v2
 	-	Implement track placement in current horizontal heading
 	-	Implement UI button to enable
 -	Add train horn
+-	Set train to orient with tracks
+v1.3
 -	Set tracks to place under train tunnels
+-	Fix train on-mount all-items dropping with Encumbrance
+-	Set train tracks to have a cost with merchant
 -	@Mod Helpers: Set IP checking on mod load
 
 v1.2.1

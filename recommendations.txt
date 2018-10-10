@@ -1,0 +1,2 @@
+﻿ExtensibleInventory = Enables extending train with storage cars.
+Kidnapped = Sources town NPCs from rescuables underground.
