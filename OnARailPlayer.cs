@@ -96,7 +96,7 @@ namespace OnARail {
 			Promises.AddValidatedPromise( SaveableEntityComponent.LoadAllValidator, () => {
 				Timers.SetTimer( "OnARailRespawn", 30, () => {
 					if( this.MyTrainWho != -1 ) {
-						TrainEntityHandler.WarpPlayerToTrain( player );
+						TrainEntity.WarpPlayerToTrain( player );
 					}
 					return false;
 				} );
@@ -116,7 +116,7 @@ namespace OnARail {
 					Main.NewText( "Warping to train..." );
 				}
 
-				TrainEntityHandler.WarpPlayerToTrain( player );	// return to train
+				TrainEntity.WarpPlayerToTrain( player );	// return to train
 			}
 		}
 	}

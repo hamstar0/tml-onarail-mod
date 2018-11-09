@@ -12,7 +12,7 @@ namespace OnARail {
 	partial class OnARailPlayer : ModPlayer {
 		public override void PreUpdate() {
 			if( this.MyTrainWho == -1 ) {
-				this.MyTrainWho = TrainEntityHandler.FindMyTrain( this.player );
+				this.MyTrainWho = TrainEntity.FindMyTrain( this.player );
 			}
 
 			if( this.MyTrainWho != -1 ) {

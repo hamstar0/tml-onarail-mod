@@ -3,16 +3,14 @@ using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
-using Terraria;
 
 
 namespace OnARail.Entities.Train.Components {
 	class TrainRespectsTerrainEntityComponent : RespectsTerrainEntityComponent {
 		private TrainRespectsTerrainEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
 
-		public TrainRespectsTerrainEntityComponent() {
-			this.ConfirmLoad();
-		}
+		public TrainRespectsTerrainEntityComponent() { }
+
 
 		////////////////
 
@@ -38,15 +36,15 @@ namespace OnARail.Entities.Train.Components {
 			}
 		}
 	}
+
 
 
 
 	class TrainRespectsGravityEntityComponent : RespectsGravityEntityComponent {
 		private TrainRespectsGravityEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
 
-		public TrainRespectsGravityEntityComponent() {
-			this.ConfirmLoad();
-		}
+		public TrainRespectsGravityEntityComponent() { }
+
 
 		////////////////
 
@@ -72,15 +70,14 @@ namespace OnARail.Entities.Train.Components {
 			}
 		}
 	}
+
 
 
 
 	class TrainRailBoundEntityComponent : RailBoundEntityComponent {
 		private TrainRailBoundEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
 
-		public TrainRailBoundEntityComponent() {
-			this.ConfirmLoad();
-		}
+		public TrainRailBoundEntityComponent() { }
 
 		////////////////
 
@@ -109,12 +106,11 @@ namespace OnARail.Entities.Train.Components {
 
 
 
+
 	class TrainPeriodicSyncEntityComponent : PeriodicSyncEntityComponent {
 		private TrainPeriodicSyncEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
 
-		public TrainPeriodicSyncEntityComponent() : base() {
-			this.ConfirmLoad();
-		}
+		public TrainPeriodicSyncEntityComponent() : base() { }
 
 		////////////////
 
@@ -129,7 +125,7 @@ namespace OnARail.Entities.Train.Components {
 
 
 	class TrainSaveableEntityComponent : SaveableEntityComponent {
-		private TrainSaveableEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : base(false) { }
+		private TrainSaveableEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this(false) { }
 
 		public TrainSaveableEntityComponent( bool as_json ) : base(as_json) { }
 

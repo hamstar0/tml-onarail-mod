@@ -32,6 +32,7 @@ namespace OnARail.NetProtocols {
 			TileEntity.PlaceEntityNet( tile_x, tile_y, mymod.TileEntityType<TrainTunnelTileEntity>() );
 		}
 
+		
 
 		////////////////
 
@@ -39,6 +40,7 @@ namespace OnARail.NetProtocols {
 		public int BegTileY;
 		public int EndTileX;
 		public int EndTileY;
+
 
 
 		////////////////

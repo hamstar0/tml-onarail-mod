@@ -16,8 +16,8 @@ namespace OnARail {
 		private void OnConnectHost() {
 			Promises.AddPostWorldLoadOncePromise( () => {
 				Promises.AddValidatedPromise( SaveableEntityComponent.LoadAllValidator, () => {
-					if( TrainEntityHandler.FindMyTrain( this.player ) == -1 ) {
-						TrainEntityHandler.SpawnMyTrain( this.player );
+					if( TrainEntity.FindMyTrain( this.player ) == -1 ) {
+						new TrainEntity( this.player );
 					}
 					return false;
 				} );

@@ -8,7 +8,7 @@ using Terraria;
 
 
 namespace OnARail.Entities.Train {
-	public partial class TrainEntityHandler {
+	public partial class TrainEntity : CustomEntity {
 		public static void WarpPlayerToTrain( Player player ) {
 			if( !SaveableEntityComponent.IsLoaded ) {
 				throw new HamstarException( "OnARail.TrainEntityHandler.WarpPlayerToTrain - Entities not loaded." );

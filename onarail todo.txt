@@ -17,39 +17,34 @@ Future?
 	-	Green log
 		-	Gives a high speed boost for 3s
 		-	Recipe: Strange Plant + Jungle Spore + 10 Bombs
+-	Implement engine upgrades (allows increased temperature + defense)
 
 
 
 v3
--	Implement engine upgrades (allows increased temperature + defense)
+-	Add bright light to train (scares bats)
 -	Implement cars
-	-	Car types
-		-	Cannon car: Fires block-destroying cannons in aimed direction
-		-	Mechanical car: Enables placing rails; more = faster rails
-		-	Cabin cars: Holds NPCs
-		-	Storage cars: Extends storage
 	-	Implement friction according to number of cars
-	-	Implement link breakage for grounded cars
-	-	Implement car linking
-	-	Implement generic car
-	-	Implement "trailer" CE component
--	Winches (attaches top of chain to slow-lift trains)
--	Implement Train Man npc (sells train stuff)
+	-	Define car entity
+	-	Implement "chained" CE component
 -	Train fuel
-	-	Implement fuel items
-		-	@Plan
-			-	...
+	-	Implement fuel items (raw gels, or oils (= gel + Extractinator))
 	-	Implement acceleration + max speed scaling based on temperature
 	-	Implement invalid fuel item indications
 	-	Implement clicking with mouse item on train to add fuel items
 	-	Add a temperature indicator
 	-	Add a tooltip indicating to feed fuel into the train
+-	Add train car chassis frames as findables
+-	Winches (attaches top of chain to slow-lift trains)
+-	Implement Train Man npc (sells train stuff)
+-	Add pillar dropping kit
+-	Add collapsable rails when unsupported (random chance)
 v2
 -	@Test playthrough
--	Implement auto-track placement mode (add UI)
-	-	Implement track placement in current vertical (angled) heading (by arrow keys)
-	-	Implement track placement in current horizontal heading
-	-	Implement UI button to enable
+-	Add train and minecart gravity when on a sloped rail (train has breaks, though)
+-	Improve CE gravity
+-	Add a train cannon (breaks blocks)
+-	Add fast horizontal rail placement (rail coils)
 -	Add train horn
 -	Set train to orient with tracks
 v1.3

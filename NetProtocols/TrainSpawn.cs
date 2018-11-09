@@ -22,11 +22,11 @@ namespace OnARail.NetProtocols {
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
 
 			Promises.AddPostWorldLoadOncePromise( () => {
-				if( TrainEntityHandler.FindMyTrain( player ) == -1 ) {
+				if( TrainEntity.FindMyTrain( player ) == -1 ) {
 					throw new HamstarException( "Cannot spawn duplicate train for player "+player.name );
 				}
 
-				TrainEntityHandler.SpawnMyTrain( player );
+				new TrainEntity( player );
 			} );
 
 			return true;

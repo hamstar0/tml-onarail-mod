@@ -11,6 +11,7 @@ using OnARail.Tiles;
 using Terraria;
 using Terraria.ModLoader;
 
+
 namespace OnARail.Entities.Train.Components {
 	class TrainBehaviorEntityComponent : CustomEntityComponent {
 		[JsonIgnore]
@@ -23,9 +24,7 @@ namespace OnARail.Entities.Train.Components {
 
 		private TrainBehaviorEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
 
-		public TrainBehaviorEntityComponent() {
-			this.ConfirmLoad();
-		}
+		public TrainBehaviorEntityComponent() { }
 
 
 		////////////////

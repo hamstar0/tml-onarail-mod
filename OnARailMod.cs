@@ -18,8 +18,6 @@ namespace OnARail {
 
 		public JsonConfig<OnARailConfigData> ConfigJson { get; private set; }
 		public OnARailConfigData Config { get { return this.ConfigJson.Data; } }
-
-		private TrainEntityHandler TrainFactory;
 		
 		internal bool HasBuffPromise = false;
 		internal bool HasMountPromise = false;
@@ -39,8 +37,6 @@ namespace OnARail {
 			OnARailMod.Instance = this;
 
 			this.LoadConfig();
-
-			this.TrainFactory = new TrainEntityHandler();
 		}
 
 		private void LoadConfig() {

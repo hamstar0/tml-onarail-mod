@@ -34,18 +34,17 @@ namespace OnARail.Entities.Train.Components {
 
 		////////////////
 
-		public override bool PreDraw( SpriteBatch sb, CustomEntity ent ) {
+		public override void Draw( SpriteBatch sb, CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
 			Player plr = Main.LocalPlayer;
 
 			this.IsMinecartIconHovering = plr.showItemIcon && plr.showItemIcon2 == ItemID.Minecart;
 
-			if( train_comp.IsMountedBy != -1 ) {
-				return false;
+			if( train_comp.IsMountedBy == -1 ) {
+				base.Draw( sb, ent );
 			}
-
-			return base.PreDraw( sb, ent );
 		}
+
 
 		public override void PostDraw( SpriteBatch sb, CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();

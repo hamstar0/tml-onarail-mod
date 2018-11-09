@@ -26,9 +26,8 @@ namespace OnARail.Entities.Train.Components {
 
 		private TrainMouseInteractionEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
 
-		public TrainMouseInteractionEntityComponent() {
-			this.ConfirmLoad();
-		}
+		public TrainMouseInteractionEntityComponent() { }
+
 
 		////////////////
 

@@ -31,8 +31,7 @@ namespace OnARail.Commands {
 			var mymod = (OnARailMod)this.mod;
 
 			if( !mymod.Config.DebugModeEnableTrainRespawnCommand ) {
-				bool _;
-				if( !UserHelpers.HasBasicServerPrivilege( caller.Player, out _ ) ) {
+				if( !UserHelpers.HasBasicServerPrivilege( caller.Player ) ) {
 					caller.Reply( "Train respawning disabled by config.", Color.Red );
 					return;
 				} else {
@@ -40,7 +39,7 @@ namespace OnARail.Commands {
 				}
 			}
 
-			int who = TrainEntityHandler.FindMyTrain( caller.Player );
+			int who = TrainEntity.FindMyTrain( caller.Player );
 			if( who != -1 ) {
 				CustomEntityManager.RemoveEntityByWho( who );
 			}
