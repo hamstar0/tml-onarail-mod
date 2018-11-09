@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DebugHelpers;
@@ -17,7 +18,7 @@ namespace OnARail {
 			Promises.AddPostWorldLoadOncePromise( () => {
 				Promises.AddValidatedPromise( SaveableEntityComponent.LoadAllValidator, () => {
 					if( TrainEntity.FindMyTrain( this.player ) == -1 ) {
-						new TrainEntity( this.player );
+						CustomEntityManager.AddToWorld( new TrainEntity( this.player ) );
 					}
 					return false;
 				} );

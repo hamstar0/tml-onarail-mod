@@ -11,3 +11,8 @@ Future features:
 
 Additional credits:
 - Darkpuppey - Train sprite base
+
+Mod recommendations:
+ExtensibleInventory = Enables extending train with storage cars.
+EvilBarriers = Implements progression goals and supplies ingredients for train upgrades.
+Kidnapped = Sources town NPCs from rescuables underground.

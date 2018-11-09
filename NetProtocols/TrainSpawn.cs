@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Components.Errors;
+﻿using HamstarHelpers.Components.CustomEntity;
+using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
@@ -26,7 +27,7 @@ namespace OnARail.NetProtocols {
 					throw new HamstarException( "Cannot spawn duplicate train for player "+player.name );
 				}
 
-				new TrainEntity( player );
+				CustomEntityManager.AddToWorld( new TrainEntity( player ) );
 			} );
 
 			return true;
