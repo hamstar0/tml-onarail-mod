@@ -14,6 +14,24 @@ using Terraria.ModLoader;
 
 namespace OnARail.Entities.Train.Components {
 	class TrainBehaviorEntityComponent : CustomEntityComponent {
+		protected class TrainBehaviorEntityComponentFactory : PacketProtocolData.Factory<TrainBehaviorEntityComponent> {
+			public TrainBehaviorEntityComponentFactory() { }
+			public override void Initialize( TrainBehaviorEntityComponent data ) { }
+		}
+
+
+
+		////////////////
+
+		public static TrainBehaviorEntityComponent CreateTrainBehaviorEntityComponent() {
+			var factory = new TrainBehaviorEntityComponentFactory();
+			return factory.Create();
+		}
+
+
+
+		////////////////
+
 		[JsonIgnore]
 		[PacketProtocolIgnore]
 		internal int IsMountedBy = -1;
@@ -22,9 +40,7 @@ namespace OnARail.Entities.Train.Components {
 
 		////////////////
 
-		private TrainBehaviorEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
-
-		public TrainBehaviorEntityComponent() { }
+		protected TrainBehaviorEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
 
 
 		////////////////

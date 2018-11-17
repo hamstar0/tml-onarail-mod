@@ -18,7 +18,8 @@ namespace OnARail {
 			Promises.AddPostWorldLoadOncePromise( () => {
 				Promises.AddValidatedPromise( SaveableEntityComponent.LoadAllValidator, () => {
 					if( TrainEntity.FindMyTrain( this.player ) == -1 ) {
-						CustomEntityManager.AddToWorld( new TrainEntity( this.player ) );
+						var ent = TrainEntity.CreateTrainEntity( this.player );
+						CustomEntityManager.AddToWorld( ent );
 					}
 					return false;
 				} );
@@ -32,7 +33,7 @@ namespace OnARail {
 		}
 
 		private void OnConnectClient() {
-			PacketProtocol.QuickRequestToServer<ModSettingsProtocol>();
+			PacketProtocolRequestToServer.QuickRequest<ModSettingsProtocol>();
 		}
 
 		private void OnConnectServer() {

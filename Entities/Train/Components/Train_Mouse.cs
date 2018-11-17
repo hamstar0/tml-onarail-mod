@@ -10,6 +10,21 @@ using Terraria;
 
 namespace OnARail.Entities.Train.Components {
 	class TrainMouseInteractionEntityComponent : IsClickableEntityComponent {
+		protected class TrainMouseInteractionEntityComponentFactory : PacketProtocolData.Factory<TrainMouseInteractionEntityComponent> {
+			public TrainMouseInteractionEntityComponentFactory() { }
+			public override void Initialize( TrainMouseInteractionEntityComponent data ) { }
+		}
+
+		////////////////
+
+		public static TrainMouseInteractionEntityComponent CreateTrainMouseInteractionEntityComponent() {
+			var factory = new TrainMouseInteractionEntityComponentFactory();
+			return factory.Create();
+		}
+
+
+		////////////////
+
 		public const float BoardingDistance = 96;
 
 
@@ -24,9 +39,7 @@ namespace OnARail.Entities.Train.Components {
 
 		////////////////
 
-		private TrainMouseInteractionEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
-
-		public TrainMouseInteractionEntityComponent() { }
+		protected TrainMouseInteractionEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
 
 
 		////////////////

@@ -4,13 +4,13 @@ using HamstarHelpers.Helpers.DebugHelpers;
 
 
 namespace OnARail.NetProtocols {
-	class ModSettingsProtocol : PacketProtocol {
+	class ModSettingsProtocol : PacketProtocolRequestToServer {
 		public OnARailConfigData Data;
 
 
 		////////////////
 
-		private ModSettingsProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
+		protected ModSettingsProtocol( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
 
 		////////////////
 
@@ -19,8 +19,8 @@ namespace OnARail.NetProtocols {
 		}
 
 		////////////////
-
-		protected override void ReceiveWithClient() {
+		
+		protected override void ReceiveReply() {
 			var mymod = OnARailMod.Instance;
 
 			mymod.ConfigJson.SetData( this.Data );

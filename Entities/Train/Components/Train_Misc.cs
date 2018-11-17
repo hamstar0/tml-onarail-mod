@@ -7,30 +7,40 @@ using HamstarHelpers.Helpers.DebugHelpers;
 
 namespace OnARail.Entities.Train.Components {
 	class TrainRespectsTerrainEntityComponent : RespectsTerrainEntityComponent {
-		private TrainRespectsTerrainEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
+		protected class TrainRespectsTerrainEntityComponentFactory : PacketProtocolData.Factory<TrainRespectsTerrainEntityComponent> {
+			public TrainRespectsTerrainEntityComponentFactory() { }
+			public override void Initialize( TrainRespectsTerrainEntityComponent data ) { }
+		}
 
-		public TrainRespectsTerrainEntityComponent() { }
+		////////////////
+
+		public static TrainRespectsTerrainEntityComponent CreateTrainRespectsTerrainEntityComponent() {
+			var factory = new TrainRespectsTerrainEntityComponentFactory();
+			return factory.Create();
+		}
+
+
+		////////////////
+
+		private TrainRespectsTerrainEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
 
 
 		////////////////
 
 		public override void UpdateSingle( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
 			if( train_comp.IsMountedBy == -1 ) {
 				base.UpdateSingle( ent );
 			}
 		}
 		public override void UpdateClient( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
 			if( train_comp.IsMountedBy == -1 ) {
 				base.UpdateClient( ent );
 			}
 		}
 		public override void UpdateServer( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
 			if( train_comp.IsMountedBy == -1 ) {
 				base.UpdateServer( ent );
 			}
@@ -41,30 +51,40 @@ namespace OnARail.Entities.Train.Components {
 
 
 	class TrainRespectsGravityEntityComponent : RespectsGravityEntityComponent {
-		private TrainRespectsGravityEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
+		protected class TrainRespectsGravityEntityComponentFactory : PacketProtocolData.Factory<TrainRespectsGravityEntityComponent> {
+			public TrainRespectsGravityEntityComponentFactory() { }
+			public override void Initialize( TrainRespectsGravityEntityComponent data ) { }
+		}
 
-		public TrainRespectsGravityEntityComponent() { }
+		////////////////
+
+		public static TrainRespectsGravityEntityComponent CreateTrainRespectsGravityEntityComponent() {
+			var factory = new TrainRespectsGravityEntityComponentFactory();
+			return factory.Create();
+		}
+
+
+		////////////////
+		
+		private TrainRespectsGravityEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
 
 
 		////////////////
 
 		public override void UpdateSingle( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
 			if( train_comp.IsMountedBy == -1 ) {
 				base.UpdateSingle( ent );
 			}
 		}
 		public override void UpdateClient( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
 			if( train_comp.IsMountedBy == -1 ) {
 				base.UpdateClient( ent );
 			}
 		}
 		public override void UpdateServer( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
 			if( train_comp.IsMountedBy == -1 ) {
 				base.UpdateServer( ent );
 			}
@@ -75,29 +95,39 @@ namespace OnARail.Entities.Train.Components {
 
 
 	class TrainRailBoundEntityComponent : RailBoundEntityComponent {
-		private TrainRailBoundEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
+		protected class TrainRailBoundEntityComponentFactory : PacketProtocolData.Factory<TrainRailBoundEntityComponent> {
+			public TrainRailBoundEntityComponentFactory() { }
+			public override void Initialize( TrainRailBoundEntityComponent data ) { }
+		}
 
-		public TrainRailBoundEntityComponent() { }
+		////////////////
+
+		public static TrainRailBoundEntityComponent CreateTrainRailBoundEntityComponent() {
+			var factory = new TrainRailBoundEntityComponentFactory();
+			return factory.Create();
+		}
+
+
+		////////////////
+		
+		private TrainRailBoundEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
 
 		////////////////
 
 		public override void UpdateSingle( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
 			if( train_comp.IsMountedBy == -1 ) {
 				base.UpdateSingle( ent );
 			}
 		}
 		public override void UpdateClient( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
 			if( train_comp.IsMountedBy == -1 ) {
 				base.UpdateClient( ent );
 			}
 		}
 		public override void UpdateServer( CustomEntity ent ) {
 			var train_comp = ent.GetComponentByType<TrainBehaviorEntityComponent>();
-
 			if( train_comp.IsMountedBy == -1 ) {
 				base.UpdateServer( ent );
 			}
@@ -108,9 +138,22 @@ namespace OnARail.Entities.Train.Components {
 
 
 	class TrainPeriodicSyncEntityComponent : PeriodicSyncEntityComponent {
-		private TrainPeriodicSyncEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
+		protected class TrainPeriodicSyncEntityComponentFactory : PacketProtocolData.Factory<TrainPeriodicSyncEntityComponent> {
+			public TrainPeriodicSyncEntityComponentFactory() { }
+			public override void Initialize( TrainPeriodicSyncEntityComponent data ) { }
+		}
 
-		public TrainPeriodicSyncEntityComponent() : base() { }
+		////////////////
+
+		public static TrainPeriodicSyncEntityComponent CreateTrainPeriodicSyncEntityComponent() {
+			var factory = new TrainPeriodicSyncEntityComponentFactory();
+			return factory.Create();
+		}
+
+
+		////////////////
+		
+		private TrainPeriodicSyncEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
 
 		////////////////
 
@@ -125,9 +168,21 @@ namespace OnARail.Entities.Train.Components {
 
 
 	class TrainSaveableEntityComponent : SaveableEntityComponent {
-		private TrainSaveableEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this(false) { }
+		protected class TrainPeriodicSyncEntityComponentFactory : SaveableEntityComponentFactory<TrainSaveableEntityComponent> {
+			public TrainPeriodicSyncEntityComponentFactory( bool as_json ) : base( as_json ) { }
+		}
 
-		public TrainSaveableEntityComponent( bool as_json ) : base(as_json) { }
+		////////////////
+
+		public static TrainSaveableEntityComponent CreateTrainSaveableEntityComponent( bool as_json ) {
+			var factory = new TrainPeriodicSyncEntityComponentFactory( as_json );
+			return factory.Create();
+		}
+
+
+		////////////////
+
+		protected TrainSaveableEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
 
 
 		////////////////

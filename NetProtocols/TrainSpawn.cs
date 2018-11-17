@@ -9,8 +9,8 @@ using Terraria;
 
 
 namespace OnARail.NetProtocols {
-	class TrainSpawnProtocol : PacketProtocol {
-		private TrainSpawnProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
+	class TrainSpawnProtocol : PacketProtocolRequestToServer {
+		protected TrainSpawnProtocol( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
 
 		////////////////
 
@@ -27,10 +27,16 @@ namespace OnARail.NetProtocols {
 					throw new HamstarException( "Cannot spawn duplicate train for player "+player.name );
 				}
 
-				CustomEntityManager.AddToWorld( new TrainEntity( player ) );
+				var ent = TrainEntity.CreateTrainEntity( player );
+				
+				CustomEntityManager.AddToWorld( ent );
 			} );
 
 			return true;
+		}
+
+		protected override void ReceiveReply() {
+			throw new System.NotImplementedException();
 		}
 	}
 }

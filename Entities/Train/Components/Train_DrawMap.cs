@@ -8,9 +8,27 @@ using Terraria;
 
 namespace OnARail.Entities.Train.Components {
 	class TrainDrawOnMapEntityComponent : DrawsOnMapEntityComponent {
-		private TrainDrawOnMapEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
+		protected class TrainDrawInGameEntityComponentFactory : DrawsOnMapEntityComponentFactory<TrainDrawOnMapEntityComponent> {
+			public TrainDrawInGameEntityComponentFactory( string src_mod_name, string rel_texture_path, int frame_count, float scale, bool zooms )
+				: base( src_mod_name, rel_texture_path, frame_count, scale, zooms ) { }
+		}
 
-		public TrainDrawOnMapEntityComponent() : base( "OnARail", "Entities/Train/TrainIcon", 1, 1f, false ) { }
+
+
+		////////////////
+
+		public static TrainDrawOnMapEntityComponent CreateTrainDrawOnMapEntityComponent() {
+			var factory = new TrainDrawInGameEntityComponentFactory( "OnARail", "Entities/Train/TrainIcon", 1, 1f, false );
+			TrainDrawOnMapEntityComponent comp = factory.Create();
+
+			return comp;
+		}
+
+
+
+		////////////////
+
+		protected TrainDrawOnMapEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
 
 
 		////////////////

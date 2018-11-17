@@ -44,7 +44,7 @@ namespace OnARail.Commands {
 				CustomEntityManager.RemoveEntityByWho( who );
 			}
 
-			PacketProtocol.QuickRequestToServer<TrainSpawnProtocol>();
+			PacketProtocolRequestToServer.QuickRequest<TrainSpawnProtocol>();
 			
 			caller.Reply( "Spawning train...", Color.LimeGreen );
 		}

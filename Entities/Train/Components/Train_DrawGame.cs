@@ -13,23 +13,41 @@ using Terraria.ID;
 
 namespace OnARail.Entities.Train.Components {
 	class TrainDrawInGameEntityComponent : DrawsInGameEntityComponent {
+		protected class TrainDrawInGameEntityComponentFactory : DrawsInGameEntityComponentFactory<TrainDrawInGameEntityComponent> {
+			public TrainDrawInGameEntityComponentFactory( string src_mod_name, string rel_texture_path, int frame_count )
+				: base( src_mod_name, rel_texture_path, frame_count ) { }
+		}
+
+
+
+		////////////////
+
+		public static TrainDrawInGameEntityComponent CreateTrainDrawInGameEntityComponent() {
+			var factory = new TrainDrawInGameEntityComponentFactory( "OnARail", "Mounts/TrainMount_Back", 4 );
+			TrainDrawInGameEntityComponent comp = factory.Create();
+
+			if( Main.netMode != 2 ) {
+				comp.TrainIcon = OnARailMod.Instance.GetTexture( "Entities/Train/TrainIcon" );
+			}
+
+			return comp;
+		}
+
+
+
+		////////////////
+
 		[PacketProtocolIgnore]
 		[JsonIgnore]
 		public bool IsMinecartIconHovering { get; private set; }
 
-		private readonly Texture2D TrainIcon;
+		private Texture2D TrainIcon;
 		private float PulseScaleAnimation = 0f;
 
 
 		////////////////
 
-		private TrainDrawInGameEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : this() { }
-
-		public TrainDrawInGameEntityComponent() : base( "OnARail", "Mounts/TrainMount_Back", 4 ) {
-			if( Main.netMode != 2 ) {
-				this.TrainIcon = OnARailMod.Instance.GetTexture( "Entities/Train/TrainIcon" );
-			}
-		}
+		protected TrainDrawInGameEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
 
 
 		////////////////
