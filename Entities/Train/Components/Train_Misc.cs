@@ -7,9 +7,9 @@ using HamstarHelpers.Helpers.DebugHelpers;
 
 namespace OnARail.Entities.Train.Components {
 	class TrainRespectsTerrainEntityComponent : RespectsTerrainEntityComponent {
-		protected class TrainRespectsTerrainEntityComponentFactory : PacketProtocolData.Factory<TrainRespectsTerrainEntityComponent> {
+		private class TrainRespectsTerrainEntityComponentFactory : CustomEntityComponentFactory<TrainRespectsTerrainEntityComponent> {
 			public TrainRespectsTerrainEntityComponentFactory() { }
-			public override void Initialize( TrainRespectsTerrainEntityComponent data ) { }
+			public override void InitializeComponent( TrainRespectsTerrainEntityComponent data ) { }
 		}
 
 		////////////////
@@ -51,9 +51,9 @@ namespace OnARail.Entities.Train.Components {
 
 
 	class TrainRespectsGravityEntityComponent : RespectsGravityEntityComponent {
-		protected class TrainRespectsGravityEntityComponentFactory : PacketProtocolData.Factory<TrainRespectsGravityEntityComponent> {
+		protected class TrainRespectsGravityEntityComponentFactory : CustomEntityComponentFactory<TrainRespectsGravityEntityComponent> {
 			public TrainRespectsGravityEntityComponentFactory() { }
-			public override void Initialize( TrainRespectsGravityEntityComponent data ) { }
+			public override void InitializeComponent( TrainRespectsGravityEntityComponent data ) { }
 		}
 
 		////////////////
@@ -95,9 +95,9 @@ namespace OnARail.Entities.Train.Components {
 
 
 	class TrainRailBoundEntityComponent : RailBoundEntityComponent {
-		protected class TrainRailBoundEntityComponentFactory : PacketProtocolData.Factory<TrainRailBoundEntityComponent> {
+		protected class TrainRailBoundEntityComponentFactory : CustomEntityComponentFactory<TrainRailBoundEntityComponent> {
 			public TrainRailBoundEntityComponentFactory() { }
-			public override void Initialize( TrainRailBoundEntityComponent data ) { }
+			public override void InitializeComponent( TrainRailBoundEntityComponent data ) { }
 		}
 
 		////////////////
@@ -138,9 +138,9 @@ namespace OnARail.Entities.Train.Components {
 
 
 	class TrainPeriodicSyncEntityComponent : PeriodicSyncEntityComponent {
-		protected class TrainPeriodicSyncEntityComponentFactory : PacketProtocolData.Factory<TrainPeriodicSyncEntityComponent> {
+		protected class TrainPeriodicSyncEntityComponentFactory : CustomEntityComponentFactory<TrainPeriodicSyncEntityComponent> {
 			public TrainPeriodicSyncEntityComponentFactory() { }
-			public override void Initialize( TrainPeriodicSyncEntityComponent data ) { }
+			public override void InitializeComponent( TrainPeriodicSyncEntityComponent data ) { }
 		}
 
 		////////////////

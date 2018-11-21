@@ -8,7 +8,7 @@ using Terraria;
 
 namespace OnARail.Entities.Train.Components {
 	class TrainDrawOnMapEntityComponent : DrawsOnMapEntityComponent {
-		protected class TrainDrawInGameEntityComponentFactory : DrawsOnMapEntityComponentFactory<TrainDrawOnMapEntityComponent> {
+		private class TrainDrawInGameEntityComponentFactory : DrawsOnMapEntityComponentFactory<TrainDrawOnMapEntityComponent> {
 			public TrainDrawInGameEntityComponentFactory( string src_mod_name, string rel_texture_path, int frame_count, float scale, bool zooms )
 				: base( src_mod_name, rel_texture_path, frame_count, scale, zooms ) { }
 		}
@@ -19,9 +19,7 @@ namespace OnARail.Entities.Train.Components {
 
 		public static TrainDrawOnMapEntityComponent CreateTrainDrawOnMapEntityComponent() {
 			var factory = new TrainDrawInGameEntityComponentFactory( "OnARail", "Entities/Train/TrainIcon", 1, 1f, false );
-			TrainDrawOnMapEntityComponent comp = factory.Create();
-
-			return comp;
+			return factory.Create();
 		}
 
 

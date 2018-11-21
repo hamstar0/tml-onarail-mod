@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Components.Network.Data;
@@ -11,13 +12,10 @@ using Terraria;
 namespace OnARail.Entities.Train {
 	public partial class TrainEntity : CustomEntity {
 		protected class TrainEntityFactory<T> : CustomEntityFactory<T> where T : TrainEntity {
-			private readonly Player OwnerPlayer;
-
-
-			////////////////
-
-			public TrainEntityFactory( Player owner_plr ) {
-				this.OwnerPlayer = owner_plr;
+			public TrainEntityFactory( Player owner_plr ) : base( owner_plr ) {
+				if( owner_plr == null ) {
+					throw new NotImplementedException( "Trains must have an owner." );
+				}
 			}
 
 			////
@@ -49,7 +47,7 @@ namespace OnARail.Entities.Train {
 				return core;
 			}
 			
-			protected override void PostInitialize( T ent ) {
+			protected override void InitializeEntity( T ent ) {
 				if( Main.netMode == 2 ) {
 					ent.SyncTo();
 				}

@@ -14,9 +14,9 @@ using Terraria.ModLoader;
 
 namespace OnARail.Entities.Train.Components {
 	class TrainBehaviorEntityComponent : CustomEntityComponent {
-		protected class TrainBehaviorEntityComponentFactory : PacketProtocolData.Factory<TrainBehaviorEntityComponent> {
+		private class TrainBehaviorEntityComponentFactory : CustomEntityComponentFactory<TrainBehaviorEntityComponent> {
 			public TrainBehaviorEntityComponentFactory() { }
-			public override void Initialize( TrainBehaviorEntityComponent data ) { }
+			public override void InitializeComponent( TrainBehaviorEntityComponent data ) { }
 		}
 
 

@@ -10,9 +10,9 @@ using Terraria;
 
 namespace OnARail.Entities.Train.Components {
 	class TrainMouseInteractionEntityComponent : IsClickableEntityComponent {
-		protected class TrainMouseInteractionEntityComponentFactory : PacketProtocolData.Factory<TrainMouseInteractionEntityComponent> {
+		private class TrainMouseInteractionEntityComponentFactory : CustomEntityComponentFactory<TrainMouseInteractionEntityComponent> {
 			public TrainMouseInteractionEntityComponentFactory() { }
-			public override void Initialize( TrainMouseInteractionEntityComponent data ) { }
+			public override void InitializeComponent( TrainMouseInteractionEntityComponent data ) { }
 		}
 
 		////////////////
