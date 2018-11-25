@@ -69,7 +69,11 @@
     <Compile Include="Config.cs" />
     <Compile Include="Entities\Train\Components\Train_Behavior.cs" />
     <Compile Include="Entities\Train\Components\Train_DrawMap.cs" />
-    <Compile Include="Entities\Train\Components\Train_Misc.cs" />
+    <Compile Include="Entities\Train\Components\Train_Saveable.cs" />
+    <Compile Include="Entities\Train\Components\Train_PeriodicSync.cs" />
+    <Compile Include="Entities\Train\Components\Train_RailBound.cs" />
+    <Compile Include="Entities\Train\Components\Train_RespectsGravity.cs" />
+    <Compile Include="Entities\Train\Components\Train_RespectsTerrain.cs" />
     <Compile Include="Entities\Train\Components\Train_DrawGame.cs" />
     <Compile Include="Entities\Train\Components\Train_Mouse.cs" />
     <Compile Include="Entities\Train\Train_Warp.cs" />

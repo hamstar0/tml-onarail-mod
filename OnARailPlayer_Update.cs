@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Components.CustomEntity.Components;
+using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Helpers.TmlHelpers;
 using HamstarHelpers.Services.Promises;
@@ -11,12 +12,14 @@ using Terraria.ModLoader;
 namespace OnARail {
 	partial class OnARailPlayer : ModPlayer {
 		public override void PreUpdate() {
-			if( this.MyTrainWho == -1 ) {
-				this.MyTrainWho = TrainEntity.FindMyTrain( this.player );
-			}
+			if( SaveableEntityComponent.HaveAllEntitiesLoaded ) {
+				if( this.MyTrainWho == -1 ) {
+					this.MyTrainWho = TrainEntity.FindMyTrain( this.player );
+				}
 
-			if( this.MyTrainWho != -1 ) {
-				this.UpdatePostTrainLoad();
+				if( this.MyTrainWho != -1 ) {
+					this.UpdatePostTrainLoad();
+				}
 			}
 
 			this.UpdatePlayerState();

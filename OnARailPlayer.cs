@@ -2,7 +2,6 @@
 using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
-using HamstarHelpers.Helpers.TmlHelpers;
 using HamstarHelpers.Services.Promises;
 using HamstarHelpers.Services.Timers;
 using Microsoft.Xna.Framework;

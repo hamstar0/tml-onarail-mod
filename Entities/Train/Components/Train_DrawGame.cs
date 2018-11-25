@@ -39,6 +39,7 @@ namespace OnARail.Entities.Train.Components {
 		private float PulseScaleAnimation = 0f;
 
 
+
 		////////////////
 
 		protected TrainDrawInGameEntityComponent( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
@@ -46,7 +47,7 @@ namespace OnARail.Entities.Train.Components {
 
 		////////////////
 
-		protected override void PostInitialize() {
+		protected override void PostPostInitialize() {
 			if( Main.netMode != 2 ) {
 				this.TrainIcon = OnARailMod.Instance.GetTexture( "Entities/Train/TrainIcon" );
 			}
@@ -93,7 +94,7 @@ namespace OnARail.Entities.Train.Components {
 				this.PulseScaleAnimation++;
 			}
 			
-			sb.Draw( this.TrainIcon, pos, null, Color.White, 0f, default( Vector2 ), scale, dir, 1f );
+			sb.Draw( this.TrainIcon, pos, null, Color.White, 0f, default(Vector2), scale, dir, 1f );
 
 			HudHelpers.DrawGlowingString( ent.Core.DisplayName, text_pos, 1f );
 		}

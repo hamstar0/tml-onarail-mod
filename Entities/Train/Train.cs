@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Components.Network.Data;
@@ -20,45 +21,26 @@ namespace OnARail.Entities.Train {
 
 			////
 
-			protected override IList<CustomEntityComponent> InitializeComponents() {
-				return new List<CustomEntityComponent> {
-					TrainBehaviorEntityComponent.CreateTrainBehaviorEntityComponent(),
-					TrainDrawInGameEntityComponent.CreateTrainDrawInGameEntityComponent(),
-					TrainDrawOnMapEntityComponent.CreateTrainDrawOnMapEntityComponent(),
-					TrainMouseInteractionEntityComponent.CreateTrainMouseInteractionEntityComponent(),
-					TrainRespectsTerrainEntityComponent.CreateTrainRespectsTerrainEntityComponent(),
-					TrainRespectsGravityEntityComponent.CreateTrainRespectsGravityEntityComponent(),
-					TrainRailBoundEntityComponent.CreateTrainRailBoundEntityComponent(),
-					TrainPeriodicSyncEntityComponent.CreateTrainPeriodicSyncEntityComponent(),
-					TrainSaveableEntityComponent.CreateTrainSaveableEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
-				};
-			}
-
-			protected override CustomEntityCore InitializeCore() {
-				Vector2 pos = this.OwnerPlayer.Center;
-				pos.Y -= 16;
-				pos.X = MathHelper.Clamp( pos.X, 160, (Main.maxTilesX - 10) * 16 );
-				pos.Y = MathHelper.Clamp( pos.Y, 160, (Main.maxTilesY - 10) * 16 );
-
-				var core = new CustomEntityCore( this.OwnerPlayer.name + "'s Train", 64, 48, pos, 1 ) {
-					Center = pos
-				};
-
-				return core;
-			}
-			
 			protected override void InitializeEntity( T ent ) {
 				if( Main.netMode == 2 ) {
-					ent.SyncTo();
+					ent.SyncToAll();
 				}
 			}
 		}
+		
+		//protected sealed class MyFactory : TrainEntityFactory<TrainEntity> {
+		//	public MyFactory( Player owner_plr ) : base( owner_plr ) { }
+		//}
 
 
 
 		////////////////
 
 		public static TrainEntity CreateTrainEntity( Player owner_plr ) {
+			if( OnARailMod.Instance.Config.DebugModeInfo ) {
+				LogHelpers.Log( "Creating new train for player "+owner_plr.name+" ("+owner_plr.whoAmI+")" );
+			}
+
 			var factory = new TrainEntityFactory<TrainEntity>( owner_plr );
 			return factory.Create();
 		}
@@ -68,20 +50,14 @@ namespace OnARail.Entities.Train {
 		////////////////
 
 		public static int FindMyTrain( Player player ) {
-			if( !SaveableEntityComponent.IsLoaded ) {
-				LogHelpers.LogOnce( "OnARail.TrainEntityHandler.FindMyTrain - Entities not loaded." );
+			if( !SaveableEntityComponent.HaveAllEntitiesLoaded ) {
+				LogHelpers.LogOnce( "!OnARail.TrainEntityHandler.FindMyTrain - Entities not loaded." );
 				return -1;
 			}
 
-			ISet<CustomEntity> ents = CustomEntityManager.GetEntitiesByComponent<TrainBehaviorEntityComponent>();
+			ISet<TrainEntity> ents = CustomEntityManager.GetEntitiesForPlayer<TrainEntity>( player );
 
-			foreach( var ent in ents ) {
-				if( ent.OwnerPlayerWho == player.whoAmI ) {
-					return ent.Core.whoAmI;
-				}
-			}
-
-			return -1;
+			return ents.FirstOrDefault()?.Core.WhoAmI ?? -1;
 		}
 
 
@@ -89,5 +65,59 @@ namespace OnARail.Entities.Train {
 		////////////////
 		
 		protected TrainEntity( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
+
+
+		////
+
+		private IList<CustomEntityComponent> CreateComponents() {
+			return new List<CustomEntityComponent> {
+				TrainBehaviorEntityComponent.CreateTrainBehaviorEntityComponent(),
+				TrainDrawInGameEntityComponent.CreateTrainDrawInGameEntityComponent(),
+				TrainDrawOnMapEntityComponent.CreateTrainDrawOnMapEntityComponent(),
+				TrainMouseInteractionEntityComponent.CreateTrainMouseInteractionEntityComponent(),
+				TrainRespectsTerrainEntityComponent.CreateTrainRespectsTerrainEntityComponent(),
+				TrainRespectsGravityEntityComponent.CreateTrainRespectsGravityEntityComponent(),
+				TrainRailBoundEntityComponent.CreateTrainRailBoundEntityComponent(),
+				TrainPeriodicSyncEntityComponent.CreateTrainPeriodicSyncEntityComponent(),
+				TrainSaveableEntityComponent.CreateTrainSaveableEntityComponent( OnARailMod.Instance.Config.SaveTrainDataAsJson )
+			};
+		}
+
+
+		////////////////
+
+		protected override IList<CustomEntityComponent> CreateComponents<T>( CustomEntityFactory<T> factory ) {
+			return this.CreateComponents();
+		}
+
+		protected override CustomEntityCore CreateCore<T>( CustomEntityFactory<T> factory ) {
+			Vector2 pos = factory.OwnerPlayer.Center;
+			pos.Y -= 16;
+			pos.X = MathHelper.Clamp( pos.X, 160, ( Main.maxTilesX - 10 ) * 16 );
+			pos.Y = MathHelper.Clamp( pos.Y, 160, ( Main.maxTilesY - 10 ) * 16 );
+
+			string name = factory.OwnerPlayer.name + "'s Train";
+
+			var core = new CustomEntityCore( name, 64, 48, pos, 1 ) {
+				Center = pos
+			};
+
+			return core;
+		}
+
+
+		public override IList<CustomEntityComponent> CreateComponentsTemplate() {
+			return this.CreateComponents();
+		}
+
+		public override CustomEntityCore CreateCoreTemplate() {
+			Vector2 pos = default( Vector2 );
+			string name = "Unclaimed Train";
+			var core = new CustomEntityCore( name, 64, 48, pos, 1 ) {
+				Center = pos
+			};
+
+			return core;
+		}
 	}
 }

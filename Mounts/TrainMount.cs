@@ -83,7 +83,7 @@ namespace OnARail.Mounts {
 
 		internal void RunUpdateForPlayer( Player player ) {
 			if( player.whoAmI != Main.myPlayer ) { return; }
-			if( !SaveableEntityComponent.IsLoaded ) { return; }
+			if( !SaveableEntityComponent.HaveAllEntitiesLoaded ) { return; }
 
 			var myplayer = player.GetModPlayer<OnARailPlayer>();
 			if( myplayer.MyTrainWho == -1 ) { return; }

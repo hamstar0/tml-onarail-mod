@@ -132,7 +132,7 @@ namespace OnARail.Entities.Train.Components {
 			}
 
 			if( owner.whoAmI == Main.myPlayer && Main.netMode == 1 ) {   // needed because player mounts aren't synced to server...?
-				ent.SyncTo();
+				ent.SyncToAll();
 			}
 
 			return true;

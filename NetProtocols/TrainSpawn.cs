@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.Components.CustomEntity;
+using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Components.Network.Data;
@@ -20,16 +21,16 @@ namespace OnARail.NetProtocols {
 
 		protected override bool ReceiveRequestWithServer( int from_who ) {
 			Player player = Main.player[ from_who ];
-			var myplayer = player.GetModPlayer<OnARailPlayer>();
 
-			Promises.AddPostWorldLoadOncePromise( () => {
-				if( TrainEntity.FindMyTrain( player ) == -1 ) {
+			Promises.AddValidatedPromise( SaveableEntityComponent.LoadAllValidator, () => {
+				if( TrainEntity.FindMyTrain( player ) != -1 ) {
 					throw new HamstarException( "Cannot spawn duplicate train for player "+player.name );
 				}
 
 				var ent = TrainEntity.CreateTrainEntity( player );
-				
 				CustomEntityManager.AddToWorld( ent );
+
+				return false;
 			} );
 
 			return true;

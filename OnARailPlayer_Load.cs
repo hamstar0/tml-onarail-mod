@@ -15,14 +15,13 @@ using Terraria.ModLoader;
 namespace OnARail {
 	partial class OnARailPlayer : ModPlayer {
 		private void OnConnectHost() {
-			Promises.AddPostWorldLoadOncePromise( () => {
-				Promises.AddValidatedPromise( SaveableEntityComponent.LoadAllValidator, () => {
-					if( TrainEntity.FindMyTrain( this.player ) == -1 ) {
-						var ent = TrainEntity.CreateTrainEntity( this.player );
-						CustomEntityManager.AddToWorld( ent );
-					}
-					return false;
-				} );
+			//Promises.AddPostWorldLoadOncePromise( () => {
+			Promises.AddValidatedPromise( SaveableEntityComponent.LoadAllValidator, () => {
+				if( TrainEntity.FindMyTrain( this.player ) == -1 ) {
+					var ent = TrainEntity.CreateTrainEntity( this.player );
+					CustomEntityManager.AddToWorld( ent );
+				}
+				return false;
 			} );
 		}
 		
