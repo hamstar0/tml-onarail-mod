@@ -12,8 +12,10 @@ namespace OnARail.Entities.Train.Components {
 	class TrainMouseInteractionEntityComponent : IsClickableEntityComponent {
 		private class TrainMouseInteractionEntityComponentFactory : CustomEntityComponentFactory<TrainMouseInteractionEntityComponent> {
 			public TrainMouseInteractionEntityComponentFactory() { }
-			public override void InitializeComponent( TrainMouseInteractionEntityComponent data ) { }
+
+			protected override void InitializeComponent( TrainMouseInteractionEntityComponent data ) { }
 		}
+
 
 		////////////////
 
@@ -57,7 +59,7 @@ namespace OnARail.Entities.Train.Components {
 						var myplayer = player.GetModPlayer<OnARailPlayer>();
 
 						if( !myplayer.IsInInitLockdown ) {
-							if( ent.OwnerPlayerWho == player.whoAmI ) {
+							if( ent.MyOwnerPlayerWho == player.whoAmI ) {
 								int train_buff_id = OnARailMod.Instance.BuffType<TrainMountBuff>();
 
 								if( player.FindBuffIndex( train_buff_id ) == -1 ) {

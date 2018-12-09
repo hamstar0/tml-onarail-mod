@@ -27,7 +27,7 @@ namespace OnARail.NetProtocols {
 
 			////
 
-			public override void Initialize( TunnelEntitySpawnProtocol data ) {
+			protected override void Initialize( TunnelEntitySpawnProtocol data ) {
 				data.BegTileX = this.BegTileX;
 				data.BegTileY = this.BegTileY;
 				data.EndTileX = this.EndTileX;

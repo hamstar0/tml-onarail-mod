@@ -9,8 +9,10 @@ namespace OnARail.Entities.Train.Components {
 	class TrainPeriodicSyncEntityComponent : PeriodicSyncEntityComponent {
 		protected class TrainPeriodicSyncEntityComponentFactory : CustomEntityComponentFactory<TrainPeriodicSyncEntityComponent> {
 			public TrainPeriodicSyncEntityComponentFactory() { }
-			public override void InitializeComponent( TrainPeriodicSyncEntityComponent data ) { }
+
+			protected override void InitializeComponent( TrainPeriodicSyncEntityComponent data ) { }
 		}
+
 
 		////////////////
 

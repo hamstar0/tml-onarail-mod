@@ -9,8 +9,10 @@ namespace OnARail.Entities.Train.Components {
 	class TrainRailBoundEntityComponent : RailBoundEntityComponent {
 		protected class TrainRailBoundEntityComponentFactory : CustomEntityComponentFactory<TrainRailBoundEntityComponent> {
 			public TrainRailBoundEntityComponentFactory() { }
-			public override void InitializeComponent( TrainRailBoundEntityComponent data ) { }
+
+			protected override void InitializeComponent( TrainRailBoundEntityComponent data ) { }
 		}
+
 
 		////////////////
 

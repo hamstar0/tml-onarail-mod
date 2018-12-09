@@ -9,8 +9,10 @@ namespace OnARail.Entities.Train.Components {
 	class TrainRespectsTerrainEntityComponent : RespectsTerrainEntityComponent {
 		private class TrainRespectsTerrainEntityComponentFactory : CustomEntityComponentFactory<TrainRespectsTerrainEntityComponent> {
 			public TrainRespectsTerrainEntityComponentFactory() { }
-			public override void InitializeComponent( TrainRespectsTerrainEntityComponent data ) { }
+
+			protected override void InitializeComponent( TrainRespectsTerrainEntityComponent data ) { }
 		}
+
 
 		////////////////
 

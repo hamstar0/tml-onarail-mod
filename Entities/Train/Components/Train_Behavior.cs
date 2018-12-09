@@ -16,7 +16,8 @@ namespace OnARail.Entities.Train.Components {
 	class TrainBehaviorEntityComponent : CustomEntityComponent {
 		private class TrainBehaviorEntityComponentFactory : CustomEntityComponentFactory<TrainBehaviorEntityComponent> {
 			public TrainBehaviorEntityComponentFactory() { }
-			public override void InitializeComponent( TrainBehaviorEntityComponent data ) { }
+
+			protected override void InitializeComponent( TrainBehaviorEntityComponent data ) { }
 		}
 
 
@@ -46,14 +47,14 @@ namespace OnARail.Entities.Train.Components {
 		////////////////
 
 		public override void UpdateSingle( CustomEntity myent ) {
-			if( myent.OwnerPlayerWho == Main.myPlayer ) {
+			if( myent.MyOwnerPlayerWho == Main.myPlayer ) {
 				this.UpdateMe( myent, Main.LocalPlayer );
 			}
 		}
 
 		public override void UpdateClient( CustomEntity myent ) {
-			if( myent.OwnerPlayerWho != -1 && myent.OwnerPlayerWho < Main.player.Length ) {
-				Player plr = Main.player[ myent.OwnerPlayerWho ];
+			if( myent.MyOwnerPlayerWho != -1 && myent.MyOwnerPlayerWho < Main.player.Length ) {
+				Player plr = Main.player[ myent.MyOwnerPlayerWho];
 
 				if( plr != null && plr.active ) {
 					this.UpdateMe( myent, plr );
@@ -62,8 +63,8 @@ namespace OnARail.Entities.Train.Components {
 		}
 
 		public override void UpdateServer( CustomEntity myent ) {
-			if( myent.OwnerPlayerWho != -1 && myent.OwnerPlayerWho < Main.player.Length ) {
-				Player plr = Main.player[ myent.OwnerPlayerWho ];
+			if( myent.MyOwnerPlayerWho != -1 && myent.MyOwnerPlayerWho < Main.player.Length ) {
+				Player plr = Main.player[ myent.MyOwnerPlayerWho];
 
 				if( plr != null && plr.active ) {
 					this.UpdateMe( myent, plr );
@@ -154,13 +155,13 @@ namespace OnARail.Entities.Train.Components {
 		}
 
 		private void TraverseToTunnel( CustomEntity train_ent, TrainTunnelTileEntity to_tunnel ) {
-			if( this.IsMountedBy == -1 || train_ent.OwnerPlayerWho == -1 ) {
+			if( this.IsMountedBy == -1 || train_ent.MyOwnerPlayerWho == -1 ) {
 				// TODO train-only traversal
 			} else {
 				Vector2 to_tunnel_pos = to_tunnel.GetWorldRectangle().Center.ToVector2();
 				to_tunnel_pos.Y -= 32;
 
-				Player plr = Main.player[train_ent.OwnerPlayerWho];
+				Player plr = Main.player[train_ent.MyOwnerPlayerWho];
 				Vector2 vel = plr.velocity;
 				
 				PlayerHelpers.Teleport( plr, to_tunnel_pos );

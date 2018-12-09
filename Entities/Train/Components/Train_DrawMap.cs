@@ -32,15 +32,15 @@ namespace OnARail.Entities.Train.Components {
 		////////////////
 
 		public override bool PreDrawFullscreenMap( SpriteBatch sb, CustomEntity ent ) {
-			return ent.OwnerPlayerWho == Main.myPlayer;
+			return ent.MyOwnerPlayerWho == Main.myPlayer;
 		}
 
 		public override bool PreDrawMiniMap( SpriteBatch sb, CustomEntity ent ) {
-			return ent.OwnerPlayerWho == Main.myPlayer;
+			return ent.MyOwnerPlayerWho == Main.myPlayer;
 		}
 
 		public override bool PreDrawOverlayMap( SpriteBatch sb, CustomEntity ent ) {
-			return ent.OwnerPlayerWho == Main.myPlayer;
+			return ent.MyOwnerPlayerWho == Main.myPlayer;
 		}
 	}
 }
