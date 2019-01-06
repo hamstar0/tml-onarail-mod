@@ -9,7 +9,7 @@ using Terraria.DataStructures;
 
 namespace OnARail.NetProtocols {
 	class TunnelEntitySpawnProtocol : PacketProtocolSendToServer {
-		protected class MyFactory : PacketProtocolData.Factory<TunnelEntitySpawnProtocol> {
+		protected class MyFactory : Factory<TunnelEntitySpawnProtocol> {
 			private readonly int BegTileX;
 			private readonly int BegTileY;
 			private readonly int EndTileX;
@@ -78,6 +78,8 @@ namespace OnARail.NetProtocols {
 		////////////////
 
 		protected TunnelEntitySpawnProtocol( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
+
+		protected override void InitializeClientSendData() { }
 
 
 		////////////////

@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Components.CustomEntity;
+﻿using System;
+using HamstarHelpers.Components.CustomEntity;
 using HamstarHelpers.Components.CustomEntity.Components;
 using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Helpers.PlayerHelpers;
